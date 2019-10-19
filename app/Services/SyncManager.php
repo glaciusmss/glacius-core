@@ -17,7 +17,6 @@ use App\Events\MarketplaceSyncing;
 use App\Marketplace;
 use App\Shop;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 use Psr\Log\LoggerInterface;
 
 class SyncManager
@@ -77,7 +76,7 @@ class SyncManager
 
     protected function makeSyncClassWith(Marketplace $marketplace)
     {
-        $namespace = __NAMESPACE__ . '\\' . Str::title($marketplace->name) . '\\Syncs\\';
+        $namespace = __NAMESPACE__ . '\\' . ucfirst($marketplace->name) . '\\Syncs\\';
         $syncBaseClass = 'Sync' . class_basename($this->model);
         $syncClass = $namespace . $syncBaseClass;
 

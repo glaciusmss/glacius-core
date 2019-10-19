@@ -2,8 +2,6 @@
 
 namespace App;
 
-use App\Events\Order\OrderCreated;
-use App\Events\Order\OrderUpdated;
 use App\Utils\HasAddresses;
 use Illuminate\Database\Eloquent\Model;
 
@@ -36,6 +34,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $products_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Address[] $addresses
  * @property-read int|null $addresses_count
+ * @property int|null $customer_id
+ * @property-read \App\Customer|null $customer
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Order whereCustomerId($value)
  */
 class Order extends Model
 {
@@ -49,11 +50,6 @@ class Order extends Model
         'meta' => 'array'
     ];
 
-    protected $dispatchesEvents = [
-        'created' => OrderCreated::class,
-        'updated' => OrderUpdated::class,
-    ];
-
     public function shop()
     {
         return $this->belongsTo(Shop::class);
@@ -62,6 +58,11 @@ class Order extends Model
     public function marketplace()
     {
         return $this->belongsTo(Marketplace::class);
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
     }
 
     public function products()

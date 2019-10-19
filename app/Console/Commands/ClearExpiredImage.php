@@ -38,7 +38,7 @@ class ClearExpiredImage extends Command
      */
     public function handle()
     {
-        $query = TempMedia::where('created_at', '<', now()->subMinutes(30));
+        $query = TempMedia::expired();
         $tempImages = $query->get();
         $deletedCount = $query->delete();
 

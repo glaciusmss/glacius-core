@@ -13,7 +13,6 @@ use App\Address;
 use App\Contracts\Processor;
 use App\Enums\AddressType;
 use App\Enums\EventType;
-use App\Order;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
@@ -33,11 +32,20 @@ abstract class BaseProcessor extends BaseMarketplace implements Processor
         $rawData = $this->event->rawData;
 
         $this->getMarketplace()->rawWebhooks()->create([
-            'raw_data' => $rawData->toArray()
+            'raw_data' => $rawData->toArray(),
+            'topic' => $this->event->topic,
         ]);
 
         if ($type->is(EventType::Created())) {
-            $this->processWhenCreated($rawData);
+            $result = $this->processWhenCreated($rawData);
+        } else if ($type->is(EventType::Updated())) {
+            $result = $this->processWhenUpdated($rawData);
+        } else if ($type->is(EventType::Deleted())) {
+            $result = $this->processWhenDeleted($rawData);
+        }
+
+        if ($result) {
+            $this->fireEventAfterProcess($result);
         }
     }
 
@@ -77,14 +85,26 @@ abstract class BaseProcessor extends BaseMarketplace implements Processor
     {
         $address = Arr::add($address, 'type', $type ?? AddressType::Default());
 
-        /** @var Address $createdShippingAddress */
-        $createdShippingAddress = $record->addAddress(
+        /** @var Address $createdAddress */
+        $createdAddress = $record->addAddress(
             Arr::only($address, ['type', 'address1', 'address2', 'city', 'state', 'zip', 'country'])
         );
 
-        $createdShippingAddress->addContact(
+        $createdAddress->addContact(
             Arr::only($address, ['first_name', 'last_name', 'phone', 'email'])
         );
+    }
+
+    private function fireEventAfterProcess($model)
+    {
+        $extractedClassFromObject = ucfirst(class_basename($model));
+        $namespace = 'App\\Events\\' . $extractedClassFromObject . '\\';
+        $eventName = $extractedClassFromObject . ucfirst($this->getEventType()->key);
+        $eventClass = $namespace . $eventName;
+
+        if (class_exists($eventClass)) {
+            event(new $eventClass($model));
+        }
     }
 
     abstract protected function getEventType();
@@ -92,4 +112,6 @@ abstract class BaseProcessor extends BaseMarketplace implements Processor
     abstract protected function processWhenCreated(Collection $rawData);
 
     abstract protected function processWhenUpdated(Collection $rawData);
+
+    abstract protected function processWhenDeleted(Collection $rawData);
 }

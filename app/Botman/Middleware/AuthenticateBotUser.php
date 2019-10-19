@@ -45,7 +45,7 @@ class AuthenticateBotUser implements Received
         }
 
         $userAssociated = optional($channel)->users()
-            ->wherePivot("meta->{$platform}_bot_id", '=', $botId)
+            ->wherePivot("meta->{$platform}_bot_id", $botId)
             ->first();
 
         if (!$userAssociated) {

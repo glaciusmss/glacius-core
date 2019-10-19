@@ -10,8 +10,6 @@ namespace App\Utils;
 
 
 use App\Contact;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 trait HasContact
 {
@@ -28,17 +26,13 @@ trait HasContact
         return $this->contact()->create($attributes);
     }
 
-    public function updateContact(Contact $contact, array $attributes)
+    public function updateContact(array $attributes)
     {
-        return $contact->fill($attributes)->save();
+        return $this->contact->fill($attributes)->save();
     }
 
-    public function deleteContact(Contact $contact)
+    public function deleteContact()
     {
-        if ($this !== $contact->contactable()->first()) {
-            return false;
-        }
-
-        return $contact->delete();
+        return $this->contact->delete();
     }
 }

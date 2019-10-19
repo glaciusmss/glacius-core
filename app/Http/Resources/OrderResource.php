@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Arr;
 
 /**
  * Class OrderResource
@@ -20,10 +19,16 @@ class OrderResource extends JsonResource
      */
     public function toArray($request)
     {
-        $orderData = parent::toArray($request);
-
-        $orderData['marketplace'] = $this->marketplace;
-
-        return Arr::except($orderData, ['meta', 'marketplace_id', 'shop_id', 'shop']);
+        return [
+            'id' => $this->id,
+            'total_price' => $this->total_price,
+            'subtotal_price' => $this->subtotal_price,
+            'customer' => $this->when($this->customer, function () {
+                return new CustomerResource($this->customer);
+            }),
+            'marketplace' => $this->marketplace,
+            'created_at' => $this->created_at->toDateTimeString(),
+            'updated_at' => $this->updated_at->toDateTimeString(),
+        ];
     }
 }

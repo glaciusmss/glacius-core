@@ -45,7 +45,7 @@ class ProcessorFactory
      */
     public function build()
     {
-        $className = 'App\\Services\\' . Str::title($this->marketplace->value) . '\\Processors\\' . Str::title($this->processorType->key) . 'Processor';
+        $className = 'App\\Services\\' . ucfirst($this->marketplace->value) . '\\Processors\\' . Str::title($this->processorType->key) . 'Processor';
 
         if (!class_exists($className)) {
             return null;

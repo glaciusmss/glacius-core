@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Events\Customer\CustomerCreated;
 use App\Events\MarketplaceSynced;
 use App\Events\OAuthConnected;
 use App\Events\OAuthDisconnected;
@@ -9,15 +10,16 @@ use App\Events\Order\OrderCreated;
 use App\Events\Product\ProductCreated;
 use App\Events\Product\ProductDeleted;
 use App\Events\Product\ProductUpdated;
-use App\Events\Webhook\CustomerCreateReceivedFromMarketplace;
-use App\Events\Webhook\OrderCreateReceivedFromMarketplace;
-use App\Listeners\Webhook\ProcessCustomerFromMarketplace;
-use App\Listeners\Webhook\ProcessOrderFromMarketplace;
+use App\Events\Webhook\CustomerWebhookReceivedFromMarketplace;
+use App\Events\Webhook\OrderWebhookReceivedFromMarketplace;
+use App\Listeners\Customer\SendCustomerNotification;
 use App\Listeners\Order\SendOrderNotification;
 use App\Listeners\RemoveShopSetting;
 use App\Listeners\SetupDefaultSetting;
 use App\Listeners\Sync\AddTransaction;
 use App\Listeners\Sync\Product\SyncProduct;
+use App\Listeners\Webhook\ProcessCustomerFromMarketplace;
+use App\Listeners\Webhook\ProcessOrderFromMarketplace;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -45,14 +47,16 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        Event::listen(OrderCreateReceivedFromMarketplace::class, ProcessOrderFromMarketplace::class);
-        Event::listen(CustomerCreateReceivedFromMarketplace::class, ProcessCustomerFromMarketplace::class);
+        Event::listen(OrderWebhookReceivedFromMarketplace::class, ProcessOrderFromMarketplace::class);
+        Event::listen(CustomerWebhookReceivedFromMarketplace::class, ProcessCustomerFromMarketplace::class);
 
         Event::listen(OrderCreated::class, SendOrderNotification::class);
 
         Event::listen(ProductCreated::class, SyncProduct::class);
         Event::listen(ProductUpdated::class, SyncProduct::class);
         Event::listen(ProductDeleted::class, SyncProduct::class);
+
+        Event::listen(CustomerCreated::class, SendCustomerNotification::class);
 
         Event::listen(MarketplaceSynced::class, AddTransaction::class);
 

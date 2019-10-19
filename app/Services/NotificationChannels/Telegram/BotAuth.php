@@ -60,7 +60,7 @@ class BotAuth extends BaseNotificationChannel implements BotAuthContract
     public function isBotConnectedToUser($botId)
     {
         return $this->getNotificationChannel()->users()
-            ->wherePivot('meta->' . $this->getBotIdKey(), '=', $botId)
+            ->wherePivot('meta->' . $this->getBotIdKey(), $botId)
             ->first(['email']);
     }
 }

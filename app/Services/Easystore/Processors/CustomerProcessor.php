@@ -9,15 +9,11 @@
 namespace App\Services\Easystore\Processors;
 
 
-use App\Address;
 use App\Customer;
-use App\Enums\AddressType;
+use App\Enums\Easystore\WebhookTopic;
 use App\Enums\EventType;
 use App\Enums\MarketplaceEnum;
-use App\Events\Webhook\CustomerCreateReceivedFromMarketplace;
-use App\Product;
 use App\Services\BaseProcessor;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class CustomerProcessor extends BaseProcessor
@@ -35,13 +31,13 @@ class CustomerProcessor extends BaseProcessor
 
         return $this->shop = $this->getMarketplace()
             ->shops()
-            ->wherePivot('meta->easystore_shop', '=', $this->event->rawData->get('shop_domain'))
+            ->wherePivot('meta->easystore_shop', $this->event->rawData->get('shop_domain'))
             ->first();
     }
 
     protected function getEventType()
     {
-        if ($this->event instanceof CustomerCreateReceivedFromMarketplace) {
+        if (WebhookTopic::CustomerCreate()->is($this->event->topic)) {
             return EventType::Created();
         }
 
@@ -71,10 +67,17 @@ class CustomerProcessor extends BaseProcessor
                 );
             }
         }
+
+        return $customerRecord;
     }
 
     protected function processWhenUpdated(Collection $rawData)
     {
         // TODO: Implement processWhenUpdated() method.
+    }
+
+    protected function processWhenDeleted(Collection $rawData)
+    {
+        // TODO: Implement processWhenDeleted() method.
     }
 }

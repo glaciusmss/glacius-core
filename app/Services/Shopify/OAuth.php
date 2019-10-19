@@ -27,13 +27,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class OAuth extends BaseMarketplace implements OAuthContract
 {
+    protected $cache;
     protected $sdkFactory;
     protected $webhook;
 
-    public function __construct($config, CacheContract $cache, SdkFactory $sdkFactory, WebhookContract $webhook)
+    public function __construct(CacheContract $cache, SdkFactory $sdkFactory, WebhookContract $webhook)
     {
-        parent::__construct($config, $cache);
-
+        $this->cache = $cache;
         $this->sdkFactory = $sdkFactory;
         $this->webhook = $webhook;
     }
@@ -44,7 +44,7 @@ class OAuth extends BaseMarketplace implements OAuthContract
 
         return AuthHelper::createAuthRequest(
             'read_orders,read_customers,read_products,write_products',
-            $this->config['redirect_url'],
+            $this->getConfig('redirect_url'),
             null,
             null,
             true

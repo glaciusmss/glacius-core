@@ -52,6 +52,10 @@ class Address extends Model
         'type' => AddressType::class,
     ];
 
+    protected $touches = [
+        'addressable'
+    ];
+
     public function addressable()
     {
         return $this->morphTo();

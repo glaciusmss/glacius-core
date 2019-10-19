@@ -33,15 +33,12 @@ class ShopeeServiceProvider extends ServiceProvider
 
         $this->app->singleton(Webhook::class, function (Container $app) {
             return new Webhook(
-                $app->make('config')->get('marketplace.shopee'),
-                $app->make(CacheContract::class),
                 $app->make(Factory::class)
             );
         });
 
         $this->app->singleton(OAuth::class, function (Container $app) {
             return new OAuth(
-                $app->make('config')->get('marketplace.shopee'),
                 $app->make(CacheContract::class),
                 $app->make(Factory::class)
             );

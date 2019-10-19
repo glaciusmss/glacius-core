@@ -63,6 +63,7 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
     ]);
 
     Route::apiResource('order', 'OrderController')->only(['index', 'show']);
+    Route::apiResource('customer', 'CustomerController')->only(['index', 'show']);
 
     Route::prefix('/image')->group(function () {
         Route::get('/{image}', 'MediaController@getImage');

@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\Model;
 class RawWebhook extends Model
 {
     protected $fillable = [
-        'raw_data'
+        'raw_data', 'topic'
     ];
 
     protected $casts = [

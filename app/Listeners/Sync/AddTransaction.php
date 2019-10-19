@@ -3,8 +3,6 @@
 namespace App\Listeners\Sync;
 
 use App\Events\MarketplaceSynced;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class AddTransaction
 {

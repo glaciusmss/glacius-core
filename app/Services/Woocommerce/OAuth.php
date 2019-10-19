@@ -24,13 +24,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class OAuth extends BaseMarketplace implements OAuthContract
 {
+    protected $cache;
     protected $sdkFactory;
     protected $webhook;
 
-    public function __construct($config, CacheContract $cache, SdkFactory $sdkFactory, WebhookContract $webhook)
+    public function __construct(CacheContract $cache, SdkFactory $sdkFactory, WebhookContract $webhook)
     {
-        parent::__construct($config, $cache);
-
+        $this->cache = $cache;
         $this->sdkFactory = $sdkFactory;
         $this->webhook = $webhook;
     }
@@ -45,8 +45,8 @@ class OAuth extends BaseMarketplace implements OAuthContract
             . '?app_name=GlaciusMSS.' . $generatedSession
             . '&scope=read_write'
             . '&user_id=' . $generatedSession
-            . '&return_url=' . $this->config['return_url']
-            . '&callback_url=' . $this->config['callback_url'];
+            . '&return_url=' . $this->getConfig('return_url')
+            . '&callback_url=' . $this->getConfig('callback_url');
     }
 
     public function oAuthCallback(Request $request)
@@ -92,7 +92,7 @@ class OAuth extends BaseMarketplace implements OAuthContract
         /** @var \App\Marketplace $marketplace */
         $marketplace = $this->getShop('marketplaces')
             ->marketplaces()
-            ->wherePivot('marketplace_id', '=', $this->getMarketplace()->id)
+            ->wherePivot('marketplace_id', $this->getMarketplace()->id)
             ->first();
 
         $this->sdkFactory->setupSdk(null, [

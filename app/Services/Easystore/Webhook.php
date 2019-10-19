@@ -11,29 +11,28 @@ namespace App\Services\Easystore;
 
 use App\Contracts\SdkFactory;
 use App\Contracts\Webhook as WebhookContract;
+use App\Enums\Easystore\WebhookTopic;
 use App\Enums\MarketplaceEnum;
-use App\Events\Webhook\CustomerCreateReceivedFromMarketplace;
-use App\Events\Webhook\OrderCreateReceivedFromMarketplace;
+use App\Events\Webhook\CustomerWebhookReceivedFromMarketplace;
+use App\Events\Webhook\OrderWebhookReceivedFromMarketplace;
 use App\Services\BaseMarketplace;
 use EasyStore\Exception\ApiException;
-use Illuminate\Contracts\Cache\Repository as CacheContract;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class Webhook extends BaseMarketplace implements WebhookContract
 {
     protected $sdkFactory;
 
-    public function __construct($config, CacheContract $cache, SdkFactory $sdkFactory)
+    public function __construct(SdkFactory $sdkFactory)
     {
-        parent::__construct($config, $cache);
-
         $this->sdkFactory = $sdkFactory;
     }
 
     public function register()
     {
         $webhookIds = [];
-        $topics = ['order/create', 'customer/create'];
+        $topics = WebhookTopic::getValues();
 
         foreach ($topics as $topic) {
             $webhookId = $this->createWebhook($topic);
@@ -50,7 +49,7 @@ class Webhook extends BaseMarketplace implements WebhookContract
         $hmacHeader = $request->headers->get('easystore-hmac-sha256', '');
         $data = file_get_contents('php://input');
 
-        $calculatedHmac = hash_hmac('sha256', $data, $this->config['secret']);
+        $calculatedHmac = hash_hmac('sha256', $data, $this->getConfig('secret'));
 
         return hash_equals($hmacHeader, $calculatedHmac);
     }
@@ -61,10 +60,10 @@ class Webhook extends BaseMarketplace implements WebhookContract
         $shopDomain = $request->headers->get('easystore-shop-domain');
         $rawData = collect($request->all())->merge(['shop_domain' => $shopDomain]);
 
-        if ($topic === 'order/create') {
-            event(new OrderCreateReceivedFromMarketplace($rawData, $this->name()));
-        } else if ($topic === 'customer/create') {
-            event(new CustomerCreateReceivedFromMarketplace($rawData, $this->name()));
+        if (Str::startsWith($topic, 'order/')) {
+            event(new OrderWebhookReceivedFromMarketplace($topic, $rawData, $this->name()));
+        } else if (Str::startsWith($topic, 'customer/')) {
+            event(new CustomerWebhookReceivedFromMarketplace($topic, $rawData, $this->name()));
         }
     }
 
@@ -82,7 +81,7 @@ class Webhook extends BaseMarketplace implements WebhookContract
             $response = $sdk->post('/webhooks.json', [
                 'webhook' => [
                     'topic' => $topic,
-                    'url' => $this->config['webhook_url'],
+                    'url' => $this->getConfig('webhook_url'),
                 ]
             ]);
 

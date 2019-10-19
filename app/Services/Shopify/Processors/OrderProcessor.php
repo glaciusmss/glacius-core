@@ -9,15 +9,13 @@
 namespace App\Services\Shopify\Processors;
 
 
-use App\Address;
-use App\Enums\AddressType;
+use App\Customer;
 use App\Enums\EventType;
 use App\Enums\MarketplaceEnum;
-use App\Events\Webhook\OrderCreateReceivedFromMarketplace;
+use App\Enums\Shopify\WebhookTopic;
 use App\Order;
 use App\Product;
 use App\Services\BaseProcessor;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class OrderProcessor extends BaseProcessor
@@ -41,7 +39,7 @@ class OrderProcessor extends BaseProcessor
 
     protected function getEventType()
     {
-        if ($this->event instanceof OrderCreateReceivedFromMarketplace) {
+        if (WebhookTopic::OrderCreate()->is($this->event->topic)) {
             return EventType::Created();
         }
 
@@ -82,10 +80,28 @@ class OrderProcessor extends BaseProcessor
                 $this->transformAddressAttr($shippingAddress, ['province' => 'state'])
             );
         }
+
+        if ($customerData = $rawData->get('customer')) {
+            $customer = Customer::whereMarketplaceId($this->getMarketplace()->id)
+                ->where('meta->marketplace_customer_id', '=', $customerData['id'])
+                ->first();
+
+            if ($customer) {
+                $orderRecord->customer()->associate($customer);
+                $orderRecord->save();
+            }
+        }
+
+        return $orderRecord;
     }
 
     protected function processWhenUpdated(Collection $rawData)
     {
         // TODO: Implement processWhenUpdated() method.
+    }
+
+    protected function processWhenDeleted(Collection $rawData)
+    {
+        // TODO: Implement processWhenDeleted() method.
     }
 }

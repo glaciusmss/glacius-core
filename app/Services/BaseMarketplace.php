@@ -12,21 +12,12 @@ namespace App\Services;
 use App\Contracts\Marketplace;
 use App\Enums\MarketplaceEnum;
 use App\Utils\HasShop;
-use Illuminate\Contracts\Cache\Repository as CacheContract;
 
 abstract class BaseMarketplace implements Marketplace
 {
     use HasShop;
 
     protected $marketplace;
-    protected $config;
-    protected $cache;
-
-    public function __construct($config, CacheContract $cache)
-    {
-        $this->config = $config;
-        $this->cache = $cache;
-    }
 
     /**
      * @return \App\Marketplace
@@ -40,5 +31,18 @@ abstract class BaseMarketplace implements Marketplace
         $name = ($this->name() instanceof MarketplaceEnum) ? $this->name()->key : $this->name();
 
         return $this->marketplace = \App\Marketplace::whereName($name)->first();
+    }
+
+    protected function getConfig($key = null)
+    {
+        $name = ($this->name() instanceof MarketplaceEnum) ? $this->name()->value : $this->name();
+
+        $config = config("marketplace.$name");
+
+        if ($key === null) {
+            return $config;
+        }
+
+        return $config[$key];
     }
 }

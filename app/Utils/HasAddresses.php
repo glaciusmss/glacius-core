@@ -10,8 +10,6 @@ namespace App\Utils;
 
 
 use App\Address;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 trait HasAddresses
 {

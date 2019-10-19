@@ -23,12 +23,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class OAuth extends BaseMarketplace implements OAuthContract
 {
+    protected $cache;
     protected $sdkFactory;
 
-    public function __construct($config, CacheContract $cache, SdkFactory $sdkFactory)
+    public function __construct(CacheContract $cache, SdkFactory $sdkFactory)
     {
-        parent::__construct($config, $cache);
-
+        $this->cache = $cache;
         $this->sdkFactory = $sdkFactory;
     }
 
@@ -107,11 +107,11 @@ class OAuth extends BaseMarketplace implements OAuthContract
         $generatedSession = Str::orderedUuid()->toString();
         $this->cache->put($this->name() . ':' . $generatedSession, $this->getShop());
 
-        $redirectUrl = $this->config['redirect_url'] . ($isDelete ? '/delete' : '') . '?session=' . $generatedSession;
+        $redirectUrl = $this->getConfig('redirect_url') . ($isDelete ? '/delete' : '') . '?session=' . $generatedSession;
 
         return 'https://partner.shopeemobile.com/api/v1/shop/' . ($isDelete ? 'cancel_auth_partner' : 'auth_partner') .
-            '?id=' . $this->config['id'] .
-            '&token=' . hash('sha256', $this->config['key'] . $redirectUrl) .
+            '?id=' . $this->getConfig('id') .
+            '&token=' . hash('sha256', $this->getConfig('key') . $redirectUrl) .
             '&redirect=' . $redirectUrl;
     }
 }

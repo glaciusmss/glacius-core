@@ -38,7 +38,7 @@ class ClearExpiredToken extends Command
      */
     public function handle()
     {
-        $deletedCount = Token::where('expired_at', '<', now())->delete();
+        $deletedCount = Token::expired()->delete();
         $this->info("Deleted {$deletedCount} expired tokens");
     }
 }

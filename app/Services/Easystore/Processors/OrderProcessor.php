@@ -9,15 +9,13 @@
 namespace App\Services\Easystore\Processors;
 
 
-use App\Address;
-use App\Enums\AddressType;
+use App\Customer;
+use App\Enums\Easystore\WebhookTopic;
 use App\Enums\EventType;
 use App\Enums\MarketplaceEnum;
-use App\Events\Webhook\OrderCreateReceivedFromMarketplace;
 use App\Order;
 use App\Product;
 use App\Services\BaseProcessor;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class OrderProcessor extends BaseProcessor
@@ -35,13 +33,13 @@ class OrderProcessor extends BaseProcessor
 
         return $this->shop = $this->getMarketplace()
             ->shops()
-            ->wherePivot('meta->easystore_shop', '=', $this->event->rawData->get('shop_domain'))
+            ->wherePivot('meta->easystore_shop', $this->event->rawData->get('shop_domain'))
             ->first();
     }
 
     protected function getEventType()
     {
-        if ($this->event instanceof OrderCreateReceivedFromMarketplace) {
+        if (WebhookTopic::OrderCreate()->is($this->event->topic)) {
             return EventType::Created();
         }
 
@@ -62,7 +60,7 @@ class OrderProcessor extends BaseProcessor
         ]);
 
         foreach ($rawData->get('line_items') as $lineItem) {
-            $product = Product::where('meta->easystore_product_id', '=', $lineItem['product_id'])
+            $product = Product::where('meta->easystore_product_id', $lineItem['product_id'])
                 ->first();
 
             if ($product) {
@@ -85,10 +83,28 @@ class OrderProcessor extends BaseProcessor
                 $this->transformAddressAttr($shippingAddress, ['province' => 'state'])
             );
         }
+
+        if ($customerData = $rawData->get('customer')) {
+            $customer = Customer::whereMarketplaceId($this->getMarketplace()->id)
+                ->where('meta->marketplace_customer_id', $customerData['id'])
+                ->first();
+
+            if ($customer) {
+                $orderRecord->customer()->associate($customer);
+                $orderRecord->save();
+            }
+        }
+
+        return $orderRecord;
     }
 
     protected function processWhenUpdated(Collection $rawData)
     {
         // TODO: Implement processWhenUpdated() method.
+    }
+
+    protected function processWhenDeleted(Collection $rawData)
+    {
+        // TODO: Implement processWhenDeleted() method.
     }
 }

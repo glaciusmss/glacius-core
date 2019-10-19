@@ -57,7 +57,7 @@ class Shop extends Model
         $botIds = [];
 
         $notificationChannels = $this->user->notificationChannels()
-            ->where('notification_channels.name', '=', NotificationChannelEnum::Telegram)
+            ->where('notification_channels.name', NotificationChannelEnum::Telegram)
             ->get();
 
         foreach ($notificationChannels as $notificationChannel) {

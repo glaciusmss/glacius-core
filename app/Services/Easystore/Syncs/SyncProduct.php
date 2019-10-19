@@ -18,7 +18,6 @@ use App\MarketplaceIntegration;
 use App\Product;
 use App\Services\BaseMarketplace;
 use EasyStore\Exception\ApiException;
-use Illuminate\Contracts\Cache\Repository as CacheContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Psr\Log\LoggerInterface;
@@ -30,10 +29,8 @@ class SyncProduct extends BaseMarketplace implements SyncContract
     /* @var LoggerInterface $logger */
     protected $logger;
 
-    public function __construct($config, CacheContract $cache, SdkFactory $sdkFactory)
+    public function __construct(SdkFactory $sdkFactory)
     {
-        parent::__construct($config, $cache);
-
         $this->sdkFactory = $sdkFactory;
         $this->logger = \Log::channel('sync_product');
     }

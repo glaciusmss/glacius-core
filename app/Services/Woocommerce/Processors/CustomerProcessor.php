@@ -9,15 +9,11 @@
 namespace App\Services\Woocommerce\Processors;
 
 
-use App\Address;
 use App\Customer;
-use App\Enums\AddressType;
 use App\Enums\EventType;
 use App\Enums\MarketplaceEnum;
-use App\Events\Webhook\CustomerCreateReceivedFromMarketplace;
-use App\Product;
+use App\Enums\Woocommerce\WebhookTopic;
 use App\Services\BaseProcessor;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class CustomerProcessor extends BaseProcessor
@@ -35,14 +31,22 @@ class CustomerProcessor extends BaseProcessor
 
         return $this->shop = $this->getMarketplace()
             ->shops()
-            ->wherePivot('meta->woocommerce_store_url', '=', $this->event->rawData->get('woocommerce_store_url'))
+            ->wherePivot('meta->woocommerce_store_url', $this->event->rawData->get('woocommerce_store_url'))
             ->first();
     }
 
     protected function getEventType()
     {
-        if ($this->event instanceof CustomerCreateReceivedFromMarketplace) {
+        if (WebhookTopic::CustomerCreate()->is($this->event->topic)) {
             return EventType::Created();
+        }
+
+        if (WebhookTopic::CustomerUpdate()->is($this->event->topic)) {
+            return EventType::Updated();
+        }
+
+        if (WebhookTopic::CustomerDelete()->is($this->event->topic)) {
+            return EventType::Deleted();
         }
 
         return null;
@@ -63,18 +67,41 @@ class CustomerProcessor extends BaseProcessor
             'phone' => $rawData->get('phone'),
         ]);
 
-        if ($addresses = $rawData->get('address')) {
-            foreach ($addresses as $address) {
-                $this->createAddress(
-                    $customerRecord,
-                    $this->transformAddressAttr($address, ['address_1' => 'address1', 'address_2' => 'address2', 'postcode' => 'zip'])
-                );
-            }
-        }
+        return $customerRecord;
     }
 
     protected function processWhenUpdated(Collection $rawData)
     {
-        // TODO: Implement processWhenUpdated() method.
+        /** @var Customer $customerRecord */
+        $customerRecord = $this->getShop()->customers()
+            ->where('meta->marketplace_customer_id', $rawData->get('id'))
+            ->first();
+
+        if (!$customerRecord) {
+            return null;
+        }
+
+        $customerRecord->updateContact([
+            'first_name' => $rawData->get('first_name'),
+            'last_name' => $rawData->get('last_name'),
+            'email' => $rawData->get('email'),
+            'phone' => $rawData->get('phone'),
+        ]);
+
+        return $customerRecord;
+    }
+
+    protected function processWhenDeleted(Collection $rawData)
+    {
+        /** @var Customer $customerRecord */
+        $customerRecord = $this->getShop()->customers()
+            ->where('meta->marketplace_customer_id', $rawData->get('id'))
+            ->first();
+
+        if ($customerRecord) {
+            $customerRecord->delete();
+        }
+
+        return $customerRecord;
     }
 }

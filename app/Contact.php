@@ -38,6 +38,10 @@ class Contact extends Model
         'first_name', 'last_name', 'phone', 'email'
     ];
 
+    protected $touches = [
+        'contactable'
+    ];
+
     public function contactable()
     {
         return $this->morphTo();

@@ -12,21 +12,20 @@ namespace App\Services\Woocommerce;
 use App\Contracts\SdkFactory;
 use App\Contracts\Webhook as WebhookContract;
 use App\Enums\MarketplaceEnum;
-use App\Events\Webhook\CustomerCreateReceivedFromMarketplace;
-use App\Events\Webhook\OrderCreateReceivedFromMarketplace;
+use App\Enums\Woocommerce\WebhookTopic;
+use App\Events\Webhook\CustomerWebhookReceivedFromMarketplace;
+use App\Events\Webhook\OrderWebhookReceivedFromMarketplace;
 use App\Services\BaseMarketplace;
 use Automattic\WooCommerce\Client;
-use Illuminate\Contracts\Cache\Repository as CacheContract;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class Webhook extends BaseMarketplace implements WebhookContract
 {
     protected $sdkFactory;
 
-    public function __construct($config, CacheContract $cache, SdkFactory $sdkFactory)
+    public function __construct(SdkFactory $sdkFactory)
     {
-        parent::__construct($config, $cache);
-
         $this->sdkFactory = $sdkFactory;
     }
 
@@ -34,24 +33,17 @@ class Webhook extends BaseMarketplace implements WebhookContract
     {
         /** @var Client $sdk */
         $sdk = $this->sdkFactory->getSdk();
+        $topics = WebhookTopic::getValues();
         $webhookId = [];
+        $createParam = [];
+
+        foreach ($topics as $topic) {
+            $createParam[] = $this->createWebhook($topic);
+        }
 
         try {
             $sdk->post('webhooks/batch', [
-                'create' => [
-                    [
-                        'name' => 'GlaciusMSS',
-                        'topic' => 'order.created',
-                        'delivery_url' => $this->config['webhook_url'],
-                        'secret' => $this->config['secret'],
-                    ],
-                    [
-                        'name' => 'GlaciusMSS',
-                        'topic' => 'customer.created',
-                        'delivery_url' => $this->config['webhook_url'],
-                        'secret' => $this->config['secret'],
-                    ],
-                ]
+                'create' => $createParam
             ]);
 
             $response = json_decode($sdk->http->getResponse()->getBody(), true);
@@ -71,7 +63,7 @@ class Webhook extends BaseMarketplace implements WebhookContract
         $hmacHeader = $request->headers->get('x-wc-webhook-signature', '');
         $data = file_get_contents('php://input');
 
-        $calculatedHmac = base64_encode(hash_hmac('sha256', $data, $this->config['secret'], true));
+        $calculatedHmac = base64_encode(hash_hmac('sha256', $data, $this->getConfig('secret'), true));
 
         return hash_equals($hmacHeader, $calculatedHmac);
     }
@@ -82,15 +74,25 @@ class Webhook extends BaseMarketplace implements WebhookContract
         $woocommerceStoreUrl = $request->headers->get('x-wc-webhook-source');
         $rawData = collect($request->all())->merge(['woocommerce_store_url' => $woocommerceStoreUrl]);
 
-        if ($topic === 'order.created') {
-            event(new OrderCreateReceivedFromMarketplace($rawData, $this->name()));
-        } else if ($topic === 'customer.created') {
-            event(new CustomerCreateReceivedFromMarketplace($rawData, $this->name()));
+        if (Str::startsWith($topic, 'order.')) {
+            event(new OrderWebhookReceivedFromMarketplace($topic, $rawData, $this->name()));
+        } else if (Str::startsWith($topic, 'customer.')) {
+            event(new CustomerWebhookReceivedFromMarketplace($topic, $rawData, $this->name()));
         }
     }
 
     public function name()
     {
         return MarketplaceEnum::WooCommerce();
+    }
+
+    protected function createWebhook($topic)
+    {
+        return [
+            'name' => 'GlaciusMSS',
+            'topic' => $topic,
+            'delivery_url' => $this->getConfig('webhook_url'),
+            'secret' => $this->getConfig('secret'),
+        ];
     }
 }

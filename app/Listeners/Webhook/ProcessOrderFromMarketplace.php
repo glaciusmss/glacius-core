@@ -9,11 +9,8 @@
 namespace App\Listeners\Webhook;
 
 
-use App\Contracts\Processor;
-use App\Enums\MarketplaceEnum;
 use App\Enums\ProcessorType;
 use App\Enums\QueueGroup;
-use App\Events\Webhook\OrderCreateReceivedFromMarketplace;
 use App\Services\ProcessorFactory;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -27,17 +24,17 @@ class ProcessOrderFromMarketplace implements ShouldQueue
         $this->processorFactory = $processorFactory;
     }
 
-    public function handle(OrderCreateReceivedFromMarketplace $orderCreateReceivedFromMarketplace)
+    public function handle($orderWebhookReceivedFromMarketplace)
     {
         $processor = $this->processorFactory
             ->setProcessorType(ProcessorType::Order())
-            ->setMarketplace($orderCreateReceivedFromMarketplace->marketplace)
+            ->setMarketplace($orderWebhookReceivedFromMarketplace->marketplace)
             ->build();
 
         if (!$processor) {
             return;
         }
 
-        $processor->process($orderCreateReceivedFromMarketplace);
+        $processor->process($orderWebhookReceivedFromMarketplace);
     }
 }

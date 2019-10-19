@@ -4,6 +4,7 @@ namespace App;
 
 use App\Enums\TokenType;
 use BenSampo\Enum\Traits\CastsEnums;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
@@ -50,6 +51,16 @@ class Token extends Model
         'type' => 'int',
     ];
 
+    public function scopeExpired(Builder $query)
+    {
+        return $query->where('expired_at', '<', now());
+    }
+
+    public function scopeIsValid(Builder $query)
+    {
+        return $query->where('expired_at', '>=', now());
+    }
+
     public static function generate(TokenType $type, $meta = [], $duration = 15, $length = 16)
     {
         if (is_int($duration)) {
@@ -77,7 +88,7 @@ class Token extends Model
     public static function validate($token)
     {
         $instance = self::whereToken($token)
-            ->where('expired_at', '>=', now())
+            ->isValid()
             ->first();
 
         if (!$instance) {
