@@ -17,7 +17,7 @@ class CreateSettingsTable extends Migration
             $table->bigIncrements('id');
             $table->string('setting_key'); // due to key is reserved in laravel
             $table->text('setting_value')->nullable();
-            $table->text('type')->default('string');
+            $table->string('type')->default('string');
             $table->string('collection')->default('general');
             $table->morphs('settingable');
             $table->timestamps();
