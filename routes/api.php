@@ -18,7 +18,11 @@ Route::match(['get', 'post'], '/botman', function () {
 });
 
 Route::prefix('/user')->group(function () {
-    Route::post('/login', 'UserController@login');
+    Route::prefix('/login')->group(function () {
+        Route::post('/', 'UserController@login');
+        Route::post('/{socialProvider}/callback', 'UserController@socialLoginCallback');
+        Route::post('/{socialProvider}', 'UserController@socialLogin');
+    });
     Route::post('/register', 'UserController@register');
     Route::patch('/password', 'UserController@password');
     Route::post('/logout', 'UserController@logout');

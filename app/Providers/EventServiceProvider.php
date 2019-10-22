@@ -21,7 +21,7 @@ use App\Listeners\Sync\Product\SyncProduct;
 use App\Listeners\Webhook\ProcessCustomerFromMarketplace;
 use App\Listeners\Webhook\ProcessOrderFromMarketplace;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
+use App\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
@@ -32,11 +32,7 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
-        ],
-    ];
+    protected $listen = [];
 
     /**
      * Register any events for your application.
@@ -46,6 +42,8 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
+
+        Event::listen(Registered::class, SendEmailVerificationNotification::class);
 
         Event::listen(OrderWebhookReceivedFromMarketplace::class, ProcessOrderFromMarketplace::class);
         Event::listen(CustomerWebhookReceivedFromMarketplace::class, ProcessCustomerFromMarketplace::class);

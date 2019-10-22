@@ -29,6 +29,8 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Token whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Token whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Token expired()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Token isValid()
  */
 class Token extends Model
 {

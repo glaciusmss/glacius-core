@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\TempMedia wherePath($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\TempMedia whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\TempMedia expired()
  */
 class TempMedia extends Model
 {

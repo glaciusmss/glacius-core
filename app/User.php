@@ -38,6 +38,8 @@ use Yadahan\AuthenticationLog\AuthenticationLogable;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\Yadahan\AuthenticationLog\AuthenticationLog[] $authentications
  * @property-read int|null $authentications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\SocialLogin[] $socialLogins
+ * @property-read int|null $social_logins_count
  */
 class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 {
@@ -111,5 +113,10 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
             ->withTimestamps()
             ->withPivot(['meta'])
             ->using(ConnectedNotificationChannel::class);
+    }
+
+    public function socialLogins()
+    {
+        return $this->hasMany(SocialLogin::class);
     }
 }

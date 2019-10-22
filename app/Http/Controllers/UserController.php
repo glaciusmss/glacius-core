@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\User\ChangePasswordRequest;
 use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\RegisterRequest;
+use App\Services\SocialLoginService;
 use App\User;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Auth\Events\Login;
@@ -14,15 +15,20 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class UserController extends Controller
 {
-    public function __construct(AuthManager $auth)
+    protected $socialLoginService;
+
+    public function __construct(AuthManager $auth, SocialLoginService $socialLoginService)
     {
         parent::__construct($auth);
         $this->middleware('auth:api')->only('logout');
+        $this->socialLoginService = $socialLoginService;
     }
 
     public function login(LoginRequest $request)
@@ -31,6 +37,28 @@ class UserController extends Controller
         if (!$token = $this->auth->attempt($credentials)) {
             throw new UnauthorizedHttpException('email-password', 'incorrect email or password');
         }
+
+        event(new Login($this->auth->guard(), $this->auth->user(), null));
+
+        return response()->json(compact('token'));
+    }
+
+    public function socialLogin($socialProvider)
+    {
+        if (!$redirectUrl = $this->socialLoginService->getProviderRedirectUrl($socialProvider)) {
+            throw new NotFoundHttpException('provider not found');
+        }
+
+        return response()->json(['url' => $redirectUrl]);
+    }
+
+    public function socialLoginCallback(Request $request, $socialProvider)
+    {
+        if (!$userRecord = $this->socialLoginService->handleProviderCallback($socialProvider)) {
+            throw new NotFoundHttpException('provider not found');
+        }
+
+        $token = $this->auth->login($userRecord);
 
         event(new Login($this->auth->guard(), $this->auth->user(), null));
 

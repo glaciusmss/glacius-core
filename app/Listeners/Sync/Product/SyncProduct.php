@@ -15,8 +15,9 @@ use App\Events\Product\ProductCreated;
 use App\Events\Product\ProductDeleted;
 use App\Events\Product\ProductUpdated;
 use App\Services\SyncManager;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SyncProduct
+class SyncProduct implements ShouldQueue
 {
     public $queue = QueueGroup::Sync;
 

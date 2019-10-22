@@ -22,6 +22,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\RawWebhook whereRawData($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\RawWebhook whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string|null $topic
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\RawWebhook whereTopic($value)
  */
 class RawWebhook extends Model
 {
