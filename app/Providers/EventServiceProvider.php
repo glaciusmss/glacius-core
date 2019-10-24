@@ -15,13 +15,13 @@ use App\Events\Webhook\OrderWebhookReceivedFromMarketplace;
 use App\Listeners\Customer\SendCustomerNotification;
 use App\Listeners\Order\SendOrderNotification;
 use App\Listeners\RemoveShopSetting;
+use App\Listeners\SendEmailVerificationNotification;
 use App\Listeners\SetupDefaultSetting;
 use App\Listeners\Sync\AddTransaction;
 use App\Listeners\Sync\Product\SyncProduct;
 use App\Listeners\Webhook\ProcessCustomerFromMarketplace;
 use App\Listeners\Webhook\ProcessOrderFromMarketplace;
 use Illuminate\Auth\Events\Registered;
-use App\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 

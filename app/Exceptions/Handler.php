@@ -49,10 +49,12 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         $statusCode = 500;
+        $headers = [];
         if ($exception instanceof ValidationException) {
             $statusCode = $exception->status;
         } else if ($exception instanceof HttpExceptionInterface) {
             $statusCode = $exception->getStatusCode();
+            $headers = $exception->getHeaders();
         }
 
         $response = [
@@ -73,6 +75,6 @@ class Handler extends ExceptionHandler
             ];
         }
 
-        return response()->json($response, $statusCode);
+        return response()->json($response, $statusCode)->withHeaders($headers);
     }
 }

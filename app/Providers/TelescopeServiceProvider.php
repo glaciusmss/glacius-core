@@ -53,6 +53,13 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
         ]);
     }
 
+    public function boot()
+    {
+        \Auth::shouldUse('web');
+
+        parent::boot();
+    }
+
     /**
      * Register the Telescope gate.
      *
@@ -64,7 +71,7 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
     {
         Gate::define('viewTelescope', function ($user) {
             return in_array($user->email, [
-                //
+                'lkloon123@hotmail.com'
             ]);
         });
     }

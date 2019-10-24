@@ -7,6 +7,7 @@ use App\Console\Commands\ClearExpiredToken;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Laravel\Horizon\Console\SnapshotCommand;
+use Laravel\Telescope\Console\PruneCommand;
 
 class Kernel extends ConsoleKernel
 {
@@ -30,7 +31,8 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command(ClearExpiredToken::class)->daily()->runInBackground();
         $schedule->command(ClearExpiredImage::class)->daily()->runInBackground();
-        $schedule->command(SnapshotCommand::class)->everyFiveMinutes();
+        $schedule->command(SnapshotCommand::class)->everyFiveMinutes()->runInBackground();
+        $schedule->command(PruneCommand::class)->daily()->runInBackground();
     }
 
     /**
