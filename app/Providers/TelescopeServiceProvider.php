@@ -53,13 +53,6 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
         ]);
     }
 
-    public function boot()
-    {
-        \Auth::shouldUse('web');
-
-        parent::boot();
-    }
-
     /**
      * Register the Telescope gate.
      *

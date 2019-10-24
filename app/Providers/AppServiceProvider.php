@@ -28,5 +28,10 @@ class AppServiceProvider extends ServiceProvider
     {
         //dont append data on api resources
         Resource::withoutWrapping();
+
+        //use web guard for telescope and horizon only
+        if (request()->is(['horizon', 'telescope'])) {
+            \Auth::shouldUse('web');
+        }
     }
 }

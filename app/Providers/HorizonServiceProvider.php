@@ -15,8 +15,6 @@ class HorizonServiceProvider extends HorizonApplicationServiceProvider
      */
     public function boot()
     {
-        \Auth::shouldUse('web');
-
         parent::boot();
 
         // Horizon::routeSmsNotificationsTo('15556667777');
