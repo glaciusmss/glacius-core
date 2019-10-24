@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
         Resource::withoutWrapping();
 
         //use web guard for telescope and horizon only
-        if (request()->is(['horizon', 'telescope'])) {
+        if (request()->is(['horizon/*', 'telescope/*'])) {
             \Auth::shouldUse('web');
         }
     }
