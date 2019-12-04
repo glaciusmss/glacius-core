@@ -12,6 +12,7 @@ namespace App\Services\Woocommerce;
 use App\Contracts\OAuth as OAuthContract;
 use App\Contracts\SdkFactory;
 use App\Contracts\Webhook as WebhookContract;
+use App\Enums\DeviceType;
 use App\Enums\MarketplaceEnum;
 use App\Events\OAuthConnected;
 use App\Events\OAuthDisconnected;
@@ -40,6 +41,9 @@ class OAuth extends BaseMarketplace implements OAuthContract
         $generatedSession = Str::orderedUuid()->toString();
         $this->cache->put($this->name() . ':' . $generatedSession . ':shop', $this->getShop());
         $this->cache->put($this->name() . ':' . $generatedSession . ':woocommerce_store_url', $this->getWoocommerceStoreUrl());
+        if (request()->header('x-request-from') === 'mobile') {
+            $this->cache->put($this->name() . ':' . $generatedSession . ':device', DeviceType::Mobile());
+        }
 
         return $this->getWoocommerceStoreUrl() . '/wc-auth/v1/authorize'
             . '?app_name=GlaciusMSS.' . $generatedSession

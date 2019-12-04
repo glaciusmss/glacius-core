@@ -8,6 +8,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Laravel\Horizon\Console\SnapshotCommand;
 use Laravel\Telescope\Console\PruneCommand;
+use Yadahan\AuthenticationLog\Console\ClearCommand as ClearAuthenticationLogCommand;
 
 class Kernel extends ConsoleKernel
 {
@@ -33,6 +34,7 @@ class Kernel extends ConsoleKernel
         $schedule->command(ClearExpiredImage::class)->daily()->runInBackground();
         $schedule->command(SnapshotCommand::class)->everyFiveMinutes()->runInBackground();
         $schedule->command(PruneCommand::class)->daily()->runInBackground();
+        $schedule->command(ClearAuthenticationLogCommand::class)->daily()->runInBackground();
     }
 
     /**

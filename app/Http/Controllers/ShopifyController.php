@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contracts\OAuth;
 use App\Contracts\Webhook;
+use App\Enums\DeviceType;
 use App\Http\Middleware\Webhook\Shopify as ValidateWebhookMiddleware;
 use App\Http\Requests\Shopify\CreateRequest;
 use Illuminate\Auth\AuthManager;
@@ -38,7 +39,13 @@ class ShopifyController extends Controller
 
     public function store(Request $request)
     {
-        $this->oAuth->oAuthCallback($request);
+        $device = $this->oAuth->oAuthCallback($request);
+
+        if ($device->is(DeviceType::Mobile())) {
+            return response()->redirectTo(
+                config('app.mobile_scheme') . 'callback/settings/connections/marketplaces'
+            );
+        }
 
         return response()->redirectTo(
             config('app.frontend_url') . '/portal/account/marketplace-connections'

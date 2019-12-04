@@ -51,7 +51,7 @@ class UserController extends Controller
         return response()->json(['url' => $redirectUrl]);
     }
 
-    public function socialLoginCallback(Request $request, $socialProvider)
+    public function socialLoginCallback($socialProvider)
     {
         if (!$userRecord = $this->socialLoginService->handleProviderCallback($socialProvider)) {
             throw new NotFoundHttpException('provider not found');

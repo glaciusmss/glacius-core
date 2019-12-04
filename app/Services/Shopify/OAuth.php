@@ -12,6 +12,7 @@ namespace App\Services\Shopify;
 use App\Contracts\OAuth as OAuthContract;
 use App\Contracts\SdkFactory;
 use App\Contracts\Webhook as WebhookContract;
+use App\Enums\DeviceType;
 use App\Enums\MarketplaceEnum;
 use App\Events\OAuthConnected;
 use App\Events\OAuthDisconnected;
@@ -41,6 +42,9 @@ class OAuth extends BaseMarketplace implements OAuthContract
     public function createAuth()
     {
         $this->cache->put($this->name() . ':' . $this->getShopifyShop() . ':shop', $this->getShop());
+        if (request()->header('x-request-from') === 'mobile') {
+            $this->cache->put($this->name() . ':' . $this->getShopifyShop() . ':device', DeviceType::Mobile());
+        }
 
         return AuthHelper::createAuthRequest(
             'read_orders,read_customers,read_products,write_products',
@@ -75,9 +79,14 @@ class OAuth extends BaseMarketplace implements OAuthContract
             'meta->webhook_id' => $webhookId,
         ]);
 
+        $device = $this->cache->get($this->name() . ':' . $this->getShopifyShop() . ':device', DeviceType::Web());
+
+        $this->cache->forget($this->name() . ':' . $this->getShopifyShop() . ':device');
         $this->cache->forget($this->name() . ':' . $this->getShopifyShop() . ':shop');
 
         event(new OAuthConnected($this->getShop(), $this->name()));
+
+        return $device;
     }
 
     public function deleteAuth()

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Contracts\OAuth;
 use App\Contracts\Webhook;
+use App\Enums\DeviceType;
+use App\Enums\MarketplaceEnum;
 use App\Http\Middleware\Webhook\Woocommerce as ValidateWebhookMiddleware;
 use App\Http\Requests\Woocommerce\CreateRequest;
 use Illuminate\Auth\AuthManager;
@@ -62,6 +64,16 @@ class WoocommerceController extends Controller
 
     public function redirect(Request $request)
     {
+        $device = cache(MarketplaceEnum::WooCommerce() . ':' . $request->input('user_id') . ':device', DeviceType::Web());
+
+        cache()->forget(MarketplaceEnum::WooCommerce() . ':' . $request->input('user_id') . ':device');
+
+        if ($device->is(DeviceType::Mobile())) {
+            return response()->redirectTo(
+                config('app.mobile_scheme') . 'callback/settings/connections/marketplaces'
+            );
+        }
+
         return response()->redirectTo(
             config('app.frontend_url') . '/portal/account/marketplace-connections'
         );

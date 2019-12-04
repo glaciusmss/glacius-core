@@ -12,6 +12,7 @@ namespace App\Services\Easystore;
 use App\Contracts\OAuth as OAuthContract;
 use App\Contracts\SdkFactory;
 use App\Contracts\Webhook as WebhookContract;
+use App\Enums\DeviceType;
 use App\Enums\MarketplaceEnum;
 use App\Events\OAuthConnected;
 use App\Events\OAuthDisconnected;
@@ -36,6 +37,9 @@ class OAuth extends BaseMarketplace implements OAuthContract
     public function createAuth()
     {
         $this->cache->put($this->name() . ':' . $this->getEasystoreShop() . ':shop', $this->getShop());
+        if (request()->header('x-request-from') === 'mobile') {
+            $this->cache->put($this->name() . ':' . $this->getEasystoreShop() . ':device', DeviceType::Mobile());
+        }
 
         $this->sdkFactory->setupSdk(null, [
             'scopes' => 'read_orders,read_customers,read_products,write_products',
@@ -75,9 +79,14 @@ class OAuth extends BaseMarketplace implements OAuthContract
             'meta->webhook_id' => $webhookId,
         ]);
 
+        $device = $this->cache->get($this->name() . ':' . $this->getEasystoreShop() . ':device', DeviceType::Web());
+
         $this->cache->forget($this->name() . ':' . $this->getEasystoreShop() . ':shop');
+        $this->cache->forget($this->name() . ':' . $this->getEasystoreShop() . ':device');
 
         event(new OAuthConnected($this->getShop(), $this->name()));
+
+        return $device;
     }
 
     public function deleteAuth()

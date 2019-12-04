@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\OAuth;
+use App\Enums\DeviceType;
 use App\Http\Middleware\Webhook\Shopee as ValidateWebhookMiddleware;
 use App\Http\Requests\Shopee\StoreRequest;
 use Illuminate\Auth\AuthManager;
@@ -35,7 +36,13 @@ class ShopeeController extends Controller
 
     public function store(StoreRequest $request)
     {
-        $this->oAuth->oAuthCallback($request);
+        $device = $this->oAuth->oAuthCallback($request);
+
+        if ($device->is(DeviceType::Mobile())) {
+            return response()->redirectTo(
+                config('app.mobile_scheme') . 'callback/settings/connections/marketplaces'
+            );
+        }
 
         return response()->redirectTo(
             config('app.frontend_url') . '/portal/account/marketplace-connections'
@@ -57,7 +64,13 @@ class ShopeeController extends Controller
         //this is an delete action
         $request->merge(['action' => 'delete']);
 
-        $this->oAuth->oAuthCallback($request);
+        $device = $this->oAuth->oAuthCallback($request);
+
+        if ($device->is(DeviceType::Mobile())) {
+            return response()->redirectTo(
+                config('app.mobile_scheme') . 'callback/settings/connections/marketplaces'
+            );
+        }
 
         return response()->redirectTo(
             config('app.frontend_url') . '/portal/account/marketplace-connections'

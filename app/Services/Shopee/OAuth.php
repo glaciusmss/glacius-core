@@ -11,6 +11,7 @@ namespace App\Services\Shopee;
 
 use App\Contracts\OAuth as OAuthContract;
 use App\Contracts\SdkFactory;
+use App\Enums\DeviceType;
 use App\Enums\MarketplaceEnum;
 use App\Events\OAuthConnected;
 use App\Events\OAuthDisconnected;
@@ -59,13 +60,18 @@ class OAuth extends BaseMarketplace implements OAuthContract
             ]);
         }
 
+        $device = $this->cache->get($this->name() . ':' . $request->input('session') . ':device', DeviceType::Web());
+
         $this->cache->forget($this->name() . ':' . $request->input('session'));
+        $this->cache->forget($this->name() . ':' . $request->input('session') . ':device');
 
         if (!$isDeleteAction) {
             event(new OAuthConnected($this->getShop(), $this->name()));
         } else {
             event(new OAuthDisconnected($this->getShop(), $this->name()));
         }
+
+        return $device;
     }
 
     public function deleteAuth()
@@ -106,6 +112,9 @@ class OAuth extends BaseMarketplace implements OAuthContract
     {
         $generatedSession = Str::orderedUuid()->toString();
         $this->cache->put($this->name() . ':' . $generatedSession, $this->getShop());
+        if (request()->header('x-request-from') === 'mobile') {
+            $this->cache->put($this->name() . ':' . $generatedSession . ':device', DeviceType::Mobile());
+        }
 
         $redirectUrl = $this->getConfig('redirect_url') . ($isDelete ? '/delete' : '') . '?session=' . $generatedSession;
 
