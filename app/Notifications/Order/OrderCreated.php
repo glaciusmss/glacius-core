@@ -2,7 +2,9 @@
 
 namespace App\Notifications\Order;
 
+use App\Channels\FcmChannel;
 use App\Channels\TelegramChannel;
+use App\Enums\FirebaseChannelEnum;
 use App\Enums\QueueGroup;
 use App\Http\Resources\OrderResource;
 use App\Order;
@@ -12,6 +14,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Str;
+use LaravelFCM\Message\OptionsBuilder;
+use LaravelFCM\Message\PayloadDataBuilder;
+use LaravelFCM\Message\PayloadNotificationBuilder;
 
 class OrderCreated extends Notification implements ShouldQueue
 {
@@ -28,7 +33,7 @@ class OrderCreated extends Notification implements ShouldQueue
 
     public function via($notifiable)
     {
-        return [TelegramChannel::class, 'broadcast'];
+        return [TelegramChannel::class, FcmChannel::class, 'broadcast'];
     }
 
     public function toTelegram($notifiable)
@@ -44,5 +49,25 @@ class OrderCreated extends Notification implements ShouldQueue
         ]);
 
         return $message->onQueue(QueueGroup::Broadcast);
+    }
+
+    public function toFcm($notifiable)
+    {
+        return [
+            'options' => (new OptionsBuilder())
+                ->setPriority('high'),
+
+            'notification' => (new PayloadNotificationBuilder())
+                ->setChannelId(FirebaseChannelEnum::Default) // for android > 26
+                ->setTitle($notifiable->name)
+                ->setBody('You have new order, ID [' . $this->order->id . '] from [' . Str::title($this->order->marketplace->name) . ']'),
+
+            'data' => (new PayloadDataBuilder())
+                ->setData([
+                    'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
+                    'model' => 'order',
+                    'model_id' => $this->order->id,
+                ])
+        ];
     }
 }
