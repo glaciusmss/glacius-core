@@ -3,6 +3,8 @@
 namespace App;
 
 use App\Events\Product\ProductDeleted;
+use App\Scopes\OrderScope;
+use App\Scopes\PaginationScope;
 use App\Utils\HasSyncTrasactions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -40,10 +42,11 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
  * @property-read int|null $media_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\SyncTransaction[] $syncTransactions
  * @property-read int|null $sync_transactions_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Product withPagination(\App\DTO\Pagination $pagination)
  */
 class Product extends Model implements HasMedia
 {
-    use HasMediaTrait, HasSyncTrasactions;
+    use HasMediaTrait, HasSyncTrasactions, OrderScope, PaginationScope;
 
     protected $fillable = [
         'name', 'description', 'meta'

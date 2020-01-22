@@ -14,6 +14,7 @@ use App\Enums\Easystore\WebhookTopic;
 use App\Enums\EventType;
 use App\Enums\MarketplaceEnum;
 use App\Services\BaseProcessor;
+use App\Utils\Helper;
 use Illuminate\Support\Collection;
 
 class CustomerProcessor extends BaseProcessor
@@ -44,6 +45,11 @@ class CustomerProcessor extends BaseProcessor
         return null;
     }
 
+    protected function processFor()
+    {
+        return Customer::class;
+    }
+
     protected function processWhenCreated(Collection $rawData)
     {
         /** @var Customer $customerRecord */
@@ -63,10 +69,12 @@ class CustomerProcessor extends BaseProcessor
             foreach ($addresses as $address) {
                 $this->createAddress(
                     $customerRecord,
-                    $this->transformAddressAttr($address, ['province' => 'state'])
+                    Helper::transformArrayKey($address, ['province' => 'state'])
                 );
             }
         }
+
+        $this->log('created customer record', $customerRecord->toArray());
 
         return $customerRecord;
     }

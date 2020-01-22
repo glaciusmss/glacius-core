@@ -61,6 +61,14 @@ class RouteServiceProvider extends ServiceProvider
                 'image not found'
             );
         });
+
+        Route::bind('userProfile', function ($value) {
+            return throw_unless(
+                \Auth::user()->userProfile()->find($value),
+                NotFoundHttpException::class,
+                'user not found'
+            );
+        });
     }
 
     /**

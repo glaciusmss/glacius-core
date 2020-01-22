@@ -41,7 +41,7 @@ class SyncManager
         foreach ($this->shop->marketplaces as $marketplace) {
             /** @var SyncContract $syncClass */
             if (!$syncClass = $this->makeSyncClassWith($marketplace)) {
-                $this->logger->info('sync class not exist, skipped');
+                $this->logger->info('sync class for ' . $marketplace->name . ' not exist, skipped');
                 continue;
             }
 

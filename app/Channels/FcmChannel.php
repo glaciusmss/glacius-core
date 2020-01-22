@@ -3,8 +3,8 @@
 namespace App\Channels;
 
 use App\Shop;
-use Illuminate\Notifications\Notification;
 use FCM;
+use Illuminate\Notifications\Notification;
 use LaravelFCM\Message\OptionsBuilder;
 use LaravelFCM\Message\PayloadDataBuilder;
 use LaravelFCM\Message\PayloadNotificationBuilder;

@@ -52,6 +52,11 @@ class CustomerProcessor extends BaseProcessor
         return null;
     }
 
+    protected function processFor()
+    {
+        return Customer::class;
+    }
+
     protected function processWhenCreated(Collection $rawData)
     {
         /** @var Customer $customerRecord */
@@ -67,6 +72,8 @@ class CustomerProcessor extends BaseProcessor
             'phone' => $rawData->get('phone'),
         ]);
 
+        $this->log('created customer record', $customerRecord->toArray());
+
         return $customerRecord;
     }
 
@@ -81,12 +88,16 @@ class CustomerProcessor extends BaseProcessor
             return null;
         }
 
+        $this->log('previous customer record', $customerRecord->toArray());
+
         $customerRecord->updateContact([
             'first_name' => $rawData->get('first_name'),
             'last_name' => $rawData->get('last_name'),
             'email' => $rawData->get('email'),
             'phone' => $rawData->get('phone'),
         ]);
+
+        $this->log('updated customer record', $customerRecord->toArray());
 
         return $customerRecord;
     }
@@ -101,6 +112,8 @@ class CustomerProcessor extends BaseProcessor
         if ($customerRecord) {
             $customerRecord->delete();
         }
+
+        $this->log('deleted customer record', $customerRecord->toArray());
 
         return $customerRecord;
     }

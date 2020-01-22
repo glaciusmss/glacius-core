@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Scopes\CustomerScope;
+use App\Scopes\OrderScope;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -34,6 +36,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Marketplace extends Model
 {
+    use OrderScope, CustomerScope;
+
     public function shops()
     {
         return $this->belongsToMany(Shop::class, 'marketplace_integrations')

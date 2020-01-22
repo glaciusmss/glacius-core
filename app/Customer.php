@@ -2,6 +2,9 @@
 
 namespace App;
 
+use App\Scopes\OrderScope;
+use App\Scopes\PaginationScope;
+use App\Scopes\PeriodScope;
 use App\Utils\HasAddresses;
 use App\Utils\HasContact;
 use Illuminate\Database\Eloquent\Model;
@@ -32,10 +35,23 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Order[] $orders
  * @property-read int|null $orders_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Customer createdByPeriodLastMonth()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Customer createdByPeriodLastQuarter()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Customer createdByPeriodLastWeek()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Customer createdByPeriodLastYear()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Customer createdByPeriodToday()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Customer createdByPeriodYesterday()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Customer createdByPreviousPeriodLastMonth()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Customer createdByPreviousPeriodLastQuarter()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Customer createdByPreviousPeriodLastWeek()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Customer createdByPreviousPeriodLastYear()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Customer createdByPreviousPeriodToday()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Customer createdByPreviousPeriodYesterday()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Customer withPagination(\App\DTO\Pagination $pagination)
  */
 class Customer extends Model
 {
-    use HasAddresses, HasContact;
+    use HasAddresses, HasContact, OrderScope, PeriodScope, PaginationScope;
 
     protected $fillable = [
         'meta', 'marketplace_id'

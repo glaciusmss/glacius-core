@@ -40,6 +40,7 @@ use Yadahan\AuthenticationLog\AuthenticationLogable;
  * @property-read int|null $authentications_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\SocialLogin[] $socialLogins
  * @property-read int|null $social_logins_count
+ * @property-read \App\UserProfile $userProfile
  */
 class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 {
@@ -118,5 +119,10 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function socialLogins()
     {
         return $this->hasMany(SocialLogin::class);
+    }
+
+    public function userProfile()
+    {
+        return $this->hasOne(UserProfile::class);
     }
 }

@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Enums\NotificationChannelEnum;
+use App\Scopes\OrderScope;
 use App\Utils\HasSettings;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -42,7 +43,7 @@ use Illuminate\Notifications\Notifiable;
  */
 class Shop extends Model
 {
-    use Notifiable, HasSettings;
+    use Notifiable, HasSettings, OrderScope;
 
     protected $fillable = [
         'name', 'description'

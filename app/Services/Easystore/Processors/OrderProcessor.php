@@ -16,6 +16,7 @@ use App\Enums\MarketplaceEnum;
 use App\Order;
 use App\Product;
 use App\Services\BaseProcessor;
+use App\Utils\Helper;
 use Illuminate\Support\Collection;
 
 class OrderProcessor extends BaseProcessor
@@ -46,6 +47,11 @@ class OrderProcessor extends BaseProcessor
         return null;
     }
 
+    protected function processFor()
+    {
+        return Order::class;
+    }
+
     protected function processWhenCreated(Collection $rawData)
     {
         //easystore prefixed with order
@@ -73,14 +79,14 @@ class OrderProcessor extends BaseProcessor
         if ($billingAddress = $rawData->get('billing_address')) {
             $this->createBillingAddress(
                 $orderRecord,
-                $this->transformAddressAttr($billingAddress, ['province' => 'state'])
+                Helper::transformArrayKey($billingAddress, ['province' => 'state'])
             );
         }
 
         if ($shippingAddress = $rawData->get('shipping_address')) {
             $this->createShippingAddress(
                 $orderRecord,
-                $this->transformAddressAttr($shippingAddress, ['province' => 'state'])
+                Helper::transformArrayKey($shippingAddress, ['province' => 'state'])
             );
         }
 
@@ -94,6 +100,8 @@ class OrderProcessor extends BaseProcessor
                 $orderRecord->save();
             }
         }
+
+        $this->log('created order record', $orderRecord->toArray());
 
         return $orderRecord;
     }

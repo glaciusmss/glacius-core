@@ -3,16 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Customer;
+use App\DTO\Pagination;
+use App\Http\Requests\Customer\RetrieveRequest;
 use App\Http\Resources\CustomerResource;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-    public function index()
+    public function index(RetrieveRequest $request)
     {
-        return CustomerResource::collection(
-            $this->getShop()->customers()->with('marketplace', 'contact', 'addresses')->get()
-        );
+        $pagination = Pagination::makePaginationFromRequest($request);
+
+        $ordersData = $this->getShop()->customers()
+            ->with('marketplace', 'contact', 'addresses')
+            ->join('marketplaces as marketplace', 'customers.marketplace_id', '=', 'marketplace.id')
+            ->select('customers.*')
+            ->withPagination($pagination);
+
+        return CustomerResource::collection($ordersData)->additional([
+            'meta' => [
+                'sort_field' => $pagination->getSortField(),
+                'sort_order' => $pagination->getSortOrder(),
+            ]
+        ]);
     }
 
     /**

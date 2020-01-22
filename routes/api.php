@@ -68,6 +68,7 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
 
     Route::apiResource('order', 'OrderController')->only(['index', 'show']);
     Route::apiResource('customer', 'CustomerController')->only(['index', 'show']);
+    Route::apiResource('user_profile', 'UserProfileController')->only(['index', 'update']);
 
     Route::prefix('/image')->group(function () {
         Route::get('/{image}', 'MediaController@getImage');
@@ -75,6 +76,11 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
     });
 
     Route::get('/marketplace-integration', 'MarketplaceIntegrationController@index');
+
+    Route::prefix('/statistic')->group(function () {
+        Route::get('/marketplace-sales', 'StatisticController@marketplaceSales');
+        Route::get('/new-customer', 'StatisticController@newCustomer');
+    });
 
     Route::prefix('/shopify')->group(function () {
         Route::post('/oauth', 'ShopifyController@create');

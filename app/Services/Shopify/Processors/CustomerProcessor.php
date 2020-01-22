@@ -14,6 +14,7 @@ use App\Enums\EventType;
 use App\Enums\MarketplaceEnum;
 use App\Enums\Shopify\WebhookTopic;
 use App\Services\BaseProcessor;
+use App\Utils\Helper;
 use Illuminate\Support\Collection;
 
 class CustomerProcessor extends BaseProcessor
@@ -52,6 +53,11 @@ class CustomerProcessor extends BaseProcessor
         return null;
     }
 
+    protected function processFor()
+    {
+        return Customer::class;
+    }
+
     protected function processWhenCreated(Collection $rawData)
     {
         /** @var Customer $customerRecord */
@@ -71,10 +77,12 @@ class CustomerProcessor extends BaseProcessor
             foreach ($addresses as $address) {
                 $this->createAddress(
                     $customerRecord,
-                    $this->transformAddressAttr($address, ['province' => 'state'])
+                    Helper::transformArrayKey($address, ['province' => 'state'])
                 );
             }
         }
+
+        $this->log('created customer record', $customerRecord->toArray());
 
         return $customerRecord;
     }
@@ -90,6 +98,8 @@ class CustomerProcessor extends BaseProcessor
             return null;
         }
 
+        $this->log('previous customer record', $customerRecord->toArray());
+
         $customerRecord->updateContact([
             'first_name' => $rawData->get('first_name'),
             'last_name' => $rawData->get('last_name'),
@@ -103,10 +113,12 @@ class CustomerProcessor extends BaseProcessor
             foreach ($addresses as $address) {
                 $this->createAddress(
                     $customerRecord,
-                    $this->transformAddressAttr($address, ['province' => 'state'])
+                    Helper::transformArrayKey($address, ['province' => 'state'])
                 );
             }
         }
+
+        $this->log('updated customer record', $customerRecord->toArray());
 
         return $customerRecord;
     }
@@ -121,6 +133,8 @@ class CustomerProcessor extends BaseProcessor
         if ($customerRecord) {
             $customerRecord->delete();
         }
+
+        $this->log('deleted customer record', $customerRecord->toArray());
 
         return $customerRecord;
     }

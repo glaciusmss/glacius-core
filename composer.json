@@ -10,7 +10,7 @@
     "require": {
         "php": "^7.2",
         "automattic/woocommerce": "^3.0",
-        "barryvdh/laravel-cors": "^0.11.4",
+        "fruitcake/laravel-cors": "^1.0",
         "bensampo/laravel-enum": "^1.26",
         "botman/botman": "^2.5",
         "botman/driver-telegram": "^1.5",
@@ -21,15 +21,16 @@
         "laravel/horizon": "^3.4",
         "laravel/socialite": "^4.2",
         "laravel/telescope": "^2.1",
-        "laravel/tinker": "^1.0",
+        "laravel/tinker": "^2.0",
         "minchao/shopee-php": "^0.0.7",
         "nao-pon/flysystem-google-drive": "^1.1",
         "neoson/easystore-api": "^1.0",
         "phpclassic/php-shopify": "^1.1",
         "pusher/pusher-php-server": "^4.0",
         "spatie/laravel-backup": "^6.4",
+        "spatie/laravel-http-logger": "^1.4",
         "spatie/laravel-medialibrary": "^7.14",
-        "tymon/jwt-auth": "1.0.0-rc.5",
+        "tymon/jwt-auth": "1.0.0-rc.5.1",
         "yadahan/laravel-authentication-log": "^1.2"
     },
     "require-dev": {

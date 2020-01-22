@@ -70,6 +70,9 @@ class UserController extends Controller
 
         $createdUser = User::create($registerData);
 
+        //create user profile after user created
+        $createdUser->userProfile()->create();
+
         event(new Registered($createdUser));
 
         return response()->json($createdUser);

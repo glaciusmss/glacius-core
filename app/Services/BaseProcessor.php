@@ -22,6 +22,8 @@ abstract class BaseProcessor extends BaseMarketplace implements Processor
 
     public function process($event)
     {
+        $this->log('job start on ' . now());
+        $this->log('webhook ' . $event->topic . ' received from ' . $this->getMarketplace()->name);
         $this->event = $event;
 
         if (!$type = $this->getEventType()) {
@@ -36,6 +38,9 @@ abstract class BaseProcessor extends BaseMarketplace implements Processor
             'topic' => $this->event->topic,
         ]);
 
+        $this->log('webhook type: ' . $type->key);
+        $this->log('payload', $rawData->toArray());
+
         if ($type->is(EventType::Created())) {
             $result = $this->processWhenCreated($rawData);
         } else if ($type->is(EventType::Updated())) {
@@ -47,28 +52,18 @@ abstract class BaseProcessor extends BaseMarketplace implements Processor
         if ($result) {
             $this->fireEventAfterProcess($result);
         }
+
+        $this->log('job end on ' . now());
     }
 
-    protected function transformAddressAttr($address, $keysToTransform)
+    protected function log($message, $context = [])
     {
-        $temp = [];
-        foreach ($address as $key => $value) {
-            $transformed = false;
+        \Log::channel('process_' . $this->transformProcessForToModel())->info($message, $context ?? []);
+    }
 
-            foreach ($keysToTransform as $oriKey => $expectedKey) {
-                if ($oriKey === $key) {
-                    $temp[$expectedKey] = $value;
-                    $transformed = true;
-                    break;
-                }
-            }
-
-            if (!$transformed) {
-                $temp[$key] = $value;
-            }
-        }
-
-        return $temp;
+    protected function error($message, $context = [])
+    {
+        \Log::channel('process_' . $this->transformProcessForToModel())->error($message, $context ?? []);
     }
 
     protected function createBillingAddress($record, $billingAddress)
@@ -107,6 +102,11 @@ abstract class BaseProcessor extends BaseMarketplace implements Processor
         }
     }
 
+    private function transformProcessForToModel()
+    {
+        return strtolower(class_basename($this->processFor()));
+    }
+
     abstract protected function getEventType();
 
     abstract protected function processWhenCreated(Collection $rawData);
@@ -114,4 +114,6 @@ abstract class BaseProcessor extends BaseMarketplace implements Processor
     abstract protected function processWhenUpdated(Collection $rawData);
 
     abstract protected function processWhenDeleted(Collection $rawData);
+
+    abstract protected function processFor();
 }

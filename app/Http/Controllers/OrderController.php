@@ -2,17 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\Pagination;
+use App\Http\Requests\Order\RetrieveRequest;
 use App\Http\Resources\OrderResource;
 use App\Order;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function index(RetrieveRequest $request)
     {
-        return OrderResource::collection(
-            $this->getShop()->orders()->with('marketplace')->get()
-        );
+        $pagination = Pagination::makePaginationFromRequest($request);
+
+        $ordersData = $this->getShop()->orders()
+            ->with('marketplace')
+            ->join('marketplaces as marketplace', 'orders.marketplace_id', '=', 'marketplace.id')
+            ->select('orders.*')
+            ->withPagination($pagination);
+
+        return OrderResource::collection($ordersData)->additional([
+            'meta' => [
+                'sort_field' => $pagination->getSortField(),
+                'sort_order' => $pagination->getSortOrder(),
+            ]
+        ]);
     }
 
     /**

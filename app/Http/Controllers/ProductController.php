@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\Pagination;
 use App\Events\Product\ProductCreated;
 use App\Events\Product\ProductUpdated;
+use App\Http\Requests\Order\RetrieveRequest;
 use App\Http\Requests\Product\StoreRequest;
 use App\Http\Requests\Product\UpdateRequest;
 use App\Http\Resources\ProductResource;
@@ -12,11 +14,22 @@ use Illuminate\Support\Arr;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(RetrieveRequest $request)
     {
-        return ProductResource::collection(
-            $this->getShop()->products()->with('productVariants')->get()
-        );
+        $pagination = Pagination::makePaginationFromRequest($request);
+
+        $productsData = $this->getShop()->products()
+            ->with('productVariants')
+            ->join('product_variants as product_variant', 'products.id', '=', 'product_variant.product_id')
+            ->select(['products.*'])
+            ->withPagination($pagination);
+
+        return ProductResource::collection($productsData)->additional([
+            'meta' => [
+                'sort_field' => $pagination->getSortField(),
+                'sort_order' => $pagination->getSortOrder(),
+            ]
+        ]);
     }
 
     public function store(StoreRequest $request)

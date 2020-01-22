@@ -10,30 +10,23 @@ namespace App\Services\Woocommerce\Syncs;
 
 
 use App\Contracts\SdkFactory;
-use App\Contracts\Sync as SyncContract;
 use App\DTO\SyncState;
 use App\Enums\MarketplaceEnum;
 use App\Enums\State;
-use App\MarketplaceIntegration;
 use App\Product;
-use App\Services\BaseMarketplace;
+use App\Services\BaseSync;
 use Automattic\WooCommerce\Client;
 use Automattic\WooCommerce\HttpClient\HttpClientException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
-use Psr\Log\LoggerInterface;
 
-class SyncProduct extends BaseMarketplace implements SyncContract
+class SyncProduct extends BaseSync
 {
     protected $sdkFactory;
-    protected $marketplaceIntegration;
-    /* @var LoggerInterface $logger */
-    protected $logger;
 
     public function __construct(SdkFactory $sdkFactory)
     {
         $this->sdkFactory = $sdkFactory;
-        $this->logger = \Log::channel('sync_product');
     }
 
     public function whenCreated(Model $model)
@@ -43,7 +36,7 @@ class SyncProduct extends BaseMarketplace implements SyncContract
 
         $createData = $this->prepareCreateData($model);
 
-        $this->logger->info('create data: ' . json_encode($createData));
+        $this->log('create data', $createData);
 
         try {
             $sdk->post(
@@ -53,7 +46,7 @@ class SyncProduct extends BaseMarketplace implements SyncContract
 
             $response = json_decode($sdk->http->getResponse()->getBody(), true);
 
-            $this->logger->info('create response: ' . json_encode($response));
+            $this->log('create response', $response);
 
             //update model with woocommerce meta
             $model->update([
@@ -73,7 +66,7 @@ class SyncProduct extends BaseMarketplace implements SyncContract
 
         $updateData = $this->prepareUpdateData($model);
 
-        $this->logger->info('update data: ' . json_encode($updateData));
+        $this->log('update data', $updateData);
 
         try {
             $sdk->put(
@@ -83,7 +76,7 @@ class SyncProduct extends BaseMarketplace implements SyncContract
 
             $response = json_decode($sdk->http->getResponse()->getBody(), true);
 
-            $this->logger->info('update response: ' . json_encode($response));
+            $this->log('update response', $response);
 
             return new SyncState(State::Success());
         } catch (HttpClientException $ex) {
@@ -112,15 +105,14 @@ class SyncProduct extends BaseMarketplace implements SyncContract
         //TODO: Implement withExisting() method.
     }
 
-    public function setMarketplaceIntegration(MarketplaceIntegration $marketplaceIntegration)
-    {
-        $this->marketplaceIntegration = $marketplaceIntegration;
-        return $this;
-    }
-
     public function name()
     {
         return MarketplaceEnum::WooCommerce();
+    }
+
+    protected function syncFor()
+    {
+        return Product::class;
     }
 
     protected function prepareCreateData(Model $model)

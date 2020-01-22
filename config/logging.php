@@ -96,9 +96,30 @@ return [
             'handler' => NullHandler::class,
         ],
 
+        'requestlog' => [
+            'driver' => 'daily',
+            'path' => storage_path('/logs/request/http-request.log'),
+            'level' => 'info',
+            'days' => 14,
+        ],
+
         'sync_product' => [
             'driver' => 'daily',
             'path' => storage_path('/logs/sync/product.log'),
+            'level' => 'info',
+            'days' => 14,
+        ],
+
+        'process_order' => [
+            'driver' => 'daily',
+            'path' => storage_path('/logs/process/order.log'),
+            'level' => 'info',
+            'days' => 14,
+        ],
+
+        'process_customer' => [
+            'driver' => 'daily',
+            'path' => storage_path('/logs/process/customer.log'),
             'level' => 'info',
             'days' => 14,
         ]

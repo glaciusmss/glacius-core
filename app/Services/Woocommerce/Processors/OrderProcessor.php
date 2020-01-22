@@ -16,6 +16,7 @@ use App\Enums\Woocommerce\WebhookTopic;
 use App\Order;
 use App\Product;
 use App\Services\BaseProcessor;
+use App\Utils\Helper;
 use Illuminate\Support\Collection;
 
 class OrderProcessor extends BaseProcessor
@@ -46,6 +47,11 @@ class OrderProcessor extends BaseProcessor
         return null;
     }
 
+    protected function processFor()
+    {
+        return Order::class;
+    }
+
     protected function processWhenCreated(Collection $rawData)
     {
         /** @var Order $orderRecord */
@@ -70,14 +76,14 @@ class OrderProcessor extends BaseProcessor
         if ($billingAddress = $rawData->get('billing')) {
             $this->createBillingAddress(
                 $orderRecord,
-                $this->transformAddressAttr($billingAddress, ['address_1' => 'address1', 'address_2' => 'address2', 'postcode' => 'zip'])
+                Helper::transformArrayKey($billingAddress, ['address_1' => 'address1', 'address_2' => 'address2', 'postcode' => 'zip'])
             );
         }
 
         if ($shippingAddress = $rawData->get('shipping')) {
             $this->createShippingAddress(
                 $orderRecord,
-                $this->transformAddressAttr($shippingAddress, ['address_1' => 'address1', 'address_2' => 'address2', 'postcode' => 'zip'])
+                Helper::transformArrayKey($shippingAddress, ['address_1' => 'address1', 'address_2' => 'address2', 'postcode' => 'zip'])
             );
         }
 
@@ -91,6 +97,8 @@ class OrderProcessor extends BaseProcessor
                 $orderRecord->save();
             }
         }
+
+        $this->log('created order record', $orderRecord->toArray());
 
         return $orderRecord;
     }
