@@ -22,7 +22,7 @@
         "laravel/socialite": "^4.2",
         "laravel/telescope": "^2.1",
         "laravel/tinker": "^2.0",
-        "minchao/shopee-php": "^0.0.7",
+        "minchao/shopee-php": "^0.0.8",
         "nao-pon/flysystem-google-drive": "^1.1",
         "neoson/easystore-api": "^1.0",
         "phpclassic/php-shopify": "^1.1",

@@ -75,6 +75,8 @@ class SocialLoginService
                 'password' => Str::random()
             ]);
 
+            $userRecord->userProfile()->create();
+
             //fire a registered event here due to user has been created
             event(new Registered($userRecord));
         }

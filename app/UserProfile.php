@@ -34,7 +34,7 @@ class UserProfile extends Model
     use CastsEnums;
 
     protected $fillable = [
-        'phone_number', 'gender', 'date_of_birth',
+        'phone_number', 'gender', 'date_of_birth', 'user_id'
     ];
 
     protected $casts = [

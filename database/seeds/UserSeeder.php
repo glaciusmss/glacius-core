@@ -1,6 +1,7 @@
 <?php
 
 use App\User;
+use App\UserProfile;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -17,6 +18,8 @@ class UserSeeder extends Seeder
             'email' => 'lkloon123@hotmail.com',
             'email_verified_at' => now(),
             'password' => 'demo1234'
-        ])->userProfile()->forceCreate([]);
+        ]);
+
+        UserProfile::forceCreate(['user_id' => 1]);
     }
 }

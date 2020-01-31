@@ -16,7 +16,7 @@ class CreateUserProfilesTable extends Migration
         Schema::create('user_profiles', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('phone_number')->nullable();
-            $table->integer('gender')->nullable();
+            $table->integer('gender')->default(\App\Enums\GenderEnum::Male);
             $table->date('date_of_birth')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
