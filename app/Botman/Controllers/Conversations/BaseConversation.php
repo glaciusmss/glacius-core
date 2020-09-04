@@ -8,22 +8,23 @@
 
 namespace App\Botman\Controllers\Conversations;
 
+use App\Botman\BotAuthTrait;
 use App\Enums\BotPlatform;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 
 abstract class BaseConversation extends Conversation
 {
+    use BotAuthTrait;
+
     protected $platform;
 
     public function run()
     {
-        $shouldStop = $this->bot->getMessage()->getExtras('should_stop');
-        if ($shouldStop) {
-            $this->bot->reply('you are not authenticated');
+        $this->platform = BotPlatform::coerce($this->bot->getDriver()->getName());
+
+        if (!$this->validateAuth()) {
             return;
         }
-
-        $this->platform = BotPlatform::coerce($this->bot->getDriver()->getName());
 
         $this->handle();
     }

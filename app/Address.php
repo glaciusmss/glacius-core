@@ -48,7 +48,7 @@ class Address extends Model
         'address1', 'address2', 'city', 'state', 'zip', 'country', 'type'
     ];
 
-    protected $enumCasts = [
+    protected $casts = [
         'type' => AddressType::class,
     ];
 

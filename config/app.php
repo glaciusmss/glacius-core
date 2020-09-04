@@ -205,6 +205,8 @@ return [
         App\Providers\ShopifyServiceProvider::class,
         App\Providers\ShopeeServiceProvider::class,
         App\Providers\WoocommerceServiceProvider::class,
+        App\Providers\BotmanServiceProvider::class,
+        App\Providers\FacebookServiceProvider::class,
         App\Providers\TelegramServiceProvider::class,
         App\Providers\EasystoreServiceProvider::class,
         App\Providers\GoogleDriveServiceProvider::class,

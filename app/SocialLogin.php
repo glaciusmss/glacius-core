@@ -3,7 +3,6 @@
 namespace App;
 
 use App\Enums\SocialProvider;
-use BenSampo\Enum\Traits\CastsEnums;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -29,13 +28,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class SocialLogin extends Model
 {
-    use CastsEnums;
-
     protected $fillable = [
         'provider_user_id', 'provider'
     ];
 
-    public $enumCasts = [
+    public $casts = [
         'provider' => SocialProvider::class
     ];
 

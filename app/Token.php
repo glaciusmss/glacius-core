@@ -3,7 +3,6 @@
 namespace App;
 
 use App\Enums\TokenType;
-use BenSampo\Enum\Traits\CastsEnums;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -31,11 +30,10 @@ use Illuminate\Support\Str;
  * @mixin \Eloquent
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Token expired()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Token isValid()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Token isType(\App\Enums\TokenType $type)
  */
 class Token extends Model
 {
-    use CastsEnums;
-
     protected $fillable = [
         'token', 'type', 'meta', 'expired_at',
     ];
@@ -44,13 +42,9 @@ class Token extends Model
         'expired_at'
     ];
 
-    protected $enumCasts = [
-        'type' => TokenType::class
-    ];
-
     protected $casts = [
         'meta' => 'array',
-        'type' => 'int',
+        'type' => TokenType::class,
     ];
 
     public function scopeExpired(Builder $query)
@@ -61,6 +55,11 @@ class Token extends Model
     public function scopeIsValid(Builder $query)
     {
         return $query->where('expired_at', '>=', now());
+    }
+
+    public function scopeIsType(Builder $query, TokenType $type)
+    {
+        return $query->where('type', $type->value);
     }
 
     public static function generate(TokenType $type, $meta = [], $duration = 15, $length = 16)
@@ -87,9 +86,10 @@ class Token extends Model
         return $instance;
     }
 
-    public static function validate($token)
+    public static function validate($token, TokenType $type)
     {
         $instance = self::whereToken($token)
+            ->isType($type)
             ->isValid()
             ->first();
 
@@ -100,9 +100,9 @@ class Token extends Model
         return $instance;
     }
 
-    public static function validateAndDelete($token)
+    public static function validateAndDelete($token, TokenType $type)
     {
-        if (!$instance = self::validate($token)) {
+        if (!$instance = self::validate($token, $type)) {
             return false;
         }
 

@@ -8,28 +8,38 @@
 
 namespace App\Botman\Controllers\Commands;
 
+use App\Botman\BotAuthTrait;
 use App\Enums\BotPlatform;
 use BotMan\BotMan\BotMan;
+use Illuminate\Support\Collection;
 
 abstract class BaseCommand
 {
-    protected $platform;
+    use BotAuthTrait;
 
-    public function run(BotMan $bot)
+    protected $platform;
+    /* @var BotMan $bot */
+    protected $bot;
+    /* @var Collection $parameters */
+    protected $parameters;
+
+    public function run(BotMan $bot, ...$parameters)
     {
-        $shouldStop = $bot->getMessage()->getExtras('should_stop');
-        if ($shouldStop) {
-            $bot->reply('you are not authenticated');
+        $this->bot = $bot;
+        $this->parameters = collect($parameters);
+        $this->platform = BotPlatform::coerce($bot->getDriver()->getName());
+
+        if (!$this->validateAuth()) {
             return;
         }
 
-        $this->platform = BotPlatform::coerce($bot->getDriver()->getName());
-
-        $this->handle(...func_get_args());
+        $this->handle();
     }
 
     protected function getUser()
     {
         return \Auth::user();
     }
+
+    abstract public function handle();
 }

@@ -3,7 +3,6 @@
 namespace App;
 
 use App\Enums\GenderEnum;
-use BenSampo\Enum\Traits\CastsEnums;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -31,17 +30,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UserProfile extends Model
 {
-    use CastsEnums;
-
     protected $fillable = [
         'phone_number', 'gender', 'date_of_birth', 'user_id'
     ];
 
     protected $casts = [
         'date_of_birth' => 'date:Y-m-d',
-    ];
-
-    protected $enumCasts = [
         'gender' => GenderEnum::class,
     ];
 

@@ -13,6 +13,7 @@ use App\Address;
 use App\Contracts\Processor;
 use App\Enums\AddressType;
 use App\Enums\EventType;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
@@ -26,7 +27,7 @@ abstract class BaseProcessor extends BaseMarketplace implements Processor
         $this->log('webhook ' . $event->topic . ' received from ' . $this->getMarketplace()->name);
         $this->event = $event;
 
-        if (!$type = $this->getEventType()) {
+        if (!$type = $this->mapWebhookTopicToEventType()) {
             return;
         }
 
@@ -41,13 +42,7 @@ abstract class BaseProcessor extends BaseMarketplace implements Processor
         $this->log('webhook type: ' . $type->key);
         $this->log('payload', $rawData->toArray());
 
-        if ($type->is(EventType::Created())) {
-            $result = $this->processWhenCreated($rawData);
-        } else if ($type->is(EventType::Updated())) {
-            $result = $this->processWhenUpdated($rawData);
-        } else if ($type->is(EventType::Deleted())) {
-            $result = $this->processWhenDeleted($rawData);
-        }
+        $result = $this->{'processWhen' . $type->key}($rawData);
 
         if ($result) {
             $this->fireEventAfterProcess($result);
@@ -94,7 +89,7 @@ abstract class BaseProcessor extends BaseMarketplace implements Processor
     {
         $extractedClassFromObject = ucfirst(class_basename($model));
         $namespace = 'App\\Events\\' . $extractedClassFromObject . '\\';
-        $eventName = $extractedClassFromObject . ucfirst($this->getEventType()->key);
+        $eventName = $extractedClassFromObject . ucfirst($this->mapWebhookTopicToEventType()->key);
         $eventClass = $namespace . $eventName;
 
         if (class_exists($eventClass)) {
@@ -107,13 +102,31 @@ abstract class BaseProcessor extends BaseMarketplace implements Processor
         return strtolower(class_basename($this->processFor()));
     }
 
-    abstract protected function getEventType();
+    /**
+     * @return EventType $eventType the event type base on webhook
+     */
+    abstract protected function mapWebhookTopicToEventType();
 
+    /**
+     * @param Collection $rawData
+     * @return Model $model the created model
+     */
     abstract protected function processWhenCreated(Collection $rawData);
 
+    /**
+     * @param Collection $rawData
+     * @return Model $model the updated model
+     */
     abstract protected function processWhenUpdated(Collection $rawData);
 
+    /**
+     * @param Collection $rawData
+     * @return Model $model the deleted model
+     */
     abstract protected function processWhenDeleted(Collection $rawData);
 
+    /**
+     * @return String $modelClass the model class name
+     */
     abstract protected function processFor();
 }

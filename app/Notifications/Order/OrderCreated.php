@@ -2,6 +2,7 @@
 
 namespace App\Notifications\Order;
 
+use App\Channels\FacebookChannel;
 use App\Channels\FcmChannel;
 use App\Channels\TelegramChannel;
 use App\Enums\FirebaseChannelEnum;
@@ -33,10 +34,16 @@ class OrderCreated extends Notification implements ShouldQueue
 
     public function via($notifiable)
     {
-        return [TelegramChannel::class, FcmChannel::class, 'broadcast'];
+        return [FacebookChannel::class, TelegramChannel::class, FcmChannel::class, 'broadcast'];
     }
 
     public function toTelegram($notifiable)
+    {
+        /** @var Shop $notifiable */
+        return $notifiable->name . ': You have new order, ID [' . $this->order->id . '] from [' . Str::title($this->order->marketplace->name) . ']';
+    }
+
+    public function toFacebook($notifiable)
     {
         /** @var Shop $notifiable */
         return $notifiable->name . ': You have new order, ID [' . $this->order->id . '] from [' . Str::title($this->order->marketplace->name) . ']';

@@ -68,6 +68,21 @@ class Shop extends Model
         return $botIds;
     }
 
+    public function routeNotificationForFacebook()
+    {
+        $botIds = [];
+
+        $notificationChannels = $this->user->notificationChannels()
+            ->where('notification_channels.name', NotificationChannelEnum::Facebook)
+            ->get();
+
+        foreach ($notificationChannels as $notificationChannel) {
+            $botIds[] = $notificationChannel->pivot->meta['facebook_bot_id'];
+        }
+
+        return $botIds;
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

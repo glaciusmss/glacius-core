@@ -21,9 +21,9 @@ class DisconnectCommand extends BaseCommand
         $this->botAuth = $botAuth;
     }
 
-    public function handle(BotMan $bot)
+    public function handle()
     {
         $disconnectedUser = $this->botAuth->disconnect();
-        $bot->reply('Successfully disconnected to Glacius with ' . $disconnectedUser->email);
+        $this->bot->reply('Successfully disconnected to Glacius with ' . $disconnectedUser->email);
     }
 }

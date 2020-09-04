@@ -6,7 +6,7 @@
  * Time: 5:16 PM.
  */
 
-namespace App\Services\NotificationChannels\Telegram;
+namespace App\Services\NotificationChannels\Facebook;
 
 
 use App\Contracts\BotAuth as BotAuthContract;
@@ -24,7 +24,7 @@ class BotAuth extends BaseNotificationChannel implements BotAuthContract
 
     public function connect($token)
     {
-        $token = Token::validateAndDelete(trim($token), TokenType::TelegramConnect());
+        $token = Token::validateAndDelete(trim($token), TokenType::FacebookConnect());
 
         throw_unless(
             $token,
@@ -36,7 +36,8 @@ class BotAuth extends BaseNotificationChannel implements BotAuthContract
 
         $this->getNotificationChannel()->users()->attach($user, [
             'meta->' . $this->getBotIdKey() => $this->getBot()->getUser()->getId(),
-            'meta->' . $this->getBotUsernameKey() => $this->getBot()->getUser()->getUsername(),
+            'meta->' . $this->getBotFirstNameKey() => $this->getBot()->getUser()->getFirstName(),
+            'meta->' . $this->getBotLastNameKey() => $this->getBot()->getUser()->getLastName(),
         ]);
 
         return $user;
@@ -53,7 +54,7 @@ class BotAuth extends BaseNotificationChannel implements BotAuthContract
 
     public function name()
     {
-        return NotificationChannelEnum::Telegram();
+        return NotificationChannelEnum::Facebook();
     }
 
     public function isBotConnectedToUser($botId)

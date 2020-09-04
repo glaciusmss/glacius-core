@@ -38,7 +38,7 @@ class OrderProcessor extends BaseProcessor
             ->first();
     }
 
-    protected function getEventType()
+    protected function mapWebhookTopicToEventType()
     {
         if (WebhookTopic::OrderCreate()->is($this->event->topic)) {
             return EventType::Created();

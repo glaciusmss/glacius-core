@@ -35,7 +35,7 @@ class CustomerProcessor extends BaseProcessor
             ->first();
     }
 
-    protected function getEventType()
+    protected function mapWebhookTopicToEventType()
     {
         if (WebhookTopic::CustomerCreate()->is($this->event->topic)) {
             return EventType::Created();

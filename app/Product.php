@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
  * App\Product
@@ -46,7 +46,7 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
  */
 class Product extends Model implements HasMedia
 {
-    use HasMediaTrait, HasSyncTrasactions, OrderScope, PaginationScope;
+    use InteractsWithMedia, HasSyncTrasactions, OrderScope, PaginationScope;
 
     protected $fillable = [
         'name', 'description', 'meta'

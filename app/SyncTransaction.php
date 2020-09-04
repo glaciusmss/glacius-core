@@ -5,7 +5,6 @@ namespace App;
 use App\Enums\EventType;
 use App\Enums\State;
 use App\Enums\SyncDirection;
-use BenSampo\Enum\Traits\CastsEnums;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -40,13 +39,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class SyncTransaction extends Model
 {
-    use CastsEnums;
-
     protected $fillable = [
         'event', 'direction', 'state', 'error_msg', 'marketplace_id'
     ];
 
-    protected $enumCasts = [
+    protected $casts = [
         'event' => EventType::class,
         'direction' => SyncDirection::class,
         'state' => State::class,

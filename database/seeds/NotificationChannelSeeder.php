@@ -16,5 +16,10 @@ class NotificationChannelSeeder extends Seeder
             'name' => 'telegram',
             'website' => 'https://telegram.org/',
         ]);
+
+        NotificationChannel::create([
+            'name' => 'facebook',
+            'website' => 'https://www.facebook.com/'
+        ]);
     }
 }

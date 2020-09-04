@@ -39,7 +39,7 @@ return [
     /*
      * Sets the Access-Control-Expose-Headers response header.
      */
-    'exposed_headers' => false,
+    'exposed_headers' => [],
     /*
      * Sets the Access-Control-Max-Age response header.
      */

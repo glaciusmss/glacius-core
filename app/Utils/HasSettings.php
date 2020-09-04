@@ -21,38 +21,34 @@ trait HasSettings
         return $this->morphMany(Setting::class, 'settingable');
     }
 
-    public function saveSetting($key, $value, $collection = 'general', $type = 'string')
+    public function saveSetting($item, $collection = 'general')
     {
-        if (!$defaultType = $this->getSettingTypes($key)) {
-            $defaultType = $type;
+        if (!$defaultType = $this->getSettingTypes($item['setting_key'])) {
+            $defaultType = $item['type'];
         }
 
         return $this->settings()
             ->updateOrCreate(
-                ['setting_key' => $key, 'collection' => $collection],
-                ['setting_value' => $value, 'type' => $defaultType]
+                ['setting_key' => $item['setting_key'], 'collection' => $collection],
+                ['setting_value' => $item['setting_value'], 'label' => $item['label'], 'type' => $defaultType]
             );
     }
 
     /**
-     * use default type(string)
-     * ex. ['setting_key' => 'setting_value']
-     *
-     * use custom type
-     * ex. ['setting_key' => ['setting_value' => 'type']]
+     * ex.
+     * [
+     *  'label' => 'Product Sync',
+     *  'setting_key' => 'is_product_sync_activated',
+     *  'setting_value' => true,
+     *  'type' => 'boolean',
+     * ]
      */
     public function saveMultipleSettings(array $keyValuePairs, $collection = 'general')
     {
         $result = [];
 
-        collect($keyValuePairs)->each(function ($item, $index) use (&$result, $collection) {
-            if (is_array($item)) {
-                foreach ($item as $value => $type) {
-                    $result[] = $this->saveSetting($index, $value, $collection, $type);
-                }
-            } else {
-                $result[] = $this->saveSetting($index, $item, $collection);
-            }
+        collect($keyValuePairs)->each(function ($item) use (&$result, $collection) {
+            $result[] = $this->saveSetting($item, $collection);
         });
 
         return $result;
@@ -76,8 +72,8 @@ trait HasSettings
     {
         $result = [];
 
-        collect($keys)->each(function ($item, $index) use ($defaults, &$result) {
-            $result[$item] = $this->getSetting($item, $defaults[$index] ?? null, $collection = 'general');
+        collect($keys)->each(function ($item, $index) use ($defaults, &$result, $collection) {
+            $result[$item] = $this->getSetting($item, $defaults[$index] ?? null, $collection);
         });
 
         return $result;
@@ -86,11 +82,14 @@ trait HasSettings
     public function getAllSettings()
     {
         return $this->settings()
-            ->get(['setting_key', 'setting_value', 'type', 'collection'])
+            ->get(['setting_key', 'setting_value', 'label', 'type', 'collection'])
             ->mapWithKeys(function ($item) {
                 return [
                     $item['collection'] => [
-                        $item['setting_key'] => $item['setting_value']
+                        'label' => $item['label'],
+                        'type' => $item['type'],
+                        'setting_key' => $item['setting_key'],
+                        'setting_value' => $item['setting_value'],
                     ]
                 ];
             });
@@ -100,10 +99,8 @@ trait HasSettings
     {
         return $this->settings()
             ->whereCollection($collection)
-            ->get(['setting_key', 'setting_value', 'type'])
-            ->mapWithKeys(function ($item) {
-                return [$item['setting_key'] => $item['setting_value']];
-            });
+            ->get(['setting_key', 'setting_value', 'label', 'type'])
+            ->toArray();
     }
 
     public function deleteSetting($key, $collection = 'general')

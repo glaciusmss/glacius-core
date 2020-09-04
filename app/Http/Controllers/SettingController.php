@@ -40,7 +40,7 @@ class SettingController extends Controller
 
     public function update(Request $request, $collection)
     {
-        $this->getShop()->saveMultipleSettings(
+        $this->getShop()->saveSetting(
             $request->input('data'),
             $collection
         );

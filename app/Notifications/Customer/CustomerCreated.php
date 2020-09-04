@@ -2,6 +2,7 @@
 
 namespace App\Notifications\Customer;
 
+use App\Channels\FacebookChannel;
 use App\Channels\TelegramChannel;
 use App\Customer;
 use App\Enums\QueueGroup;
@@ -28,10 +29,16 @@ class CustomerCreated extends Notification implements ShouldQueue
 
     public function via($notifiable)
     {
-        return [TelegramChannel::class, 'broadcast'];
+        return [FacebookChannel::class, TelegramChannel::class, 'broadcast'];
     }
 
     public function toTelegram($notifiable)
+    {
+        /** @var Shop $notifiable */
+        return $notifiable->name . ': You have new customer, ID [' . $this->customer->id . '] from [' . Str::title($this->customer->marketplace->name) . ']';
+    }
+
+    public function toFacebook($notifiable)
     {
         /** @var Shop $notifiable */
         return $notifiable->name . ': You have new customer, ID [' . $this->customer->id . '] from [' . Str::title($this->customer->marketplace->name) . ']';

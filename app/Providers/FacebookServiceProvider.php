@@ -2,13 +2,13 @@
 
 namespace App\Providers;
 
-use App\Http\Controllers\TelegramController;
-use App\Services\NotificationChannels\Telegram\BotAuth;
+use App\Http\Controllers\FacebookController;
+use App\Services\NotificationChannels\Facebook\BotAuth;
 use App\Contracts\BotAuth as BotAuthContract;
 use Illuminate\Container\Container;
 use Illuminate\Support\ServiceProvider;
 
-class TelegramServiceProvider extends ServiceProvider
+class FacebookServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -21,7 +21,7 @@ class TelegramServiceProvider extends ServiceProvider
             return new BotAuth();
         });
 
-        $this->app->when(TelegramController::class)
+        $this->app->when(FacebookController::class)
             ->needs(BotAuthContract::class)
             ->give(BotAuth::class);
     }

@@ -109,6 +109,11 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
             Route::post('/', 'TelegramController@connect');
             Route::delete('/', 'TelegramController@disconnect');
         });
+
+        Route::prefix('/facebook')->group(function () {
+            Route::post('/', 'FacebookController@connect');
+            Route::delete('/', 'FacebookController@disconnect');
+        });
     });
 
     Route::prefix('/setting')->group(function () {

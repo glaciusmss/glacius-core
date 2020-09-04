@@ -8,8 +8,6 @@
 
 namespace App\Botman\Middleware;
 
-
-use App\Enums\BotPlatform;
 use App\NotificationChannel;
 use BotMan\BotMan\BotMan;
 use BotMan\BotMan\Interfaces\Middleware\Received;
@@ -40,16 +38,21 @@ class AuthenticateBotUser implements Received
         $platform = strtolower($bot->getDriver()->getName());
         $botId = $message->getSender();
 
-        if (BotPlatform::Telegram()->is($platform)) {
-            $channel = $this->getNotificationChannel($platform);
+        $channel = $this->getNotificationChannel($platform);
+
+        if (!$channel) {
+            $message->addExtras('should_stop', true);
+            $message->addExtras('stop_msg', 'This channel is currently not supported yet');
+            return $next($message);
         }
 
-        $userAssociated = optional($channel)->users()
+        $userAssociated = $channel->users()
             ->wherePivot("meta->{$platform}_bot_id", $botId)
             ->first();
 
         if (!$userAssociated) {
             $message->addExtras('should_stop', true);
+            $message->addExtras('stop_msg', ['you are not connected', 'please run /start first']);
             return $next($message);
         }
 

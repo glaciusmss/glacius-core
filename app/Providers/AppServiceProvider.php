@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Utils\CarbonFix;
-use Illuminate\Http\Resources\Json\Resource;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //dont append data on api resources
-        Resource::withoutWrapping();
+        JsonResource::withoutWrapping();
 
         //use web guard for telescope and horizon only
         if (request()->is(['horizon*', 'telescope*'])) {
