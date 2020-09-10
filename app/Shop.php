@@ -9,37 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
 /**
- * App\Shop
- *
- * @property int $id
- * @property string $name
- * @property string $description
- * @property int $user_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Marketplace[] $marketplaces
- * @property-read int|null $marketplaces_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Order[] $orders
- * @property-read int|null $orders_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Product[] $products
- * @property-read int|null $products_count
- * @property-read \App\User $user
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Shop newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Shop newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Shop query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Shop whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Shop whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Shop whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Shop whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Shop whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Shop whereUserId($value)
- * @mixin \Eloquent
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
- * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Setting[] $settings
- * @property-read int|null $settings_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Customer[] $customers
- * @property-read int|null $customers_count
+ * @mixin IdeHelperShop
  */
 class Shop extends Model
 {
@@ -57,12 +27,14 @@ class Shop extends Model
     {
         $botIds = [];
 
-        $notificationChannels = $this->user->notificationChannels()
-            ->where('notification_channels.name', NotificationChannelEnum::Telegram)
-            ->get();
+        foreach($this->users as $user) {
+            $notificationChannels = $user->notificationChannels()
+                ->where('notification_channels.name', NotificationChannelEnum::Telegram)
+                ->get();
 
-        foreach ($notificationChannels as $notificationChannel) {
-            $botIds[] = $notificationChannel->pivot->meta['telegram_bot_id'];
+            foreach ($notificationChannels as $notificationChannel) {
+                $botIds[] = $notificationChannel->pivot->meta['telegram_bot_id'];
+            }
         }
 
         return $botIds;
@@ -72,20 +44,24 @@ class Shop extends Model
     {
         $botIds = [];
 
-        $notificationChannels = $this->user->notificationChannels()
-            ->where('notification_channels.name', NotificationChannelEnum::Facebook)
-            ->get();
+        foreach($this->users as $user) {
+            $notificationChannels = $user->notificationChannels()
+                ->where('notification_channels.name', NotificationChannelEnum::Facebook)
+                ->get();
 
-        foreach ($notificationChannels as $notificationChannel) {
-            $botIds[] = $notificationChannel->pivot->meta['facebook_bot_id'];
+            foreach ($notificationChannels as $notificationChannel) {
+                $botIds[] = $notificationChannel->pivot->meta['facebook_bot_id'];
+            }
         }
 
         return $botIds;
     }
 
-    public function user()
+    public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(User::class, 'user_shops')
+            ->withTimestamps()
+            ->using(UserShop::class);
     }
 
     public function products()

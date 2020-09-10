@@ -9,13 +9,19 @@
 namespace App\Contracts;
 
 
+use App\MarketplaceIntegration;
 use Illuminate\Http\Request;
+use Illuminate\Support\Enumerable;
 
 interface Webhook
 {
-    public function register();
+    public function register(MarketplaceIntegration $marketplaceIntegration);
+
+    public function remove(MarketplaceIntegration $marketplaceIntegration);
 
     public function validateHmac(Request $request);
 
-    public function dispatcher(Request $request);
+    public function getTopicFromRequest(Request $request): string;
+
+    public function mergeExtraDataBeforeProcess(Enumerable $rawData, Request $request): Enumerable;
 }

@@ -10,8 +10,7 @@ use App\Events\Order\OrderCreated;
 use App\Events\Product\ProductCreated;
 use App\Events\Product\ProductDeleted;
 use App\Events\Product\ProductUpdated;
-use App\Events\Webhook\CustomerWebhookReceivedFromMarketplace;
-use App\Events\Webhook\OrderWebhookReceivedFromMarketplace;
+use App\Events\Webhook\WebhookReceived;
 use App\Listeners\Customer\SendCustomerNotification;
 use App\Listeners\Order\SendOrderNotification;
 use App\Listeners\RemoveShopSetting;
@@ -19,8 +18,7 @@ use App\Listeners\SendEmailVerificationNotification;
 use App\Listeners\SetupDefaultSetting;
 use App\Listeners\Sync\AddTransaction;
 use App\Listeners\Sync\Product\SyncProduct;
-use App\Listeners\Webhook\ProcessCustomerFromMarketplace;
-use App\Listeners\Webhook\ProcessOrderFromMarketplace;
+use App\Listeners\Webhook\ProcessWebhook;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
@@ -45,8 +43,7 @@ class EventServiceProvider extends ServiceProvider
 
         Event::listen(Registered::class, SendEmailVerificationNotification::class);
 
-        Event::listen(OrderWebhookReceivedFromMarketplace::class, ProcessOrderFromMarketplace::class);
-        Event::listen(CustomerWebhookReceivedFromMarketplace::class, ProcessCustomerFromMarketplace::class);
+        Event::listen(WebhookReceived::class, ProcessWebhook::class);
 
         Event::listen(OrderCreated::class, SendOrderNotification::class);
 

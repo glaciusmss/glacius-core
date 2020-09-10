@@ -22,7 +22,7 @@ class StatisticController extends Controller
             'total_count_percentage' => 0,
             'total_sales_percentage' => 0,
         ];
-        $marketplaces = $this->getShop('marketplaces')->marketplaces;
+        $marketplaces = $this->getShop()->marketplaces;
 
         foreach ($marketplaces as $marketplace) {
             $currentCount = $marketplace->getOrdersByPeriod($period)->count();
@@ -59,7 +59,7 @@ class StatisticController extends Controller
             'total_previous_count' => 0,
             'total_count_percentage' => 0,
         ];
-        $marketplaces = $this->getShop('marketplaces')->marketplaces;
+        $marketplaces = $this->getShop()->marketplaces;
 
         foreach ($marketplaces as $marketplace) {
             $currentCount = $marketplace->getCustomersByPeriod($period)->count();

@@ -1,68 +1,29 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Neoson Lam
- * Date: 9/20/2019
- * Time: 10:09 AM.
- */
+
 
 namespace App\Services\Easystore\Processors;
 
 
+use App\Contracts\Processor;
 use App\Customer;
-use App\Enums\Easystore\WebhookTopic;
-use App\Enums\EventType;
-use App\Enums\MarketplaceEnum;
+use App\Events\Webhook\WebhookReceived;
 use App\Order;
 use App\Product;
-use App\Services\BaseProcessor;
 use App\Utils\Helper;
-use Illuminate\Support\Collection;
 
-class OrderProcessor extends BaseProcessor
+class OrderProcessor extends BaseProcessor implements Processor
 {
-    public function name()
-    {
-        return MarketplaceEnum::EasyStore();
-    }
-
-    public function getShop($withRelations = null)
-    {
-        if ($this->shop) {
-            return $this->shop;
-        }
-
-        return $this->shop = $this->getMarketplace()
-            ->shops()
-            ->wherePivot('meta->easystore_shop', $this->event->rawData->get('shop_domain'))
-            ->first();
-    }
-
-    protected function mapWebhookTopicToEventType()
-    {
-        if (WebhookTopic::OrderCreate()->is($this->event->topic)) {
-            return EventType::Created();
-        }
-
-        return null;
-    }
-
-    protected function processFor()
-    {
-        return Order::class;
-    }
-
-    protected function processWhenCreated(Collection $rawData)
+    public function onCreate(WebhookReceived $event)
     {
         //easystore prefixed with order
-        $rawData = collect($rawData['order']);
+        $rawData = collect($event->rawData['order']);
 
         /** @var Order $orderRecord */
-        $orderRecord = $this->getShop()->orders()->create([
+        $orderRecord = $this->getShop($event)->orders()->create([
             'total_price' => $rawData->get('total_price'),
             'subtotal_price' => $rawData->get('subtotal_price'),
             'meta' => ['marketplace_order_id' => $rawData->get('id')],
-            'marketplace_id' => $this->getMarketplace()->id
+            'marketplace_id' => $this->getMarketplace($event->identifier)->id
         ]);
 
         foreach ($rawData->get('line_items') as $lineItem) {
@@ -91,7 +52,7 @@ class OrderProcessor extends BaseProcessor
         }
 
         if ($customerData = $rawData->get('customer')) {
-            $customer = Customer::whereMarketplaceId($this->getMarketplace()->id)
+            $customer = Customer::whereMarketplaceId($this->getMarketplace($event->identifier)->id)
                 ->where('meta->marketplace_customer_id', $customerData['id'])
                 ->first();
 
@@ -101,18 +62,21 @@ class OrderProcessor extends BaseProcessor
             }
         }
 
-        $this->log('created order record', $orderRecord->toArray());
-
         return $orderRecord;
     }
 
-    protected function processWhenUpdated(Collection $rawData)
+    public function onUpdate(WebhookReceived $event)
     {
-        // TODO: Implement processWhenUpdated() method.
+        // TODO: Implement onUpdate() method.
     }
 
-    protected function processWhenDeleted(Collection $rawData)
+    public function onDelete(WebhookReceived $event)
     {
-        // TODO: Implement processWhenDeleted() method.
+        // TODO: Implement onDelete() method.
+    }
+
+    public function processFor(): string
+    {
+        return Order::class;
     }
 }

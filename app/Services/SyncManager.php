@@ -10,7 +10,7 @@ namespace App\Services;
 
 
 use App\Contracts\Sync as SyncContract;
-use App\Enums\EventType;
+use App\Enums\WebhookEventMapper;
 use App\Enums\SyncDirection;
 use App\Events\MarketplaceSynced;
 use App\Events\MarketplaceSyncing;
@@ -33,7 +33,7 @@ class SyncManager
         $this->logger = \Log::channel('sync_' . strtolower(class_basename($model)));
     }
 
-    public function syncWith(EventType $method)
+    public function syncWith(WebhookEventMapper $method)
     {
         $this->logger->info('job start on ' . now());
         $this->logger->info('connected marketplace: ' . $this->shop->marketplaces->implode('name', ','));

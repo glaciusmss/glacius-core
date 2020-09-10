@@ -11,7 +11,7 @@ class MarketplaceIntegrationController extends Controller
     public function index()
     {
         return MarketplaceIntegrationResource::collection(
-            $this->getShop('marketplaces')->marketplaces
+            $this->getShop()->marketplaces
         );
     }
 

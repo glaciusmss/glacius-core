@@ -15,8 +15,6 @@ class ShopResource extends JsonResource
      */
     public function toArray($request)
     {
-        $shopData = parent::toArray($request);
-
-        return Arr::except($shopData, 'user_id');
+        return parent::toArray($request);
     }
 }

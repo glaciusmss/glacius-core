@@ -9,7 +9,7 @@
 namespace App\Listeners\Sync\Product;
 
 
-use App\Enums\EventType;
+use App\Enums\WebhookEventMapper;
 use App\Enums\QueueGroup;
 use App\Events\Product\ProductCreated;
 use App\Events\Product\ProductDeleted;
@@ -34,15 +34,15 @@ class SyncProduct implements ShouldQueue
     protected function type($event)
     {
         if ($event instanceof ProductCreated) {
-            return EventType::Created();
+            return WebhookEventMapper::Created();
         }
 
         if ($event instanceof ProductUpdated) {
-            return EventType::Updated();
+            return WebhookEventMapper::Updated();
         }
 
         if ($event instanceof ProductDeleted) {
-            return EventType::Deleted();
+            return WebhookEventMapper::Deleted();
         }
 
         return null;

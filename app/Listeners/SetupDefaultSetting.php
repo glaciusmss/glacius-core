@@ -27,6 +27,6 @@ class SetupDefaultSetting
                 'setting_value' => true,
                 'type' => 'boolean'
             ]
-        ], $oAuthConnected->marketplace->value);
+        ], $oAuthConnected->identifier);
     }
 }

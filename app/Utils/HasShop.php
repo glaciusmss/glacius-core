@@ -9,6 +9,7 @@
 namespace App\Utils;
 
 
+use App\Shop;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -20,7 +21,7 @@ trait HasShop
      * @param null $withRelations
      * @return \App\Shop
      */
-    public function getShop($withRelations = null)
+    public function getShop(): Shop
     {
         if ($this->shop) {
             return $this->shop;
@@ -29,18 +30,17 @@ trait HasShop
         $this->validateIfShopIdPresent();
         $shopId = request()->input('shop_id');
 
-        /** @var HasMany $query */
-        $query = auth()->user()->shops();
-
-        if ($withRelations) {
-            $query->with($withRelations);
-        }
-
         return $this->shop = throw_unless(
-            $query->find($shopId),
-            NotFoundHttpException::class,
-            'shop not found'
+            auth()->user()->shops()->find($shopId),
+            new NotFoundHttpException('shop not found')
         );
+    }
+
+    public function setShop(Shop $shop)
+    {
+        $this->shop = $shop;
+
+        return $this;
     }
 
     protected function validateIfShopIdPresent()

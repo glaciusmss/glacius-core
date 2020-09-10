@@ -12,11 +12,11 @@ class OAuthDisconnected
     use Dispatchable, SerializesModels;
 
     public $shop;
-    public $marketplace;
+    public $identifier;
 
-    public function __construct(Shop $shop, MarketplaceEnum $marketplace)
+    public function __construct(Shop $shop, string $identifier)
     {
         $this->shop = $shop;
-        $this->marketplace = $marketplace;
+        $this->identifier = $identifier;
     }
 }

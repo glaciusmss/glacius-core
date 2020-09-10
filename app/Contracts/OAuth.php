@@ -9,18 +9,21 @@ namespace App\Contracts;
 use App\Enums\DeviceType;
 use Illuminate\Http\Request;
 
-interface OAuth
+interface OAuth extends Configurable, HasShop
 {
     /**
+     * @param Request $request
      * @return string $url
      */
-    public function createAuth();
+    public function onInstall(Request $request);
 
     /**
      * @param Request $request
      * @return DeviceType $deviceType
      */
-    public function oAuthCallback(Request $request);
+    public function onInstallCallback(Request $request);
 
-    public function deleteAuth();
+    public function onDeleteAuth(Request $request);
+
+    public function onDeleteAuthCallback(Request $request);
 }

@@ -9,7 +9,15 @@
 namespace App\Contracts;
 
 
+use App\Events\Webhook\WebhookReceived;
+
 interface Processor
 {
-    public function process($event);
+    public function onCreate(WebhookReceived $event);
+
+    public function onUpdate(WebhookReceived $event);
+
+    public function onDelete(WebhookReceived $event);
+
+    public function processFor(): string;
 }

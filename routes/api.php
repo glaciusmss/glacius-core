@@ -37,26 +37,11 @@ Route::prefix('/user')->group(function () {
     });
 });
 
-Route::prefix('/shopify')->group(function () {
-    Route::get('/oauth', 'ShopifyController@store');
-    Route::post('/webhooks', 'ShopifyController@webhooks');
-});
-
-Route::prefix('/shopee')->group(function () {
-    Route::get('/oauth', 'ShopeeController@store');
-    Route::get('/oauth/delete', 'ShopeeController@delete');
-    Route::post('/webhooks', 'ShopeeController@webhooks');
-});
-
-Route::prefix('/woocommerce')->group(function () {
-    Route::post('/callback', 'WoocommerceController@store');
-    Route::get('/redirect', 'WoocommerceController@redirect');
-    Route::post('/webhooks', 'WoocommerceController@webhooks');
-});
-
-Route::prefix('/easystore')->group(function () {
-    Route::get('/oauth', 'EasystoreController@store');
-    Route::post('/webhooks', 'EasystoreController@webhooks');
+Route::prefix('/{identifier}')->middleware('supported.marketplace')->group(function () {
+    Route::post('/callback', 'ConnectorController@woocommerceCallback');
+    Route::get('/oauth', 'ConnectorController@oAuthCallback');
+    Route::get('/redirect', 'ConnectorController@woocommerceRedirect');
+    Route::post('/webhooks', 'ConnectorController@webhooks')->middleware('validate.webhook');
 });
 
 //require auth
@@ -82,24 +67,9 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
         Route::get('/new-customer', 'StatisticController@newCustomer');
     });
 
-    Route::prefix('/shopify')->group(function () {
-        Route::post('/oauth', 'ShopifyController@create');
-        Route::delete('/oauth', 'ShopifyController@destroy');
-    });
-
-    Route::prefix('/shopee')->group(function () {
-        Route::post('/oauth', 'ShopeeController@create');
-        Route::delete('/oauth', 'ShopeeController@destroy');
-    });
-
-    Route::prefix('/woocommerce')->group(function () {
-        Route::post('/oauth', 'WoocommerceController@create');
-        Route::delete('/oauth', 'WoocommerceController@destroy');
-    });
-
-    Route::prefix('/easystore')->group(function () {
-        Route::post('/oauth', 'EasystoreController@create');
-        Route::delete('/oauth', 'EasystoreController@destroy');
+    Route::prefix('/{identifier}')->middleware('supported.marketplace')->group(function () {
+        Route::post('/oauth', 'ConnectorController@create');
+        Route::delete('/oauth', 'ConnectorController@destroy');
     });
 
     Route::prefix('/notification')->group(function () {
