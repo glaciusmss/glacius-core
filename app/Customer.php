@@ -10,15 +10,50 @@ use App\Utils\HasContact;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @mixin IdeHelperCustomer
+ * App\Customer
+ *
+ * @property int $id
+ * @property array $meta
+ * @property int $shop_id
+ * @property int $marketplace_id
+ * @property \App\Utils\CarbonFix|null $created_at
+ * @property \App\Utils\CarbonFix|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Address[] $addresses
+ * @property-read int|null $addresses_count
+ * @property-read \App\Contact|null $contact
+ * @property-read \App\Marketplace $marketplace
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Order[] $orders
+ * @property-read int|null $orders_count
+ * @property-read \App\Shop $shop
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer createdByPeriodLastMonth()
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer createdByPeriodLastQuarter()
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer createdByPeriodLastWeek()
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer createdByPeriodLastYear()
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer createdByPeriodToday()
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer createdByPeriodYesterday()
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer createdByPreviousPeriodLastMonth()
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer createdByPreviousPeriodLastQuarter()
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer createdByPreviousPeriodLastWeek()
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer createdByPreviousPeriodLastYear()
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer createdByPreviousPeriodToday()
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer createdByPreviousPeriodYesterday()
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer whereMarketplaceId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer whereMeta($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer whereShopId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer withPagination(\App\DTO\Pagination $pagination)
+ * @mixin \Eloquent
  */
 class Customer extends Model
 {
     use HasAddresses, HasContact, OrderScope, PeriodScope, PaginationScope;
 
-    protected $fillable = [
-        'meta', 'marketplace_id'
-    ];
+    protected $guarded = [];
 
     protected $casts = [
         'meta' => 'array'

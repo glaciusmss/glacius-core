@@ -7,7 +7,6 @@ namespace App\Services\Connectors;
 use App\Contracts\Connector;
 use App\Contracts\ResolvesConnector;
 use App\Exceptions\ConnectorNotFoundException;
-use App\Shop;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Enumerable;
 

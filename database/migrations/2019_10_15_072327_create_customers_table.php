@@ -15,7 +15,7 @@ class CreateCustomersTable extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->json('meta')->nullable();
+            $table->json('meta')->default('{}');
             $table->unsignedBigInteger('shop_id');
             $table->unsignedBigInteger('marketplace_id');
             $table->timestamps();

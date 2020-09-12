@@ -5,7 +5,6 @@ namespace App\Listeners\Webhook;
 
 
 use App\Contracts\Processor;
-use App\Contracts\Webhook;
 use App\Enums\QueueGroup;
 use App\Enums\WebhookEventMapper;
 use App\Events\Webhook\WebhookReceived;
@@ -41,8 +40,7 @@ class ProcessWebhook implements ShouldQueue
         }
 
         // dispatch processor
-        $processorServices = $this->connectorManager->makeService($connector->getProcessorServices());
-        $processorServices = Collection::wrap($processorServices);
+        $processorServices = Collection::wrap($connector->getProcessorServices());
 
         // identify which processor to be used
         $resolvedProcessor = $processorServices->map(function ($processService) {

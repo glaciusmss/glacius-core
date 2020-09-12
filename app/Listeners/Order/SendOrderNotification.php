@@ -4,7 +4,7 @@ namespace App\Listeners\Order;
 
 use App\Enums\QueueGroup;
 use App\Events\Order\OrderCreated;
-use App\Notifications\Order\OrderCreated as OrderCreatedNotifcation;
+use App\Notifications\Order\OrderCreated as OrderCreatedNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class SendOrderNotification implements ShouldQueue
@@ -14,7 +14,7 @@ class SendOrderNotification implements ShouldQueue
     public function handle(OrderCreated $event)
     {
         $event->order->shop->notify(
-            new OrderCreatedNotifcation($event->order)
+            new OrderCreatedNotification($event->order)
         );
     }
 }

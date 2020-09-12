@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
+use App\Contracts\BotAuth as BotAuthContract;
 use App\Http\Controllers\TelegramController;
 use App\Services\NotificationChannels\Telegram\BotAuth;
-use App\Contracts\BotAuth as BotAuthContract;
 use Illuminate\Container\Container;
 use Illuminate\Support\ServiceProvider;
 

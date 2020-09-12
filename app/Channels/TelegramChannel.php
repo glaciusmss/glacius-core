@@ -2,6 +2,7 @@
 
 namespace App\Channels;
 
+use App\Jobs\Bot\SayJob;
 use BotMan\Drivers\Telegram\TelegramDriver;
 use Illuminate\Notifications\Notification;
 
@@ -15,6 +16,6 @@ class TelegramChannel
 
         $message = $notification->toTelegram($notifiable);
 
-        app('botman')->say($message, $toBotId, TelegramDriver::class);
+        SayJob::dispatch($message, $toBotId, TelegramDriver::class);
     }
 }

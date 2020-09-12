@@ -18,8 +18,6 @@ use Illuminate\Support\Collection;
 
 class ConnectorManager
 {
-    protected $resolvedConnector;
-
     public function processOAuth(string $identifier, string $methodToBeCalled, ...$parameters)
     {
         $authService = $this->makeService(
@@ -41,11 +39,7 @@ class ConnectorManager
 
     public function resolveConnector(string $identifier): Connector
     {
-        if ($this->resolvedConnector) {
-            return $this->resolvedConnector;
-        }
-
-        return $this->resolvedConnector = app(ResolvesConnector::class)->findConnector($identifier);
+        return app(ResolvesConnector::class)->findConnector($identifier);
     }
 
     public function dispatchWebhookToProcessor(string $identifier, Request $request)
@@ -54,7 +48,7 @@ class ConnectorManager
         /** @var Webhook $webhookService */
         $webhookService = $this->makeService($connector->getWebhookService());
 
-        $topic = $webhookService->getTopic($request);
+        $topic = $webhookService->getTopicFromRequest($request);
         $rawData = $webhookService->mergeExtraDataBeforeProcess(Collection::wrap($request->all()), $request);
 
         WebhookReceived::dispatch($topic, $rawData, $identifier);

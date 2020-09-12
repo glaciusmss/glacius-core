@@ -1,61 +1,49 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Neoson Lam
- * Date: 9/21/2019
- * Time: 5:41 PM.
- */
+
 
 namespace App\Services\Shopify\Syncs;
 
 
-use App\Contracts\SdkFactory;
+use App\Contracts\Sync;
 use App\DTO\SyncState;
-use App\Enums\MarketplaceEnum;
 use App\Enums\State;
+use App\Events\SyncEvent;
+use App\MarketplaceIntegration;
 use App\Product;
-use App\Services\BaseSync;
-use Illuminate\Database\Eloquent\Model;
+use App\Services\Shopify\Helpers\HasSdk;
+use App\Utils\FilterInternalField;
+use App\Utils\Helper;
 use Illuminate\Support\Arr;
 use PHPShopify\Exception\ApiException;
-use PHPShopify\ShopifySDK;
 
-class SyncProduct extends BaseSync
+class SyncProduct implements Sync
 {
-    protected $sdkFactory;
+    use HasSdk, FilterInternalField;
 
-    public function __construct(SdkFactory $sdkFactory)
+    public function onCreate(SyncEvent $event, MarketplaceIntegration $marketplaceIntegration): SyncState
     {
-        $this->sdkFactory = $sdkFactory;
-    }
+        /** @var Product $product */
+        $product = $event->model;
 
-    public function whenCreated(Model $model)
-    {
-        /** @var Product $model */
-        $sdk = $this->setupAndGetSdk();
+        $createData = $this->prepareCreateData($product);
 
-        $createData = $this->prepareCreateData($model);
-
-        $this->log('create data', $createData);
+        $sdk = $this->getSdk([
+            'AccessToken' => $marketplaceIntegration->token,
+            'ShopUrl' => $marketplaceIntegration->meta['shopify_shop']
+        ]);
 
         try {
-            $response = $sdk->Product->post(
-                $createData
-            );
-
-            $this->log('create response', $response);
+            $response = $sdk->Product->post($createData);
 
             //update model with shopify meta
-            $model->update([
-                'meta' => array_merge(Arr::wrap($model->meta), ['shopify_product_id' => $response['id']])
+            $product->update([
+                'meta->shopify_product_id' => $response['id']
             ]);
 
-            //reload productVariants
-            $model->unsetRelation('productVariants');
-            $model->productVariants
-                ->find($model->productVariants->first()['id'])
+            $product->productVariants
+                ->find($product->productVariants->first()['id'])
                 ->update([
-                    'meta' => array_merge(Arr::wrap($model->productVariants->first()['meta']), ['shopify_variant_id' => Arr::get($response, 'variants.0.id')])
+                    'meta->shopify_variant_id' => Arr::get($response, 'variants.0.id')
                 ]);
 
             return new SyncState(State::Success());
@@ -64,21 +52,20 @@ class SyncProduct extends BaseSync
         }
     }
 
-    public function whenUpdated(Model $model)
+    public function onUpdate(SyncEvent $event, MarketplaceIntegration $marketplaceIntegration): SyncState
     {
-        $sdk = $this->setupAndGetSdk();
-        $shopifyProductid = $model->meta['shopify_product_id'];
+        /** @var Product $product */
+        $product = $event->model;
 
-        $updateData = $this->prepareUpdateData($model);
+        $updateData = $this->prepareUpdateData($product);
 
-        $this->log('update data', $updateData);
+        $sdk = $this->getSdk([
+            'AccessToken' => $marketplaceIntegration->token,
+            'ShopUrl' => $marketplaceIntegration->meta['shopify_shop']
+        ]);
 
         try {
-            $response = $sdk->Product($shopifyProductid)->put(
-                $updateData
-            );
-
-            $this->log('update response', $response);
+            $response = $sdk->Product($product->meta['shopify_product_id'])->put($updateData);
 
             return new SyncState(State::Success());
         } catch (ApiException $ex) {
@@ -86,14 +73,18 @@ class SyncProduct extends BaseSync
         }
     }
 
-    public function whenDeleted(Model $model)
+    public function onDelete(SyncEvent $event, MarketplaceIntegration $marketplaceIntegration): SyncState
     {
-        $sdk = $this->setupAndGetSdk();
+        /** @var Product $product */
+        $product = $event->model;
+
+        $sdk = $this->getSdk([
+            'AccessToken' => $marketplaceIntegration->token,
+            'ShopUrl' => $marketplaceIntegration->meta['shopify_shop']
+        ]);
 
         try {
-            $sdk->Product(
-                $model->meta['shopify_product_id']
-            )->delete();
+            $sdk->Product($product->meta['shopify_product_id'])->delete();
 
             return new SyncState(State::Success());
         } catch (ApiException $ex) {
@@ -101,34 +92,29 @@ class SyncProduct extends BaseSync
         }
     }
 
-    public function withExisting()
-    {
-        //TODO: Implement withExisting() method.
-    }
-
-    public function name()
-    {
-        return MarketplaceEnum::Shopify();
-    }
-
-    protected function syncFor()
+    public function processFor(): string
     {
         return Product::class;
     }
 
-    protected function prepareCreateData(Model $model)
+    public function withExisting()
     {
-        /** @var Product $model */
-        $newVariants = $model->productVariants->first();
+        // TODO: Implement withExisting() method.
+    }
+
+    protected function prepareCreateData(Product $product)
+    {
+        /** @var Product $product */
+        $newVariants = $product->productVariants->first();
 
         $images = [];
-        $model->getMedia()->each(function ($item) use (&$images) {
+        $product->getMedia()->each(function ($item) use (&$images) {
             $images[] = ['src' => $item->getFullUrl()];
         });
 
         return [
-            'title' => $model->name,
-            'body_html' => $model->description,
+            'title' => $product->name,
+            'body_html' => $product->description,
             'images' => $images,
             'variants' => [
                 [
@@ -140,66 +126,33 @@ class SyncProduct extends BaseSync
         ];
     }
 
-    protected function prepareUpdateData(Model $model)
+    protected function prepareUpdateData(Product $product)
     {
-        $updateData = [];
+        $updateData = [
+            'variants' => [],
+            'images' => [],
+        ];
 
-        /** @var Product $model */
-        foreach ($model->productVariants as $productVariant) {
-            $productVariantChanges = Arr::except($productVariant->getChanges(), ['created_at', 'updated_at', 'deleted_at']);
-            foreach ($productVariantChanges as $key => $value) {
-                $updateProductVariantData = [];
-                switch ($key) {
-                    case 'stock':
-                        $updateProductVariantData['inventory_quantity'] = $value;
-                        break;
-                    default:
-                        $updateProductVariantData[$key] = $value;
-                        break;
-                }
+        foreach ($product->productVariants as $productVariant) {
+            $filteredProductVariant = Helper::transformArrayKey(
+                $this->filterInternalProductVariantField($productVariant),
+                ['stock' => 'inventory_quantity']
+            );
 
-                if (!isset($updateData['variants']) || !is_array($updateData['variants'])) {
-                    $updateData['variants'] = [];
-                }
-
-                $updateData['variants'][] = Arr::add($updateProductVariantData, 'id', $productVariant->meta['shopify_variant_id']);
-            }
+            $updateData['variants'][] = Arr::add($filteredProductVariant, 'id', $productVariant->meta['shopify_variant_id']);
         }
 
-        $updateData['images'] = [];
-        $model->getMedia()->each(function ($item) use (&$updateData) {
+        $product->getMedia()->each(function ($item) use (&$updateData) {
             $updateData['images'][] = ['src' => $item->getFullUrl()];
         });
 
-        $productChanges = Arr::except($model->getChanges(), ['created_at', 'updated_at', 'deleted_at']);
+        $filteredProduct = Helper::transformArrayKey(
+            $this->filterInternalProductField($product),
+            ['name' => 'title', 'description' => 'body_html']
+        );
 
-        foreach ($productChanges as $key => $value) {
-            switch ($key) {
-                case 'name':
-                    $updateData['title'] = $value;
-                    break;
-                case 'description':
-                    $updateData['body_html'] = $value;
-                    break;
-                default:
-                    $updateData[$key] = $value;
-                    break;
-            }
-        }
+        $updateData = array_merge($updateData, $filteredProduct);
 
-        return Arr::add($updateData, 'id', $model->meta['shopify_product_id']);
-    }
-
-    /**
-     * @return ShopifySDK
-     */
-    protected function setupAndGetSdk()
-    {
-        $this->sdkFactory->setupSdk(null, [
-            'AccessToken' => $this->marketplaceIntegration->token,
-            'shopifyShop' => $this->marketplaceIntegration->meta['shopify_shop']
-        ]);
-
-        return $this->sdkFactory->getSdk();
+        return Arr::add($updateData, 'id', $product->meta['shopify_product_id']);
     }
 }

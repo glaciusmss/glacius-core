@@ -5,8 +5,8 @@ namespace App\Services\Easystore\Helpers;
 
 
 use App\Exceptions\NotSupportedException;
-use Illuminate\Support\Arr;
 use EasyStore\Client as EasyStoreClient;
+use Illuminate\Support\Arr;
 
 trait HasSdk
 {

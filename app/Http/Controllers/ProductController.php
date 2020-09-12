@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DTO\Pagination;
 use App\Events\Product\ProductCreated;
+use App\Events\Product\ProductDeleted;
 use App\Events\Product\ProductUpdated;
 use App\Http\Requests\Order\RetrieveRequest;
 use App\Http\Requests\Product\StoreRequest;
@@ -42,14 +43,13 @@ class ProductController extends Controller
         $createdProduct->productVariants()->create(
             Arr::only($productVariantData, ['price', 'stock'])
         );
-        $createdProduct->load('productVariants');
 
         $createdProduct->attachNewMedia(
             $request->input('images')
         );
 
         //fire product created event
-        event(new ProductCreated($createdProduct));
+        event(new ProductCreated($createdProduct, $this->getShop()));
 
         return new ProductResource($createdProduct);
     }
@@ -74,7 +74,7 @@ class ProductController extends Controller
         );
 
         //fire product updated event
-        event(new ProductUpdated($product));
+        event(new ProductUpdated($product, $this->getShop()));
 
         return response()->noContent();
     }
@@ -82,6 +82,9 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
+
+        //fire product deleted event
+        event(new ProductDeleted($product, $this->getShop()));
 
         return response()->noContent();
     }

@@ -2,6 +2,13 @@
 
 namespace App\Events\Product;
 
-class ProductCreated extends BaseProductEvent
+use App\Enums\SyncEventMapper;
+use App\Events\SyncEvent;
+
+class ProductCreated extends SyncEvent
 {
+    public function getMethod()
+    {
+        return SyncEventMapper::Create;
+    }
 }

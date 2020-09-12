@@ -17,7 +17,7 @@ class CreateOrdersTable extends Migration
             $table->bigIncrements('id');
             $table->decimal('total_price', 16, 2);
             $table->decimal('subtotal_price', 16, 2);
-            $table->json('meta')->nullable();
+            $table->json('meta')->default('{}');
             $table->unsignedBigInteger('shop_id');
             $table->unsignedBigInteger('marketplace_id');
             $table->timestamps();

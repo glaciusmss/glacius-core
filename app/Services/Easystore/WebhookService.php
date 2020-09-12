@@ -5,15 +5,12 @@ namespace App\Services\Easystore;
 
 
 use App\Contracts\Webhook;
-use App\Customer;
-use App\Enums\Easystore\WebhookTopic;
-use App\Enums\WebhookEventMapper;
 use App\MarketplaceIntegration;
-use App\Order;
+use App\Services\Easystore\Enums\WebhookTopic;
 use App\Services\Easystore\Helpers\HasSdk;
+use EasyStore\Client as EasyStoreClient;
 use EasyStore\Exception\ApiException;
 use Illuminate\Http\Request;
-use EasyStore\Client as EasyStoreClient;
 use Illuminate\Support\Enumerable;
 
 class WebhookService implements Webhook

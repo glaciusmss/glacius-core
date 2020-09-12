@@ -11,6 +11,7 @@ namespace App\Botman\Controllers\Commands;
 
 use App\Botman\Controllers\Conversations\ConnectConversation;
 use App\Contracts\BotAuth;
+use App\Jobs\Bot\ReplyJob;
 use BotMan\BotMan\BotMan;
 use Illuminate\Support\Arr;
 
@@ -26,14 +27,14 @@ class StartCommand extends BaseCommand
     public function handle()
     {
         if ($connectedUser = $this->botAuth->isBotConnectedToUser($this->bot->getUser()->getId())) {
-            $this->bot->reply('This account has connected to ' . $connectedUser->email);
-            $this->bot->reply('Please disconnect first before connect to another account');
+            ReplyJob::dispatch($this->bot, 'This account has connected to ' . $connectedUser->email);
+            ReplyJob::dispatch($this->bot, 'Please disconnect first before connect to another account');
             return;
         }
 
         if ($connectToken = $this->parameters->first()) {
             $connectedUser = $this->botAuth->connect($connectToken);
-            $this->bot->reply('Successfully connected to Glacius with ' . $connectedUser->email);
+            ReplyJob::dispatch($this->bot, 'Successfully connected to Glacius with ' . $connectedUser->email);
             return;
         }
 

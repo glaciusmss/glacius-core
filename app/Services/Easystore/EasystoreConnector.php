@@ -6,11 +6,12 @@ namespace App\Services\Easystore;
 
 use App\Contracts\Connector;
 use App\Customer;
-use App\Enums\Easystore\WebhookTopic;
 use App\Enums\WebhookEventMapper;
 use App\Order;
+use App\Services\Easystore\Enums\WebhookTopic;
 use App\Services\Easystore\Processors\CustomerProcessor;
 use App\Services\Easystore\Processors\OrderProcessor;
+use App\Services\Easystore\Syncs\SyncProduct;
 
 class EasystoreConnector implements Connector
 {
@@ -31,7 +32,9 @@ class EasystoreConnector implements Connector
 
     public function getSyncService(): array
     {
-        // TODO: Implement getSyncService() method.
+        return [
+            SyncProduct::class
+        ];
     }
 
     public function getProcessorServices(): array

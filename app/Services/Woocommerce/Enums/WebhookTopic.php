@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums\Woocommerce;
+namespace App\Services\Woocommerce\Enums;
 
 use BenSampo\Enum\Enum;
 

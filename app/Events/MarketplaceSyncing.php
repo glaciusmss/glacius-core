@@ -2,8 +2,8 @@
 
 namespace App\Events;
 
-use App\Enums\WebhookEventMapper;
 use App\Enums\SyncDirection;
+use App\Enums\WebhookEventMapper;
 use App\Marketplace;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Events\Dispatchable;

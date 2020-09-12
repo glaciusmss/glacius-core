@@ -9,6 +9,7 @@
 namespace App\Exceptions;
 
 
+use App\Jobs\Bot\ReplyJob;
 use BotMan\BotMan\BotMan;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Arr;
@@ -50,10 +51,10 @@ class BotHandler
     {
         if ($exception instanceof BotException) {
             $exception->messages->each(function ($message) use ($bot) {
-                $bot->reply($message);
+                ReplyJob::dispatch($bot, $message);
             });
         } else {
-            $bot->reply($exception->getMessage());
+            ReplyJob::dispatch($bot, $exception->getMessage());
         }
 
         if (method_exists($bot->getDriver(), 'messagesHandled')) {

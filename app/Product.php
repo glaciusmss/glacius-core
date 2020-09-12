@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Events\Product\ProductDeleted;
 use App\Scopes\OrderScope;
 use App\Scopes\PaginationScope;
 use App\Utils\HasSyncTrasactions;
@@ -13,22 +12,45 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
- * @mixin IdeHelperProduct
+ * App\Product
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $description
+ * @property int $shop_id
+ * @property \App\Utils\CarbonFix|null $created_at
+ * @property \App\Utils\CarbonFix|null $updated_at
+ * @property array $meta
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
+ * @property-read int|null $media_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Order[] $orders
+ * @property-read int|null $orders_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\ProductVariants[] $productVariants
+ * @property-read int|null $product_variants_count
+ * @property-read \App\Shop $shop
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\SyncTransaction[] $syncTransactions
+ * @property-read int|null $sync_transactions_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Product query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereMeta($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereShopId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Product withPagination(\App\DTO\Pagination $pagination)
+ * @mixin \Eloquent
  */
 class Product extends Model implements HasMedia
 {
     use InteractsWithMedia, HasSyncTrasactions, OrderScope, PaginationScope;
 
-    protected $fillable = [
-        'name', 'description', 'meta'
-    ];
+    protected $guarded = [];
 
     protected $casts = [
         'meta' => 'array'
-    ];
-
-    protected $dispatchesEvents = [
-        'deleted' => ProductDeleted::class,
     ];
 
     public function attachNewMedia($newMedias)
@@ -38,7 +60,7 @@ class Product extends Model implements HasMedia
         foreach (Arr::wrap($newMedias) as $newMedia) {
             if (!$currentMedia->pluck('file_name')->contains($newMedia)) {
                 //search in temp media
-                $tempMedia = TempMedia::whereFileName($newMedia)->first();
+                $tempMedia = TempMedia::whereFileName($newMedia)->firstOrFail();
                 $this->attachTempMedia($tempMedia);
                 $tempMedia->delete();
             }

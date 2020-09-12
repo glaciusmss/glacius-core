@@ -10,7 +10,6 @@ namespace App\Utils;
 
 
 use App\Shop;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 trait HasShop

@@ -53,7 +53,7 @@ class SocialLoginService
             return false;
         }
 
-        return SocialProvider::getInstance($provider);
+        return SocialProvider::fromValue($provider);
     }
 
     protected function createOrGetUserFromProvider(SocialProvider $provider, ProviderUser $providerUser)

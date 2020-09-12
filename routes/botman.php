@@ -13,8 +13,8 @@ $botman->on('messaging_referrals', function ($payload, $bot) {
 });
 
 $botman->fallback(function (Botman $bot) {
-    $bot->types();
-    $bot->reply('sorry, command still in development stages');
+    \App\Jobs\Bot\TypingJob::dispatch($bot);
+    \App\Jobs\Bot\ReplyJob::dispatch($bot, 'sorry, command still in development stages');
 });
 
 $botman->exception(\Exception::class, function (\Exception $exception, Botman $bot) {

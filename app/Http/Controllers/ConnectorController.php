@@ -2,16 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Contracts\OAuth;
-use App\Contracts\ResolvesConnector;
-use App\Contracts\Webhook;
 use App\Enums\DeviceType;
-use App\Enums\MarketplaceEnum;
-use App\Http\Middleware\Webhook\Woocommerce as ValidateWebhookMiddleware;
 use App\Http\Requests\ConnectorRequest;
 use App\Http\Requests\Woocommerce\CreateRequest;
 use App\Services\Connectors\ConnectorManager;
-use Illuminate\Auth\AuthManager;
 use Illuminate\Http\Request;
 
 class ConnectorController extends Controller

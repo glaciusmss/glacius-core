@@ -10,20 +10,43 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Yadahan\AuthenticationLog\AuthenticationLogable;
 
 /**
- * @mixin IdeHelperUser
+ * App\User
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property \App\Utils\CarbonFix|null $email_verified_at
+ * @property string $password
+ * @property \App\Utils\CarbonFix|null $created_at
+ * @property \App\Utils\CarbonFix|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Yadahan\AuthenticationLog\AuthenticationLog[] $authentications
+ * @property-read int|null $authentications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\NotificationChannel[] $notificationChannels
+ * @property-read int|null $notification_channels_count
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Shop[] $shops
+ * @property-read int|null $shops_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\SocialLogin[] $socialLogins
+ * @property-read int|null $social_logins_count
+ * @property-read \App\UserProfile|null $userProfile
+ * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|User query()
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerifiedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 {
     use Notifiable, AuthenticationLogable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for arrays.

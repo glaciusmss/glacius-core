@@ -5,11 +5,8 @@ namespace App\Services\Woocommerce;
 
 
 use App\Contracts\Webhook;
-use App\Customer;
-use App\Enums\WebhookEventMapper;
-use App\Enums\Woocommerce\WebhookTopic;
 use App\MarketplaceIntegration;
-use App\Order;
+use App\Services\Woocommerce\Enums\WebhookTopic;
 use App\Services\Woocommerce\Helpers\HasSdk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Enumerable;

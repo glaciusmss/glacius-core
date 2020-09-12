@@ -28,8 +28,7 @@ class BotAuth extends BaseNotificationChannel implements BotAuthContract
 
         throw_unless(
             $token,
-            BotException::class,
-            'Invalid token, please regenerate'
+            new BotException('Invalid token, please regenerate')
         );
 
         $user = User::find($token->meta['user_id']);

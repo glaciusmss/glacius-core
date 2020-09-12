@@ -31,8 +31,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('shop', function ($value) {
             return throw_unless(
                 \Auth::user()->shops()->find($value),
-                NotFoundHttpException::class,
-                'shop not found'
+                new NotFoundHttpException('shop not found')
             );
         });
 
@@ -40,8 +39,7 @@ class RouteServiceProvider extends ServiceProvider
             $shop = $this->app->make(Controller::class)->getShop();
             return throw_unless(
                 $shop->products()->find($value),
-                NotFoundHttpException::class,
-                'product not found'
+                new NotFoundHttpException('product not found')
             );
         });
 
@@ -49,24 +47,21 @@ class RouteServiceProvider extends ServiceProvider
             $shop = $this->app->make(Controller::class)->getShop();
             return throw_unless(
                 $shop->orders()->find($value),
-                NotFoundHttpException::class,
-                'order not found'
+                new NotFoundHttpException('order not found')
             );
         });
 
         Route::bind('image', function ($value) {
             return throw_unless(
                 Media::whereFileName($value)->first(),
-                NotFoundHttpException::class,
-                'image not found'
+                new NotFoundHttpException('image not found')
             );
         });
 
         Route::bind('userProfile', function ($value) {
             return throw_unless(
                 \Auth::user()->userProfile()->find($value),
-                NotFoundHttpException::class,
-                'user not found'
+                new NotFoundHttpException('user not found')
             );
         });
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums\Easystore;
+namespace App\Services\Easystore\Enums;
 
 use BenSampo\Enum\Enum;
 

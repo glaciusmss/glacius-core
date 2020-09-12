@@ -5,11 +5,8 @@ namespace App\Services\Shopify;
 
 
 use App\Contracts\Webhook;
-use App\Customer;
-use App\Enums\Shopify\WebhookTopic;
-use App\Enums\WebhookEventMapper;
 use App\MarketplaceIntegration;
-use App\Order;
+use App\Services\Shopify\Enums\WebhookTopic;
 use App\Services\Shopify\Helpers\HasSdk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Enumerable;

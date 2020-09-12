@@ -51,6 +51,7 @@ class OrderCreated extends Notification implements ShouldQueue
 
     public function toBroadcast($notifiable)
     {
+        /** @var Shop $notifiable */
         $message = new BroadcastMessage([
             'order' => new OrderResource($this->order)
         ]);
@@ -60,6 +61,7 @@ class OrderCreated extends Notification implements ShouldQueue
 
     public function toFcm($notifiable)
     {
+        /** @var Shop $notifiable */
         return [
             'options' => (new OptionsBuilder())
                 ->setPriority('high'),

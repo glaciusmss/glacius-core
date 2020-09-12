@@ -17,7 +17,7 @@ class CreateTokensTable extends Migration
             $table->bigIncrements('id');
             $table->text('token');
             $table->integer('type');
-            $table->json('meta');
+            $table->json('meta')->default('{}');
             $table->dateTime('expired_at');
             $table->timestamps();
         });

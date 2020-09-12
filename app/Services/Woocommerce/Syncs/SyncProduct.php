@@ -1,190 +1,153 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Neoson Lam
- * Date: 9/21/2019
- * Time: 5:41 PM.
- */
+
 
 namespace App\Services\Woocommerce\Syncs;
 
 
-use App\Contracts\SdkFactory;
+use App\Contracts\Sync;
 use App\DTO\SyncState;
-use App\Enums\MarketplaceEnum;
 use App\Enums\State;
+use App\Events\SyncEvent;
+use App\MarketplaceIntegration;
 use App\Product;
-use App\Services\BaseSync;
-use Automattic\WooCommerce\Client;
-use Automattic\WooCommerce\HttpClient\HttpClientException;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
+use App\Services\Woocommerce\Helpers\HasSdk;
+use App\Utils\FilterInternalField;
+use App\Utils\Helper;
 
-class SyncProduct extends BaseSync
+class SyncProduct implements Sync
 {
-    protected $sdkFactory;
+    use HasSdk, FilterInternalField;
 
-    public function __construct(SdkFactory $sdkFactory)
+    public function onCreate(SyncEvent $event, MarketplaceIntegration $marketplaceIntegration): SyncState
     {
-        $this->sdkFactory = $sdkFactory;
-    }
+        /** @var Product $product */
+        $product = $event->model;
 
-    public function whenCreated(Model $model)
-    {
-        /** @var Product $model */
-        $sdk = $this->setupAndGetSdk();
+        $createData = $this->prepareCreateData($product);
 
-        $createData = $this->prepareCreateData($model);
-
-        $this->log('create data', $createData);
+        $sdk = $this->getSdk([
+            'woocommerceStoreUrl' => $marketplaceIntegration->meta['woocommerce_store_url'],
+            'consumerKey' => $marketplaceIntegration->meta['key'],
+            'consumerSecret' => $marketplaceIntegration->meta['secret'],
+        ]);
 
         try {
-            $sdk->post(
-                'products',
-                $createData
-            );
+            $sdk->post('products', $createData);
 
             $response = json_decode($sdk->http->getResponse()->getBody(), true);
 
-            $this->log('create response', $response);
-
             //update model with woocommerce meta
-            $model->update([
-                'meta' => array_merge(Arr::wrap($model->meta), ['woocommerce_product_id' => $response['id']])
+            $product->update([
+                'meta->woocommerce_product_id' => $response['id']
             ]);
 
             return new SyncState(State::Success());
-        } catch (HttpClientException $ex) {
+        } catch (\Throwable $ex) {
             return new SyncState(State::Error(), $ex->getMessage());
         }
     }
 
-    public function whenUpdated(Model $model)
+    public function onUpdate(SyncEvent $event, MarketplaceIntegration $marketplaceIntegration): SyncState
     {
-        $sdk = $this->setupAndGetSdk();
-        $woocommerceProductId = $model->meta['woocommerce_product_id'];
+        /** @var Product $product */
+        $product = $event->model;
 
-        $updateData = $this->prepareUpdateData($model);
+        $sdk = $this->getSdk([
+            'woocommerceStoreUrl' => $marketplaceIntegration->meta['woocommerce_store_url'],
+            'consumerKey' => $marketplaceIntegration->meta['key'],
+            'consumerSecret' => $marketplaceIntegration->meta['secret'],
+        ]);
 
-        $this->log('update data', $updateData);
+        $woocommerceProductId = $product->meta['woocommerce_product_id'];
+
+        $updateData = $this->prepareUpdateData($product);
 
         try {
-            $sdk->put(
-                'products/' . $woocommerceProductId,
-                $updateData
-            );
+            $sdk->put('products/' . $woocommerceProductId, $updateData);
 
             $response = json_decode($sdk->http->getResponse()->getBody(), true);
 
-            $this->log('update response', $response);
-
             return new SyncState(State::Success());
-        } catch (HttpClientException $ex) {
+        } catch (\Throwable $ex) {
             return new SyncState(State::Error(), $ex->getMessage());
         }
     }
 
-    public function whenDeleted(Model $model)
+    public function onDelete(SyncEvent $event, MarketplaceIntegration $marketplaceIntegration): SyncState
     {
-        $sdk = $this->setupAndGetSdk();
+        /** @var Product $product */
+        $product = $event->model;
+
+        $sdk = $this->getSdk([
+            'woocommerceStoreUrl' => $marketplaceIntegration->meta['woocommerce_store_url'],
+            'consumerKey' => $marketplaceIntegration->meta['key'],
+            'consumerSecret' => $marketplaceIntegration->meta['secret'],
+        ]);
 
         try {
             $sdk->delete(
-                'products/' . $model->meta['woocommerce_product_id'],
+                'products/' . $product->meta['woocommerce_product_id'],
                 ['force' => true]
             );
 
             return new SyncState(State::Success());
-        } catch (HttpClientException $ex) {
+        } catch (\Throwable $ex) {
             return new SyncState(State::Error(), $ex->getMessage());
         }
     }
 
-    public function withExisting()
-    {
-        //TODO: Implement withExisting() method.
-    }
-
-    public function name()
-    {
-        return MarketplaceEnum::WooCommerce();
-    }
-
-    protected function syncFor()
+    public function processFor(): string
     {
         return Product::class;
     }
 
-    protected function prepareCreateData(Model $model)
+    public function withExisting()
     {
-        /** @var Product $model */
-        $newVariants = $model->productVariants->first();
+        // TODO: Implement withExisting() method.
+    }
+
+    protected function prepareCreateData(Product $product)
+    {
+        $newVariants = $product->productVariants->first();
 
         $images = [];
-        $model->getMedia()->each(function ($item) use (&$images) {
+        $product->getMedia()->each(function ($item) use (&$images) {
             $images[] = ['src' => $item->getFullUrl()];
         });
 
         return [
-            'name' => $model->name,
-            'description' => $model->description,
+            'name' => $product->name,
+            'description' => $product->description,
             'regular_price' => $newVariants['price'],
             'stock_quantity' => $newVariants['stock'],
             'images' => $images,
         ];
     }
 
-    protected function prepareUpdateData(Model $model)
+    protected function prepareUpdateData(Product $product)
     {
-        $updateData = [];
+        $updateData = [
+            'images' => []
+        ];
 
-        /** @var Product $model */
-        foreach ($model->productVariants as $productVariant) {
-            $productVariantChanges = Arr::except($productVariant->getChanges(), ['created_at', 'updated_at', 'deleted_at']);
-            foreach ($productVariantChanges as $key => $value) {
-                switch ($key) {
-                    case 'stock':
-                        $updateData['stock_quantity'] = $value;
-                        break;
-                    case 'price':
-                        $updateData['regular_price'] = $value;
-                        break;
-                    default:
-                        $updateData[$key] = $value;
-                        break;
-                }
-            }
+        foreach ($product->productVariants as $productVariant) {
+            $filteredProductVariant = Helper::transformArrayKey(
+                $this->filterInternalProductVariantField($productVariant),
+                ['stock' => 'stock_quantity', 'price' => 'regular_price']
+            );
+
+            array_merge($updateData, $filteredProductVariant);
         }
 
-        $updateData['images'] = [];
-        $model->getMedia()->each(function ($item) use (&$updateData) {
+        $product->getMedia()->each(function ($item) use (&$updateData) {
             $updateData['images'][] = ['src' => $item->getFullUrl()];
         });
 
-        $productChanges = Arr::except($model->getChanges(), ['created_at', 'updated_at', 'deleted_at']);
+        $filteredProduct = Helper::transformArrayKey(
+            $this->filterInternalProductField($product),
+            []
+        );
 
-        foreach ($productChanges as $key => $value) {
-            switch ($key) {
-                default:
-                    $updateData[$key] = $value;
-                    break;
-            }
-        }
-
-        return $updateData;
-    }
-
-    /**
-     * @return Client
-     */
-    protected function setupAndGetSdk()
-    {
-        $this->sdkFactory->setupSdk(null, [
-            'url' => $this->marketplaceIntegration->meta['woocommerce_store_url'],
-            'consumer_key' => $this->marketplaceIntegration->meta['key'],
-            'consumer_secret' => $this->marketplaceIntegration->meta['secret']
-        ]);
-
-        return $this->sdkFactory->getSdk();
+        return array_merge($updateData, $filteredProduct);
     }
 }

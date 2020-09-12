@@ -17,7 +17,7 @@ use App\Listeners\RemoveShopSetting;
 use App\Listeners\SendEmailVerificationNotification;
 use App\Listeners\SetupDefaultSetting;
 use App\Listeners\Sync\AddTransaction;
-use App\Listeners\Sync\Product\SyncProduct;
+use App\Listeners\Sync\ProcessSync;
 use App\Listeners\Webhook\ProcessWebhook;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -47,9 +47,9 @@ class EventServiceProvider extends ServiceProvider
 
         Event::listen(OrderCreated::class, SendOrderNotification::class);
 
-        Event::listen(ProductCreated::class, SyncProduct::class);
-        Event::listen(ProductUpdated::class, SyncProduct::class);
-        Event::listen(ProductDeleted::class, SyncProduct::class);
+        Event::listen(ProductCreated::class, ProcessSync::class);
+        Event::listen(ProductUpdated::class, ProcessSync::class);
+        Event::listen(ProductDeleted::class, ProcessSync::class);
 
         Event::listen(CustomerCreated::class, SendCustomerNotification::class);
 

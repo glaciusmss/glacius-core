@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums\Shopify;
+namespace App\Services\Shopify\Enums;
 
 use BenSampo\Enum\Enum;
 

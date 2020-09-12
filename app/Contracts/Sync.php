@@ -10,30 +10,18 @@ namespace App\Contracts;
 
 
 use App\DTO\SyncState;
+use App\Events\SyncEvent;
 use App\MarketplaceIntegration;
-use Illuminate\Database\Eloquent\Model;
 
 interface Sync
 {
-    /**
-     * @param Model $model
-     * @return SyncState
-     */
-    public function whenCreated(Model $model);
+    public function onCreate(SyncEvent $event, MarketplaceIntegration $marketplaceIntegration): SyncState;
 
-    /**
-     * @param Model $model
-     * @return SyncState
-     */
-    public function whenUpdated(Model $model);
+    public function onUpdate(SyncEvent $event, MarketplaceIntegration $marketplaceIntegration): SyncState;
 
-    /**
-     * @param Model $model
-     * @return SyncState
-     */
-    public function whenDeleted(Model $model);
+    public function onDelete(SyncEvent $event, MarketplaceIntegration $marketplaceIntegration): SyncState;
+
+    public function processFor(): string;
 
     public function withExisting();
-
-    public function setMarketplaceIntegration(MarketplaceIntegration $marketplaceIntegration);
 }

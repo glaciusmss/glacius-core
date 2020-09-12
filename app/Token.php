@@ -8,13 +8,33 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 /**
- * @mixin IdeHelperToken
+ * App\Token
+ *
+ * @property int $id
+ * @property string $token
+ * @property TokenType $type
+ * @property array $meta
+ * @property \App\Utils\CarbonFix $expired_at
+ * @property \App\Utils\CarbonFix|null $created_at
+ * @property \App\Utils\CarbonFix|null $updated_at
+ * @method static Builder|Token expired()
+ * @method static Builder|Token isType(\App\Enums\TokenType $type)
+ * @method static Builder|Token isValid()
+ * @method static Builder|Token newModelQuery()
+ * @method static Builder|Token newQuery()
+ * @method static Builder|Token query()
+ * @method static Builder|Token whereCreatedAt($value)
+ * @method static Builder|Token whereExpiredAt($value)
+ * @method static Builder|Token whereId($value)
+ * @method static Builder|Token whereMeta($value)
+ * @method static Builder|Token whereToken($value)
+ * @method static Builder|Token whereType($value)
+ * @method static Builder|Token whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Token extends Model
 {
-    protected $fillable = [
-        'token', 'type', 'meta', 'expired_at',
-    ];
+    protected $guarded = [];
 
     protected $dates = [
         'expired_at'
@@ -40,11 +60,9 @@ class Token extends Model
         return $query->where('type', $type->value);
     }
 
-    public static function generate(TokenType $type, $meta = [], $duration = 15, $length = 16)
+    public static function generate(TokenType $type, array $meta = [], int $duration = 15, int $length = 16)
     {
-        if (is_int($duration)) {
-            $expiredAt = now()->addMinutes($duration);
-        }
+        $expiredAt = now()->addMinutes($duration);
 
         $token = md5(Str::random($length) . microtime());
 
@@ -56,7 +74,7 @@ class Token extends Model
         ]);
     }
 
-    public static function generateAndSave(TokenType $type, $meta = [], $duration = 15, $length = 16)
+    public static function generateAndSave(TokenType $type, array $meta = [], int $duration = 15, int $length = 16)
     {
         $instance = self::generate($type, $meta, $duration, $length);
         $instance->save();
@@ -64,7 +82,7 @@ class Token extends Model
         return $instance;
     }
 
-    public static function validate($token, TokenType $type)
+    public static function validate(string $token, TokenType $type)
     {
         $instance = self::whereToken($token)
             ->isType($type)
@@ -78,7 +96,7 @@ class Token extends Model
         return $instance;
     }
 
-    public static function validateAndDelete($token, TokenType $type)
+    public static function validateAndDelete(string $token, TokenType $type)
     {
         if (!$instance = self::validate($token, $type)) {
             return false;

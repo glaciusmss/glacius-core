@@ -17,7 +17,7 @@ class CreateMarketplaceIntegrationsTable extends Migration
             $table->bigIncrements('id');
             $table->text('token')->nullable();
             $table->text('refreshToken')->nullable();
-            $table->json('meta')->nullable();
+            $table->json('meta')->default('{}');
             $table->unsignedBigInteger('shop_id');
             $table->unsignedBigInteger('marketplace_id');
             $table->timestamps();

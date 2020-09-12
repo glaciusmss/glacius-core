@@ -15,7 +15,7 @@ class CreateConnectedNotificationChannelsTable extends Migration
     {
         Schema::create('connected_notification_channels', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->json('meta')->nullable();
+            $table->json('meta')->default('{}');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('notification_channel_id');
             $table->timestamps();

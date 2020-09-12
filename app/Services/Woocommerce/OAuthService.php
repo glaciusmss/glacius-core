@@ -11,8 +11,8 @@ use App\Services\Woocommerce\Helpers\HasSdk;
 use App\Services\Woocommerce\Validations\OAuth\OnInstallRule;
 use App\Utils\HasMarketplace;
 use App\Utils\HasShop;
-use Illuminate\Http\Request;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 

@@ -10,6 +10,7 @@ namespace App\Botman\Controllers\Conversations;
 
 use App\Botman\BotAuthTrait;
 use App\Enums\BotPlatform;
+use App\Jobs\Bot\ReplyJob;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 
 abstract class BaseConversation extends Conversation
@@ -32,6 +33,14 @@ abstract class BaseConversation extends Conversation
     protected function getUser()
     {
         return \Auth::user();
+    }
+
+    public function queuedAsk($question, $next, $additionalParameters = [])
+    {
+        ReplyJob::dispatch($this->bot, $question);
+        $this->bot->storeConversation($this, $next, $question, $additionalParameters);
+
+        return $this;
     }
 
     abstract public function handle();

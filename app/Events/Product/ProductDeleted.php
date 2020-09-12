@@ -2,6 +2,13 @@
 
 namespace App\Events\Product;
 
-class ProductDeleted extends BaseProductEvent
+use App\Enums\SyncEventMapper;
+use App\Events\SyncEvent;
+
+class ProductDeleted extends SyncEvent
 {
+    public function getMethod()
+    {
+        return SyncEventMapper::Delete;
+    }
 }

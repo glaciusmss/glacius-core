@@ -11,6 +11,7 @@ namespace App\Botman\Controllers\Conversations;
 
 use App\Contracts\BotAuth;
 use App\Exceptions\BotException;
+use App\Jobs\Bot\ReplyJob;
 use BotMan\BotMan\Messages\Incoming\Answer;
 
 class ConnectConversation extends BaseConversation
@@ -24,19 +25,19 @@ class ConnectConversation extends BaseConversation
 
     public function handle()
     {
-        $this->bot->reply('Hello, I notice that you are not came from Glacius website.');
+        ReplyJob::dispatch($this->bot, 'Hello, I notice that you are not came from Glacius website.');
         $this->askForToken();
     }
 
     protected function askForToken()
     {
-        $this->ask('Please send me the token you got from Glacius website.', function (Answer $answer) {
+        $this->queuedAsk('Please send me the token you got from Glacius website.', function (Answer $answer) {
             try {
                 $connectedUser = $this->botAuth->connect(
                     $answer->getText()
                 );
 
-                $this->say('Successfully connected to Glacius with ' . $connectedUser->email);
+                ReplyJob::dispatch($this->bot, 'Successfully connected to Glacius with ' . $connectedUser->email);
             } catch (BotException $exception) {
                 app(\App\Exceptions\BotHandler::class)->render($exception, $this->bot);
                 $this->askForToken();

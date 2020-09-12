@@ -1,21 +1,26 @@
 <?php
 
+
 namespace App\Events;
 
+
 use App\Shop;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class OAuthDisconnected
+abstract class SyncEvent
 {
     use Dispatchable, SerializesModels;
 
+    public $model;
     public $shop;
-    public $identifier;
 
-    public function __construct(Shop $shop, string $identifier)
+    public function __construct(Model $model, Shop $shop)
     {
+        $this->model = $model;
         $this->shop = $shop;
-        $this->identifier = $identifier;
     }
+
+    abstract public function getMethod();
 }

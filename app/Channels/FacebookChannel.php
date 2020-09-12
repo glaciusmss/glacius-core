@@ -2,6 +2,7 @@
 
 namespace App\Channels;
 
+use App\Jobs\Bot\SayJob;
 use BotMan\Drivers\Facebook\FacebookDriver;
 use Illuminate\Notifications\Notification;
 
@@ -15,6 +16,6 @@ class FacebookChannel
 
         $message = $notification->toFacebook($notifiable);
 
-        app('botman')->say($message, $toBotId, FacebookDriver::class);
+        SayJob::dispatch($message, $toBotId, FacebookDriver::class);
     }
 }

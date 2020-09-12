@@ -7,10 +7,11 @@ namespace App\Services\Woocommerce;
 use App\Contracts\Connector;
 use App\Customer;
 use App\Enums\WebhookEventMapper;
-use App\Enums\Woocommerce\WebhookTopic;
 use App\Order;
+use App\Services\Woocommerce\Enums\WebhookTopic;
 use App\Services\Woocommerce\Processors\CustomerProcessor;
 use App\Services\Woocommerce\Processors\OrderProcessor;
+use App\Services\Woocommerce\Syncs\SyncProduct;
 
 class WoocommerceConnector implements Connector
 {
@@ -31,7 +32,9 @@ class WoocommerceConnector implements Connector
 
     public function getSyncService(): array
     {
-        // TODO: Implement getSyncService() method.
+        return [
+            SyncProduct::class
+        ];
     }
 
     public function getProcessorServices(): array

@@ -14,7 +14,7 @@ class CustomerProcessor extends BaseProcessor implements Processor
     {
         /** @var Customer $customerRecord */
         $customerRecord = $this->getShop($event)->customers()->create([
-            'meta' => ['marketplace_customer_id' => $event->rawData->get('id')],
+            'meta->marketplace_customer_id' => $event->rawData->get('id'),
             'marketplace_id' => $this->getMarketplace($event->identifier)->id,
         ]);
 

@@ -6,11 +6,12 @@ namespace App\Services\Shopify;
 
 use App\Contracts\Connector;
 use App\Customer;
-use App\Enums\Shopify\WebhookTopic;
 use App\Enums\WebhookEventMapper;
 use App\Order;
+use App\Services\Shopify\Enums\WebhookTopic;
 use App\Services\Shopify\Processors\CustomerProcessor;
 use App\Services\Shopify\Processors\OrderProcessor;
+use App\Services\Shopify\Syncs\SyncProduct;
 
 class ShopifyConnector implements Connector
 {
@@ -31,7 +32,9 @@ class ShopifyConnector implements Connector
 
     public function getSyncService(): array
     {
-        // TODO: Implement getSyncService() method.
+        return [
+            SyncProduct::class,
+        ];
     }
 
     public function getProcessorServices(): array

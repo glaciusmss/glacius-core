@@ -3,7 +3,6 @@
 namespace App\Events;
 
 use App\DTO\SyncState;
-use App\Enums\WebhookEventMapper;
 use App\Enums\SyncDirection;
 use App\Marketplace;
 use Illuminate\Database\Eloquent\Model;
@@ -20,7 +19,7 @@ class MarketplaceSynced
     public $marketplace;
     public $syncState;
 
-    public function __construct(WebhookEventMapper $event, Model $model, SyncDirection $direction, Marketplace $marketplace, SyncState $syncState)
+    public function __construct(string $event, Model $model, SyncDirection $direction, Marketplace $marketplace, SyncState $syncState)
     {
         $this->event = $event;
         $this->model = $model;

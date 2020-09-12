@@ -15,7 +15,7 @@ class CreateSyncTransactionsTable extends Migration
     {
         Schema::create('sync_transactions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('event');
+            $table->string('event');
             $table->integer('direction');
             $table->integer('state');
             $table->text('error_msg')->nullable();

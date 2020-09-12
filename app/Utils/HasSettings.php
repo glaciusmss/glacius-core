@@ -21,7 +21,7 @@ trait HasSettings
         return $this->morphMany(Setting::class, 'settingable');
     }
 
-    public function saveSetting($item, $collection = 'general')
+    public function saveSetting($item, string $collection = 'general')
     {
         if (!$defaultType = $this->getSettingTypes($item['setting_key'])) {
             $defaultType = $item['type'];
@@ -43,13 +43,13 @@ trait HasSettings
      *  'type' => 'boolean',
      * ]
      */
-    public function saveMultipleSettings(array $keyValuePairs, $collection = 'general')
+    public function saveMultipleSettings(array $keyValuePairs, string $collection = 'general')
     {
         $result = [];
 
-        collect($keyValuePairs)->each(function ($item) use (&$result, $collection) {
+        foreach ($keyValuePairs as $item) {
             $result[] = $this->saveSetting($item, $collection);
-        });
+        }
 
         return $result;
     }
@@ -72,9 +72,9 @@ trait HasSettings
     {
         $result = [];
 
-        collect($keys)->each(function ($item, $index) use ($defaults, &$result, $collection) {
+        foreach ($keys as $index => $item) {
             $result[$item] = $this->getSetting($item, $defaults[$index] ?? null, $collection);
-        });
+        }
 
         return $result;
     }
@@ -95,7 +95,7 @@ trait HasSettings
             });
     }
 
-    public function getAllSettingFromCollection($collection)
+    public function getAllSettingFromCollection(string $collection)
     {
         return $this->settings()
             ->whereCollection($collection)
@@ -103,7 +103,7 @@ trait HasSettings
             ->toArray();
     }
 
-    public function deleteSetting($key, $collection = 'general')
+    public function deleteSetting(string $key, string $collection = 'general')
     {
         return $this->settings()
             ->whereSettingKey($key)
@@ -111,7 +111,7 @@ trait HasSettings
             ->delete();
     }
 
-    public function deleteAllSettingsFromCollection($collection)
+    public function deleteAllSettingsFromCollection(string $collection)
     {
         return $this->settings()
             ->whereCollection($collection)
@@ -122,9 +122,9 @@ trait HasSettings
     {
         $result = [];
 
-        collect($keys)->each(function ($item) use (&$result, $collection) {
+        foreach ($keys as $item) {
             $result[] = $this->deleteSetting($item, $collection);
-        });
+        }
 
         return $result;
     }

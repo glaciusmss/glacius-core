@@ -33,5 +33,8 @@ interface Connector
      */
     public function getProcessorServices(): array;
 
+    /**
+     * @return array array of mapper
+     */
     public function mapper(): array;
 }

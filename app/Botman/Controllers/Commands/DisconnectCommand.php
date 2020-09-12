@@ -10,7 +10,7 @@ namespace App\Botman\Controllers\Commands;
 
 
 use App\Contracts\BotAuth;
-use BotMan\BotMan\BotMan;
+use App\Jobs\Bot\ReplyJob;
 
 class DisconnectCommand extends BaseCommand
 {
@@ -24,6 +24,6 @@ class DisconnectCommand extends BaseCommand
     public function handle()
     {
         $disconnectedUser = $this->botAuth->disconnect();
-        $this->bot->reply('Successfully disconnected to Glacius with ' . $disconnectedUser->email);
+        ReplyJob::dispatch($this->bot, 'Successfully disconnected to Glacius with ' . $disconnectedUser->email);
     }
 }

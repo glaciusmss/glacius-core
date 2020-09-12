@@ -4,6 +4,8 @@
 namespace App\Utils;
 
 
+use Illuminate\Support\Collection;
+
 class Helper
 {
     public static function calculatePercentage($oldValue, $newValue)
@@ -23,25 +25,17 @@ class Helper
         return (1 - $oldValue / $newValue) * 100;
     }
 
-    public static function transformArrayKey($array, $keysToTransform)
+    public static function transformArrayKey($array, $keysToTransform): array
     {
-        $temp = [];
-        foreach ($array as $key => $value) {
-            $transformed = false;
-
-            foreach ($keysToTransform as $oriKey => $expectedKey) {
-                if ($oriKey === $key) {
-                    $temp[$expectedKey] = $value;
-                    $transformed = true;
-                    break;
+        return Collection::wrap($array)
+            ->map(function ($item, $key) use ($keysToTransform) {
+                if (array_key_exists($key, $keysToTransform)) {
+                    return [$keysToTransform[$key] => $item];
                 }
-            }
 
-            if (!$transformed) {
-                $temp[$key] = $value;
-            }
-        }
-
-        return $temp;
+                return [$key => $item];
+            })
+            ->collapse()
+            ->toArray();
     }
 }

@@ -7,17 +7,45 @@ use App\Scopes\OrderScope;
 use App\Utils\HasSettings;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 /**
- * @mixin IdeHelperShop
+ * App\Shop
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $description
+ * @property \App\Utils\CarbonFix|null $created_at
+ * @property \App\Utils\CarbonFix|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Customer[] $customers
+ * @property-read int|null $customers_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Marketplace[] $marketplaces
+ * @property-read int|null $marketplaces_count
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Order[] $orders
+ * @property-read int|null $orders_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Product[] $products
+ * @property-read int|null $products_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Setting[] $settings
+ * @property-read int|null $settings_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $users
+ * @property-read int|null $users_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Shop newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Shop newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Shop query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Shop whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Shop whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Shop whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Shop whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Shop whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Shop extends Model
 {
-    use Notifiable, HasSettings, OrderScope;
+    use Notifiable, HasSettings, OrderScope, HasRelationships;
 
-    protected $fillable = [
-        'name', 'description'
-    ];
+    protected $guarded = [];
 
     protected $settingTypes = [
         'is_product_sync_activated' => 'boolean',
@@ -27,14 +55,12 @@ class Shop extends Model
     {
         $botIds = [];
 
-        foreach($this->users as $user) {
-            $notificationChannels = $user->notificationChannels()
-                ->where('notification_channels.name', NotificationChannelEnum::Telegram)
-                ->get();
+        $notificationChannels = $this->userNotificationChannels()
+            ->where('notification_channels.name', NotificationChannelEnum::Telegram)
+            ->get();
 
-            foreach ($notificationChannels as $notificationChannel) {
-                $botIds[] = $notificationChannel->pivot->meta['telegram_bot_id'];
-            }
+        foreach ($notificationChannels as $notificationChannel) {
+            $botIds[] = $notificationChannel->pivot->meta['telegram_bot_id'];
         }
 
         return $botIds;
@@ -44,14 +70,12 @@ class Shop extends Model
     {
         $botIds = [];
 
-        foreach($this->users as $user) {
-            $notificationChannels = $user->notificationChannels()
-                ->where('notification_channels.name', NotificationChannelEnum::Facebook)
-                ->get();
+        $notificationChannels = $this->userNotificationChannels()
+            ->where('notification_channels.name', NotificationChannelEnum::Facebook)
+            ->get();
 
-            foreach ($notificationChannels as $notificationChannel) {
-                $botIds[] = $notificationChannel->pivot->meta['facebook_bot_id'];
-            }
+        foreach ($notificationChannels as $notificationChannel) {
+            $botIds[] = $notificationChannel->pivot->meta['facebook_bot_id'];
         }
 
         return $botIds;
@@ -88,5 +112,11 @@ class Shop extends Model
     public function customers()
     {
         return $this->hasMany(Customer::class);
+    }
+
+    public function userNotificationChannels()
+    {
+        return $this->hasManyDeep(NotificationChannel::class, ['user_shops', User::class, 'connected_notification_channels'])
+            ->withPivot('connected_notification_channels', ['meta', 'created_at', 'updated_at'], ConnectedNotificationChannel::class, 'pivot');
     }
 }
