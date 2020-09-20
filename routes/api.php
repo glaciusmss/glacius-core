@@ -87,8 +87,9 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
     });
 
     Route::prefix('/setting')->group(function () {
-        Route::get('/{collection}', 'SettingController@show');
-        Route::patch('/{collection}', 'SettingController@update');
+        Route::get('/', 'SettingController@index');
+        Route::get('/{identifier}', 'SettingController@show');
+        Route::patch('/{identifier}', 'SettingController@update');
     });
 });
 

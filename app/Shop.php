@@ -100,7 +100,7 @@ class Shop extends Model
     {
         return $this->belongsToMany(Marketplace::class, 'marketplace_integrations')
             ->withTimestamps()
-            ->withPivot(['token', 'refreshToken', 'meta'])
+            ->withPivot(['id', 'token', 'refreshToken', 'meta'])
             ->using(MarketplaceIntegration::class);
     }
 

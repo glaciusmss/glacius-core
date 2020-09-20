@@ -11,7 +11,7 @@ class OnInstallRule implements RequestValidation
     public function rules(): array
     {
         return [
-            'woocommerce_store_url' => 'required'
+            'woocommerce_store_url' => 'required|url'
         ];
     }
 }

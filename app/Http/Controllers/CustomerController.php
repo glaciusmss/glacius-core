@@ -15,9 +15,7 @@ class CustomerController extends Controller
         $pagination = Pagination::makePaginationFromRequest($request);
 
         $ordersData = $this->getShop()->customers()
-            ->with('marketplace', 'contact', 'addresses')
-            ->join('marketplaces as marketplace', 'customers.marketplace_id', '=', 'marketplace.id')
-            ->select('customers.*')
+            ->with(['marketplace', 'contact', 'addresses'])
             ->withPagination($pagination);
 
         return CustomerResource::collection($ordersData)->additional([

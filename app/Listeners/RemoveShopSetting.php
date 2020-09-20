@@ -8,6 +8,6 @@ class RemoveShopSetting
 {
     public function handle(OAuthDisconnected $oAuthDisconnected)
     {
-        $oAuthDisconnected->shop->deleteAllSettingsFromCollection($oAuthDisconnected->identifier);
+        $oAuthDisconnected->shop->deleteAllSettings();
     }
 }

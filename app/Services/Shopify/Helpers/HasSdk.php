@@ -20,16 +20,16 @@ trait HasSdk
         }
 
         return new ShopifySDK(array_merge([
-            'ApiKey' => config('marketplace.shopify.key'),
-            'SharedSecret' => config('marketplace.shopify.secret'),
+            'ApiKey' => config('shopify.key'),
+            'SharedSecret' => config('shopify.secret'),
         ], $configuration));
     }
 
     public function configureSdk(array $configuration = null)
     {
         ShopifySDK::config(array_merge([
-            'ApiKey' => config('marketplace.shopify.key'),
-            'SharedSecret' => config('marketplace.shopify.secret'),
+            'ApiKey' => config('shopify.key'),
+            'SharedSecret' => config('shopify.secret'),
         ], $configuration));
     }
 

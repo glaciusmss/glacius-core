@@ -18,6 +18,8 @@ class AuthenticateWithBasicAuth extends BaseBasicAuth
      */
     public function handle($request, Closure $next, $guard = null, $field = null)
     {
-        return parent::handle($request, $next, 'web');
+        $this->auth->shouldUse('web');
+
+        return parent::handle($request, $next);
     }
 }

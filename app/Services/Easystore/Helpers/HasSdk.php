@@ -17,8 +17,8 @@ trait HasSdk
         }
 
         return new EasyStoreClient(array_merge([
-            'client_id' => config('marketplace.easystore.key'),
-            'client_secret' => config('marketplace.easystore.secret'),
+            'client_id' => config('easystore.key'),
+            'client_secret' => config('easystore.secret'),
         ], $configuration));
     }
 }

@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Providers;
+namespace App\Services\Woocommerce;
 
 use App\Contracts\ResolvesConnector;
-use App\Services\Easystore\EasystoreConnector;
 use Illuminate\Support\ServiceProvider;
 
-class EasystoreServiceProvider extends ServiceProvider
+class WoocommerceServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -16,7 +15,7 @@ class EasystoreServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->resolving(ResolvesConnector::class, function (ResolvesConnector $connectorResolver) {
-            $connectorResolver->addConnector(EasystoreConnector::class);
+            $connectorResolver->addConnector(WoocommerceConnector::class);
 
             return $connectorResolver;
         });

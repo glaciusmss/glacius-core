@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Utils\HasSettings;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
@@ -30,6 +32,8 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  */
 class MarketplaceIntegration extends Pivot
 {
+    use HasSettings;
+
     protected $guarded = [];
 
     protected $table = 'marketplace_integrations';
@@ -37,4 +41,24 @@ class MarketplaceIntegration extends Pivot
     protected $casts = [
         'meta' => 'array'
     ];
+
+    public function delete()
+    {
+        if (!isset($this->attributes[$this->getKeyName()])) {
+            // we nid this id to delete the settings associated to this
+            try {
+                $this->id = self::whereShopId($this->shop_id)
+                    ->whereMarketplaceId($this->marketplace_id)
+                    ->firstOrFail(['id'])
+                    ->id;
+            } catch (ModelNotFoundException $ex) {
+                // ignore this, some other method might call this too
+                // for ex: during oauth install
+            }
+        }
+
+        $this->deleteAllSettings();
+
+        parent::delete();
+    }
 }

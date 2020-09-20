@@ -4,6 +4,9 @@ namespace App\Console;
 
 use App\Console\Commands\ClearExpiredImage;
 use App\Console\Commands\ClearExpiredToken;
+use App\Console\Commands\MigrateRollbackWebsocket;
+use App\Console\Commands\MigrateWebsocket;
+use BeyondCode\LaravelWebSockets\Console\CleanStatistics;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Laravel\Horizon\Console\SnapshotCommand;
@@ -19,7 +22,9 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         ClearExpiredToken::class,
-        ClearExpiredImage::class
+        ClearExpiredImage::class,
+        MigrateWebsocket::class,
+        MigrateRollbackWebsocket::class,
     ];
 
     /**
@@ -34,6 +39,7 @@ class Kernel extends ConsoleKernel
         $schedule->command(ClearExpiredImage::class)->daily()->runInBackground();
         $schedule->command(SnapshotCommand::class)->everyFiveMinutes()->runInBackground();
         $schedule->command(PruneCommand::class)->daily()->runInBackground();
+        $schedule->command(CleanStatistics::class)->daily()->runInBackground();
         $schedule->command(ClearAuthenticationLogCommand::class)->daily()->runInBackground();
     }
 

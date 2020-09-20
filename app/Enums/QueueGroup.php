@@ -6,6 +6,7 @@ use BenSampo\Enum\Enum;
 
 /**
  * @method static QueueGroup Sync()
+ * @method static QueueGroup Transaction()
  * @method static QueueGroup Broadcast()
  * @method static QueueGroup Notification()
  * @method static QueueGroup Webhook()
@@ -15,6 +16,7 @@ use BenSampo\Enum\Enum;
 final class QueueGroup extends Enum
 {
     const Sync = 'sync';
+    const Transaction = 'transaction';
     const Broadcast = 'broadcast';
     const Notification = 'notification';
     const Webhook = 'webhook';

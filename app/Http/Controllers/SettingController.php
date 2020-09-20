@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Marketplace;
 use App\Setting;
 use Illuminate\Http\Request;
 
@@ -9,7 +10,13 @@ class SettingController extends Controller
 {
     public function index()
     {
-        return $this->getShop()->getAllSettings();
+        return $this->getShop()
+            ->marketplaces()
+            ->with('pivot.settings')
+            ->get()
+            ->mapWithKeys(function (Marketplace $marketplace) {
+                return [$marketplace->name => $marketplace->pivot->getAllSettings()];
+            });
     }
 
     /**
@@ -33,17 +40,28 @@ class SettingController extends Controller
         //
     }
 
-    public function show($collection)
+    public function show(Request $request, $identifier)
     {
-        return $this->getShop()->getAllSettingFromCollection($collection);
+        $collection = $request->input('collection');
+
+        $marketplace = $this->getShop()
+            ->marketplaces()
+            ->whereName($identifier)
+            ->firstOrFail();
+
+        return $marketplace->pivot->getAllSettingFromCollection($collection);
     }
 
-    public function update(Request $request, $collection)
+    public function update(Request $request, $identifier)
     {
-        $this->getShop()->saveSetting(
-            $request->input('data'),
-            $collection
-        );
+        $marketplace = $this->getShop()
+            ->marketplaces()
+            ->whereName($identifier)
+            ->firstOrFail();
+
+        foreach ($request->input('data') as $collection => $data) {
+            $marketplace->pivot->updateMultipleSettings($data, $collection);
+        }
 
         return response()->noContent();
     }

@@ -16,8 +16,6 @@ class OrderController extends Controller
 
         $ordersData = $this->getShop()->orders()
             ->with('marketplace')
-            ->join('marketplaces as marketplace', 'orders.marketplace_id', '=', 'marketplace.id')
-            ->select('orders.*')
             ->withPagination($pagination);
 
         return OrderResource::collection($ordersData)->additional([

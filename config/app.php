@@ -202,15 +202,19 @@ return [
         /*
          * Custom Service Providers...
          */
-        App\Providers\ShopifyServiceProvider::class,
-//        App\Providers\ShopeeServiceProvider::class,
-        App\Providers\WoocommerceServiceProvider::class,
         App\Providers\BotmanServiceProvider::class,
         App\Providers\FacebookServiceProvider::class,
         App\Providers\TelegramServiceProvider::class,
-        App\Providers\EasystoreServiceProvider::class,
         App\Providers\GoogleDriveServiceProvider::class,
         App\Providers\ConnectorServiceProvider::class,
+        App\Providers\WebsocketServiceProvider::class,
+
+        /*
+         * Marketplace Service Providers...
+         */
+        App\Services\Easystore\EasystoreServiceProvider::class,
+        App\Services\Shopify\ShopifyServiceProvider::class,
+        App\Services\Woocommerce\WoocommerceServiceProvider::class,
     ],
 
     /*

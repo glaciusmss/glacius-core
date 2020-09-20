@@ -17,6 +17,9 @@ return [
 
     'default' => env('DB_CONNECTION', 'mysql'),
 
+    'websocket_connection' => env('WEBSOCKET_DB_CONNECTION', 'mysql_websocket'),
+    'websocket_migration_path' => env('WEBSOCKET_MIGRATION_PATH', 'database/websocket_migrations'),
+
     /*
     |--------------------------------------------------------------------------
     | Database Connections
@@ -52,6 +55,26 @@ return [
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
             'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+
+        'mysql_websocket' => [
+            'driver' => 'mysql',
+            'url' => env('WEBSOCKET_DATABASE_URL', env('DATABASE_URL')),
+            'host' => env('WEBSOCKET_DB_HOST', env('DB_HOST', '127.0.0.1')),
+            'port' => env('WEBSOCKET_DB_PORT', env('DB_PORT', '3306')),
+            'database' => env('WEBSOCKET_DB_DATABASE', env('DB_DATABASE', 'forge')),
+            'username' => env('WEBSOCKET_DB_USERNAME', env('DB_USERNAME', 'forge')),
+            'password' => env('WEBSOCKET_DB_PASSWORD', env('DB_PASSWORD', '')),
+            'unix_socket' => env('WEBSOCKET_DB_SOCKET', env('DB_SOCKET', '')),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',

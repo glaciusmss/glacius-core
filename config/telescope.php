@@ -93,11 +93,14 @@ return [
     */
 
     'ignore_paths' => [
-        //
+        'websocket*'
     ],
 
     'ignore_commands' => [
-        //
+        'horizon:snapshot',
+        'storage:link',
+        'config:cache',
+        'route:cache'
     ],
 
     /*

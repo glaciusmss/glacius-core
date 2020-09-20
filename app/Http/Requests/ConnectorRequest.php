@@ -32,7 +32,13 @@ class ConnectorRequest extends BaseRequest
 
         $rules = Arr::get($configurations, "validation.$functionName", []);
 
-        return $this->wrapRules($rules);
+        $rules = $this->wrapRules($rules);
+
+        if ($functionName === 'onInstall') {
+            return Arr::add($rules, 'rtn_url', 'required');
+        }
+
+        return $rules;
     }
 
     protected function mapUriToFunction()

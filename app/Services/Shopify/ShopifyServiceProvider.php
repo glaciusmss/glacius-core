@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Providers;
+namespace App\Services\Shopify;
 
 use App\Contracts\ResolvesConnector;
-use App\Services\Shopify\ShopifyConnector;
 use Illuminate\Support\ServiceProvider;
 
 class ShopifyServiceProvider extends ServiceProvider

@@ -57,7 +57,7 @@ class OAuthService implements OAuth
 
         $url = AuthHelper::createAuthRequest(
             'read_orders,read_customers,read_products,write_products',
-            config('marketplace.shopify.redirect_url'),
+            config('shopify.redirect_url'),
             null,
             null,
             true
@@ -70,7 +70,7 @@ class OAuthService implements OAuth
     {
         $this->setShop(
             throw_unless(
-                $this->cache->get('shopify:' . $this->getShopifyShop($request) . ':shop'),
+                $this->cache->pull('shopify:' . $this->getShopifyShop($request) . ':shop'),
                 new NotFoundHttpException('please try again')
             )
         );
@@ -87,12 +87,7 @@ class OAuthService implements OAuth
             'meta->shopify_shop' => $this->getShopifyShop($request),
         ]);
 
-        $device = $this->cache->get('shopify:' . $this->getShopifyShop($request) . ':device', DeviceType::Web());
-
-        $this->cache->forget('shopify:' . $this->getShopifyShop($request) . ':device');
-        $this->cache->forget('shopify:' . $this->getShopifyShop($request) . ':shop');
-
-        return $device;
+        return $this->getShop();
     }
 
     public function onDeleteAuth(Request $request)

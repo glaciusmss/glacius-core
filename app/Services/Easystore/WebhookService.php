@@ -55,7 +55,7 @@ class WebhookService implements Webhook
         $hmacHeader = $request->headers->get('easystore-hmac-sha256', '');
         $data = file_get_contents('php://input');
 
-        $calculatedHmac = hash_hmac('sha256', $data, config('marketplace.easystore.secret'));
+        $calculatedHmac = hash_hmac('sha256', $data, config('easystore.secret'));
 
         return hash_equals($hmacHeader, $calculatedHmac);
     }
@@ -78,7 +78,7 @@ class WebhookService implements Webhook
             $response = $sdk->post('/webhooks.json', [
                 'webhook' => [
                     'topic' => $topic,
-                    'url' => config('marketplace.easystore.webhook_url'),
+                    'url' => config('easystore.webhook_url'),
                 ]
             ]);
 

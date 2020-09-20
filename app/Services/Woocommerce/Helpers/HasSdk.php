@@ -20,7 +20,10 @@ trait HasSdk
             $configuration['woocommerceStoreUrl'],
             $configuration['consumerKey'],
             $configuration['consumerSecret'],
-            Arr::except($configuration, ['woocommerceStoreUrl', 'consumerKey', 'consumerSecret'])
+            array_merge(
+                Arr::except($configuration, ['woocommerceStoreUrl', 'consumerKey', 'consumerSecret']),
+                ['timeout' => config('woocommerce.timeout')]
+            )
         );
     }
 }

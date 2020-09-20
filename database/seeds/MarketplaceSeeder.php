@@ -13,11 +13,6 @@ class MarketplaceSeeder extends Seeder
     public function run()
     {
         Marketplace::create([
-            'name' => 'shopee',
-            'website' => 'https://shopee.com.my/',
-        ]);
-
-        Marketplace::create([
             'name' => 'shopify',
             'website' => 'https://www.shopify.com/',
         ]);

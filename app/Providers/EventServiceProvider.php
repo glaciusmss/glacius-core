@@ -12,10 +12,11 @@ use App\Events\Product\ProductDeleted;
 use App\Events\Product\ProductUpdated;
 use App\Events\Webhook\WebhookReceived;
 use App\Listeners\Customer\SendCustomerNotification;
+use App\Listeners\DetachMarketplaceIntegration;
 use App\Listeners\Order\SendOrderNotification;
 use App\Listeners\RemoveShopSetting;
 use App\Listeners\SendEmailVerificationNotification;
-use App\Listeners\SetupDefaultSetting;
+use App\Listeners\SetupInitialSetting;
 use App\Listeners\Sync\AddTransaction;
 use App\Listeners\Sync\ProcessSync;
 use App\Listeners\Webhook\ProcessWebhook;
@@ -55,7 +56,7 @@ class EventServiceProvider extends ServiceProvider
 
         Event::listen(MarketplaceSynced::class, AddTransaction::class);
 
-        Event::listen(OAuthConnected::class, SetupDefaultSetting::class);
+        Event::listen(OAuthConnected::class, SetupInitialSetting::class);
         Event::listen(OAuthDisconnected::class, RemoveShopSetting::class);
     }
 }

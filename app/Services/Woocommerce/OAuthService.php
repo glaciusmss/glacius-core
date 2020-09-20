@@ -6,9 +6,11 @@ namespace App\Services\Woocommerce;
 
 use App\Contracts\OAuth;
 use App\Enums\DeviceType;
+use App\Enums\TokenType;
 use App\Exceptions\NotSupportedException;
 use App\Services\Woocommerce\Helpers\HasSdk;
 use App\Services\Woocommerce\Validations\OAuth\OnInstallRule;
+use App\Token;
 use App\Utils\HasMarketplace;
 use App\Utils\HasShop;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
@@ -41,7 +43,7 @@ class OAuthService implements OAuth
 
     public function onInstall(Request $request)
     {
-        $generatedSession = Str::orderedUuid()->toString();
+        $generatedSession = Token::generateAndSave(TokenType::WoocommerceConnect(), $this->getShop()->attributesToArray())->token;
         $this->cache->put('woocommerce:' . $generatedSession . ':shop', $this->getShop());
         $this->cache->put('woocommerce:' . $generatedSession . ':woocommerce_store_url', $this->getWoocommerceStoreUrl($request));
         if (request()->header('x-request-from') === 'mobile') {
@@ -62,13 +64,13 @@ class OAuthService implements OAuth
     {
         $this->setShop(
             throw_unless(
-                $this->cache->get('woocommerce:' . $request->input('user_id') . ':shop'),
+                $this->cache->pull('woocommerce:' . $request->input('user_id') . ':shop'),
                 new NotFoundHttpException('please try again')
             )
         );
 
         $woocommerceStoreUrl = throw_unless(
-            $this->cache->get('woocommerce:' . $request->input('user_id') . ':woocommerce_store_url'),
+            $this->cache->pull('woocommerce:' . $request->input('user_id') . ':woocommerce_store_url'),
             new NotFoundHttpException('please try again')
         );
 
@@ -79,9 +81,6 @@ class OAuthService implements OAuth
             'meta->woocommerce_store_url' => $woocommerceStoreUrl,
             'meta->session_id' => $request->input('user_id'),
         ]);
-
-        $this->cache->forget('woocommerce:' . $request->input('user_id') . ':shop');
-        $this->cache->forget('woocommerce:' . $request->input('user_id') . ':woocommerce_store_url');
     }
 
     public function onDeleteAuth(Request $request)

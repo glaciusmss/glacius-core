@@ -7,11 +7,10 @@ use App\Enums\SyncDirection;
 use App\Marketplace;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Queue\SerializesModels;
 
 class MarketplaceSynced
 {
-    use Dispatchable, SerializesModels;
+    use Dispatchable;
 
     public $event;
     public $model;

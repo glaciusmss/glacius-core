@@ -18,7 +18,7 @@ trait PaginationScope
     {
         return $query
             ->orderBy($this->withTableName($pagination), $pagination->getSortOrder())
-            ->paginate($pagination->getSizePerPage());
+            ->paginate($pagination->getPerPage());
     }
 
     private function withTableName(Pagination $pagination)

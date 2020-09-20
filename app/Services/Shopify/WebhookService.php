@@ -48,7 +48,7 @@ class WebhookService implements Webhook
         $hmacHeader = $request->headers->get('x-shopify-hmac-sha256', '');
         $data = file_get_contents('php://input');
 
-        $calculatedHmac = base64_encode(hash_hmac('sha256', $data, config('marketplace.shopify.secret'), true));
+        $calculatedHmac = base64_encode(hash_hmac('sha256', $data, config('shopify.secret'), true));
 
         return hash_equals($hmacHeader, $calculatedHmac);
     }
@@ -71,7 +71,7 @@ class WebhookService implements Webhook
             $response = $sdk->Webhook
                 ->post([
                     'topic' => $topic,
-                    'address' => config('marketplace.shopify.webhook_url'),
+                    'address' => config('shopify.webhook_url'),
                     'format' => 'json',
                 ]);
 

@@ -2,10 +2,14 @@
 
 namespace App\Listeners\Sync;
 
+use App\Enums\QueueGroup;
 use App\Events\MarketplaceSynced;
+use BotMan\BotMan\Interfaces\ShouldQueue;
 
-class AddTransaction
+class AddTransaction implements ShouldQueue
 {
+    public $queue = QueueGroup::Transaction;
+
     public function handle(MarketplaceSynced $marketplaceSynced)
     {
         if (!method_exists($marketplaceSynced->model, 'addSyncTransaction')) {

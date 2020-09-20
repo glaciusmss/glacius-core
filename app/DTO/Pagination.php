@@ -16,19 +16,19 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Pagination
 {
-    protected $sizePerPage;
+    protected $perPage;
     protected $sortField;
     protected $sortOrder;
 
     /**
      * Pagination constructor.
-     * @param $sizePerPage
+     * @param $perPage
      * @param $sortField
      * @param $sortOrder
      */
-    public function __construct($sizePerPage, $sortField, $sortOrder)
+    public function __construct($perPage, $sortField, $sortOrder)
     {
-        $this->sizePerPage = $sizePerPage;
+        $this->perPage = $perPage;
         $this->sortField = $sortField;
         $this->sortOrder = $sortOrder;
     }
@@ -37,7 +37,7 @@ class Pagination
     {
         if ($request instanceof PaginationRequest) {
             return new self(
-                $request->input('size_per_page'),
+                $request->input('per_page'),
                 $request->input('sort_field', 'id'),
                 $request->input('sort_order', 'desc')
             );
@@ -49,9 +49,9 @@ class Pagination
     /**
      * @return int
      */
-    public function getSizePerPage()
+    public function getPerpage()
     {
-        return $this->sizePerPage;
+        return $this->perPage;
     }
 
     /**

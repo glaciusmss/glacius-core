@@ -2,6 +2,7 @@
 
 namespace App;
 
+use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
 use App\Scopes\CustomerScope;
 use App\Scopes\OrderScope;
 use Illuminate\Database\Eloquent\Model;
@@ -36,7 +37,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Marketplace extends Model
 {
-    use OrderScope, CustomerScope;
+    use OrderScope, CustomerScope, EagerLoadPivotTrait;
 
     protected $guarded = [];
 

@@ -21,8 +21,6 @@ class ProductController extends Controller
 
         $productsData = $this->getShop()->products()
             ->with('productVariants')
-            ->join('product_variants as product_variant', 'products.id', '=', 'product_variant.product_id')
-            ->select(['products.*'])
             ->withPagination($pagination);
 
         return ProductResource::collection($productsData)->additional([

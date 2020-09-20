@@ -49,7 +49,7 @@ class OAuthService implements OAuth
         $sdk = $this->getSdk([
             'shop' => $this->getEasystoreShop($request),
             'scopes' => 'read_orders,read_customers,read_products,write_products',
-            'redirect_uri' => config('marketplace.easystore.redirect_url')
+            'redirect_uri' => config('easystore.redirect_url')
         ]);
 
         return ['url' => $sdk->buildAuthUrl()];
@@ -58,7 +58,7 @@ class OAuthService implements OAuth
     public function onInstallCallback(Request $request)
     {
         $this->shop = throw_unless(
-            $this->cache->get('easystore:' . $this->getEasystoreShop($request) . ':shop'),
+            $this->cache->pull('easystore:' . $this->getEasystoreShop($request) . ':shop'),
             new NotFoundHttpException('please try again')
         );
 
@@ -72,12 +72,7 @@ class OAuthService implements OAuth
             'meta->easystore_shop' => $this->getEasystoreShop($request),
         ]);
 
-        $device = $this->cache->get('easystore:' . $this->getEasystoreShop($request) . ':device', DeviceType::Web());
-
-        $this->cache->forget('easystore:' . $this->getEasystoreShop($request) . ':shop');
-        $this->cache->forget('easystore:' . $this->getEasystoreShop($request) . ':device');
-
-        return $device;
+        return $this->getShop();
     }
 
     public function onDeleteAuth(Request $request)
