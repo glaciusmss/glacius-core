@@ -8,7 +8,6 @@
 
 namespace App\Utils;
 
-
 use App\Shop;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 

@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use ScoutElastic\Searchable;
 
 /**
- * App\Customer
+ * App\Customer.
  *
  * @property int $id
  * @property array $meta
@@ -67,13 +67,13 @@ class Customer extends Model
             'marketplace_name' => ['type' => 'text'],
             'shop_id' => ['type' => 'keyword'],
             'created_at' => ['type' => 'keyword'],
-        ]
+        ],
     ];
 
     protected $guarded = [];
 
     protected $casts = [
-        'meta' => 'array'
+        'meta' => 'array',
     ];
 
     public function toSearchableArray()

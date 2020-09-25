@@ -6,7 +6,7 @@ use App\Utils\HasSettings;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- * App\UserShop
+ * App\UserShop.
  *
  * @property int $id
  * @property int $user_id

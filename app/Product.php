@@ -14,7 +14,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
- * App\Product
+ * App\Product.
  *
  * @property int $id
  * @property string $name
@@ -58,13 +58,13 @@ class Product extends Model implements HasMedia
             'price' => ['type' => 'keyword'],
             'shop_id' => ['type' => 'keyword'],
             'updated_at' => ['type' => 'keyword'],
-        ]
+        ],
     ];
 
     protected $guarded = [];
 
     protected $casts = [
-        'meta' => 'array'
+        'meta' => 'array',
     ];
 
     public function toSearchableArray()
@@ -83,7 +83,7 @@ class Product extends Model implements HasMedia
         $currentMedia = $this->getMedia();
 
         foreach (Arr::wrap($newMedias) as $newMedia) {
-            if (!$currentMedia->pluck('file_name')->contains($newMedia)) {
+            if (! $currentMedia->pluck('file_name')->contains($newMedia)) {
                 //search in temp media
                 $tempMedia = TempMedia::whereFileName($newMedia)->firstOrFail();
                 $this->attachTempMedia($tempMedia);

@@ -10,6 +10,6 @@ use BenSampo\Enum\Enum;
  */
 final class DeviceType extends Enum
 {
-    const Web =   0;
-    const Mobile =   1;
+    const Web = 0;
+    const Mobile = 1;
 }

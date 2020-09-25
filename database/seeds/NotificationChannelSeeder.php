@@ -19,7 +19,7 @@ class NotificationChannelSeeder extends Seeder
 
         NotificationChannel::create([
             'name' => 'facebook',
-            'website' => 'https://www.facebook.com/'
+            'website' => 'https://www.facebook.com/',
         ]);
     }
 }

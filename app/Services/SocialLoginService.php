@@ -8,7 +8,6 @@
 
 namespace App\Services;
 
-
 use App\Enums\SocialProvider;
 use App\SocialLogin;
 use App\User;
@@ -28,7 +27,7 @@ class SocialLoginService
 
     public function getProviderRedirectUrl($provider)
     {
-        if (!$provider = $this->validateProvider($provider)) {
+        if (! $provider = $this->validateProvider($provider)) {
             return false;
         }
 
@@ -37,7 +36,7 @@ class SocialLoginService
 
     public function handleProviderCallback($provider)
     {
-        if (!$provider = $this->validateProvider($provider)) {
+        if (! $provider = $this->validateProvider($provider)) {
             return false;
         }
 
@@ -49,7 +48,7 @@ class SocialLoginService
 
     protected function validateProvider($provider)
     {
-        if (!SocialProvider::hasValue($provider)) {
+        if (! SocialProvider::hasValue($provider)) {
             return false;
         }
 
@@ -68,11 +67,11 @@ class SocialLoginService
 
         $userRecord = User::whereEmail($providerUser->getEmail())->first();
 
-        if (!$userRecord) {
+        if (! $userRecord) {
             $userRecord = User::create([
                 'name' => $providerUser->getName(),
                 'email' => $providerUser->getEmail(),
-                'password' => Str::random()
+                'password' => Str::random(),
             ]);
 
             $userRecord->userProfile()->create();
@@ -83,7 +82,7 @@ class SocialLoginService
 
         $userRecord->socialLogins()->create([
             'provider_user_id' => $providerUser->getId(),
-            'provider' => $provider
+            'provider' => $provider,
         ]);
 
         return $userRecord;

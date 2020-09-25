@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Events;
-
 
 use App\Shop;
 use Illuminate\Database\Eloquent\Model;

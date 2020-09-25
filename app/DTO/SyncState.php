@@ -8,7 +8,6 @@
 
 namespace App\DTO;
 
-
 class SyncState
 {
     protected $state;
@@ -35,6 +34,4 @@ class SyncState
     {
         return $this->errorMsg;
     }
-
-
 }

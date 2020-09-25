@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- * App\ConnectedNotificationChannel
+ * App\ConnectedNotificationChannel.
  *
  * @property int $id
  * @property array $meta
@@ -31,6 +31,6 @@ class ConnectedNotificationChannel extends Pivot
     protected $table = 'connected_notification_channels';
 
     protected $casts = [
-        'meta' => 'array'
+        'meta' => 'array',
     ];
 }

@@ -5,9 +5,8 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * Class ShopResource
+ * Class ShopResource.
  * @mixin \App\Shop
- * @package App\Http\Resources
  */
 class ShopResource extends JsonResource
 {

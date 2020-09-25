@@ -34,6 +34,5 @@ class ConnectorServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
     }
 }

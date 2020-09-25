@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
             'name' => 'NeoSon',
             'email' => 'lkloon123@hotmail.com',
             'email_verified_at' => now(),
-            'password' => 'demo1234'
+            'password' => 'demo1234',
         ]);
 
         UserProfile::forceCreate(['user_id' => 1]);

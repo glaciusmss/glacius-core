@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\Easystore;
-
 
 use App\Contracts\Webhook;
 use App\MarketplaceIntegration;
@@ -34,7 +32,7 @@ class WebhookService implements Webhook
         }
 
         $marketplaceIntegration->update([
-            'meta->webhook_id' => $webhookIds
+            'meta->webhook_id' => $webhookIds,
         ]);
     }
 
@@ -79,7 +77,7 @@ class WebhookService implements Webhook
                 'webhook' => [
                     'topic' => $topic,
                     'url' => config('easystore.webhook_url'),
-                ]
+                ],
             ]);
 
             return $response['id'];

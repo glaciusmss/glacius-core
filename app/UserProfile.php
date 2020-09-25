@@ -6,7 +6,7 @@ use App\Enums\GenderEnum;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\UserProfile
+ * App\UserProfile.
  *
  * @property int $id
  * @property string|null $phone_number

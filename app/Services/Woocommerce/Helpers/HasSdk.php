@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\Woocommerce\Helpers;
-
 
 use App\Exceptions\NotSupportedException;
 use Automattic\WooCommerce\Client;
@@ -12,7 +10,7 @@ trait HasSdk
 {
     public function getSdk(array $configuration = null)
     {
-        if (!Arr::hasAny($configuration, ['woocommerceStoreUrl', 'consumerKey', 'consumerSecret'])) {
+        if (! Arr::hasAny($configuration, ['woocommerceStoreUrl', 'consumerKey', 'consumerSecret'])) {
             throw new NotSupportedException('some configuration missing');
         }
 

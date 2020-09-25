@@ -10,7 +10,7 @@ class FacebookChannel
 {
     public function send($notifiable, Notification $notification)
     {
-        if (!$toBotId = $notifiable->routeNotificationFor('facebook', $notification)) {
+        if (! $toBotId = $notifiable->routeNotificationFor('facebook', $notification)) {
             return;
         }
 

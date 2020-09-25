@@ -8,7 +8,7 @@ use App\Scopes\OrderScope;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Marketplace
+ * App\Marketplace.
  *
  * @property int $id
  * @property string $name

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\Easystore;
-
 
 use App\Contracts\Connector;
 use App\Customer;
@@ -33,7 +31,7 @@ class EasystoreConnector implements Connector
     public function getSyncService(): array
     {
         return [
-            SyncProduct::class
+            SyncProduct::class,
         ];
     }
 
@@ -52,7 +50,7 @@ class EasystoreConnector implements Connector
                 WebhookTopic::OrderCreate => [Order::class, WebhookEventMapper::Create],
                 WebhookTopic::CustomerCreate => [Customer::class, WebhookEventMapper::Create],
                 WebhookTopic::CustomerDelete => [Customer::class, WebhookEventMapper::Delete],
-            ]
+            ],
         ];
     }
 }

@@ -8,7 +8,6 @@
 
 namespace App\Utils;
 
-
 use App\Setting;
 
 trait HasSettings
@@ -30,7 +29,7 @@ trait HasSettings
                 ->update(['setting_value' => $item['setting_value']]);
         }
 
-        if (!$defaultType = $this->getSettingTypes($item['setting_key'])) {
+        if (! $defaultType = $this->getSettingTypes($item['setting_key'])) {
             $defaultType = $item['type'];
         }
 
@@ -40,7 +39,7 @@ trait HasSettings
                 'collection' => $collection,
                 'setting_value' => $item['setting_value'],
                 'label' => $item['label'],
-                'type' => $defaultType
+                'type' => $defaultType,
             ]);
     }
 
@@ -51,7 +50,7 @@ trait HasSettings
      *  'setting_key' => 'is_product_sync_activated',
      *  'setting_value' => true,
      *  'type' => 'boolean',
-     * ]
+     * ].
      */
     public function createMultipleSettings(array $keyValuePairs, string $collection = 'general')
     {
@@ -82,7 +81,7 @@ trait HasSettings
             ->where('collection', $collection)
             ->first();
 
-        if (!$setting) {
+        if (! $setting) {
             return value($default);
         }
 
@@ -110,7 +109,7 @@ trait HasSettings
                         'type' => $item['type'],
                         'setting_key' => $item['setting_key'],
                         'setting_value' => $item['setting_value'],
-                    ]
+                    ],
                 ];
             });
     }

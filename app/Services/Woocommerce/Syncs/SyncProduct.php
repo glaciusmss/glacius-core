@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\Woocommerce\Syncs;
-
 
 use App\Contracts\Sync;
 use App\DTO\SyncState;
@@ -38,7 +36,7 @@ class SyncProduct implements Sync
 
             //update model with woocommerce meta
             $product->update([
-                'meta->woocommerce_product_id' => $response['id']
+                'meta->woocommerce_product_id' => $response['id'],
             ]);
 
             return new SyncState(State::Success());
@@ -63,7 +61,7 @@ class SyncProduct implements Sync
         $updateData = $this->prepareUpdateData($product);
 
         try {
-            $sdk->put('products/' . $woocommerceProductId, $updateData);
+            $sdk->put('products/'.$woocommerceProductId, $updateData);
 
             $response = json_decode($sdk->http->getResponse()->getBody(), true);
 
@@ -86,7 +84,7 @@ class SyncProduct implements Sync
 
         try {
             $sdk->delete(
-                'products/' . $product->meta['woocommerce_product_id'],
+                'products/'.$product->meta['woocommerce_product_id'],
                 ['force' => true]
             );
 
@@ -127,7 +125,7 @@ class SyncProduct implements Sync
     protected function prepareUpdateData(Product $product)
     {
         $updateData = [
-            'images' => []
+            'images' => [],
         ];
 
         foreach ($product->productVariants as $productVariant) {

@@ -37,6 +37,7 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('product', function ($value) {
             $shop = $this->app->make(Controller::class)->getShop();
+
             return throw_unless(
                 $shop->products()->find($value),
                 new NotFoundHttpException('product not found')
@@ -45,6 +46,7 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('order', function ($value) {
             $shop = $this->app->make(Controller::class)->getShop();
+
             return throw_unless(
                 $shop->orders()->find($value),
                 new NotFoundHttpException('order not found')

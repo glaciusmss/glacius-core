@@ -26,7 +26,7 @@ class WebsocketServiceProvider extends ServiceProvider
     {
         Gate::define('viewWebSocketsDashboard', function ($user = null) {
             return in_array($user->email, [
-                'lkloon123@hotmail.com'
+                'lkloon123@hotmail.com',
             ]);
         });
     }

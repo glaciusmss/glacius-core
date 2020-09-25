@@ -17,7 +17,7 @@ use Illuminate\Support\Str;
 class AuthenticateBotUser implements Received
 {
     protected $excepts = [
-        '/start'
+        '/start',
     ];
 
     /**
@@ -40,9 +40,10 @@ class AuthenticateBotUser implements Received
 
         $channel = $this->getNotificationChannel($platform);
 
-        if (!$channel) {
+        if (! $channel) {
             $message->addExtras('should_stop', true);
             $message->addExtras('stop_msg', 'This channel is currently not supported yet');
+
             return $next($message);
         }
 
@@ -50,9 +51,10 @@ class AuthenticateBotUser implements Received
             ->wherePivot("meta->{$platform}_bot_id", $botId)
             ->first();
 
-        if (!$userAssociated) {
+        if (! $userAssociated) {
             $message->addExtras('should_stop', true);
             $message->addExtras('stop_msg', ['you are not connected', 'please run /start first']);
+
             return $next($message);
         }
 

@@ -18,15 +18,15 @@ class PaginationRequest extends BaseRequest
             'page' => 'numeric',
             'per_page' => 'numeric',
             'sort_field' => 'string',
-            'sort_order' => 'string'
+            'sort_order' => 'string',
         ];
     }
 
     protected function prepareForValidation()
     {
         $this->merge([
-            'page' => (int)$this->page,
-            'per_page' => (int)$this->per_page,
+            'page' => (int) $this->page,
+            'per_page' => (int) $this->per_page,
         ]);
     }
 }

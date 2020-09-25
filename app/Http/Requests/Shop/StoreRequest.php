@@ -5,7 +5,6 @@
 
 namespace App\Http\Requests\Shop;
 
-
 use App\Http\Requests\BaseRequest;
 
 class StoreRequest extends BaseRequest
@@ -19,7 +18,7 @@ class StoreRequest extends BaseRequest
     {
         return [
             'name' => 'required',
-            'description' => 'required'
+            'description' => 'required',
         ];
     }
 }

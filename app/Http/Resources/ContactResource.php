@@ -5,9 +5,8 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * Class ContactResource
+ * Class ContactResource.
  * @mixin \App\Contact
- * @package App\Http\Resources
  */
 class ContactResource extends JsonResource
 {

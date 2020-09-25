@@ -35,19 +35,19 @@ class CustomerCreated extends Notification implements ShouldQueue
     public function toTelegram($notifiable)
     {
         /** @var Shop $notifiable */
-        return $notifiable->name . ': You have new customer, ID [' . $this->customer->id . '] from [' . Str::title($this->customer->marketplace->name) . ']';
+        return $notifiable->name.': You have new customer, ID ['.$this->customer->id.'] from ['.Str::title($this->customer->marketplace->name).']';
     }
 
     public function toFacebook($notifiable)
     {
         /** @var Shop $notifiable */
-        return $notifiable->name . ': You have new customer, ID [' . $this->customer->id . '] from [' . Str::title($this->customer->marketplace->name) . ']';
+        return $notifiable->name.': You have new customer, ID ['.$this->customer->id.'] from ['.Str::title($this->customer->marketplace->name).']';
     }
 
     public function toBroadcast($notifiable)
     {
         $message = new BroadcastMessage([
-            'customer' => new CustomerResource($this->customer)
+            'customer' => new CustomerResource($this->customer),
         ]);
 
         return $message->onQueue(QueueGroup::Broadcast);

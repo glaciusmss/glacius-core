@@ -5,7 +5,6 @@
 
 namespace App\Contracts;
 
-
 use App\Enums\DeviceType;
 use Illuminate\Http\Request;
 

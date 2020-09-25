@@ -20,5 +20,6 @@ $botman->fallback(function (Botman $bot) {
 $botman->exception(\Exception::class, function (\Exception $exception, Botman $bot) {
     $exceptionHandler = app(App\Exceptions\BotHandler::class);
     $exceptionHandler->report($exception);
+
     return $exceptionHandler->render($exception, $bot);
 });

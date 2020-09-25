@@ -21,7 +21,7 @@ class MediaController extends Controller
         $file = $request->file('file');
 
         /** @var UploadedFile $file */
-        $fileName = Str::orderedUuid()->toString() . '.' . $file->getClientOriginalExtension();
+        $fileName = Str::orderedUuid()->toString().'.'.$file->getClientOriginalExtension();
         $filePath = $file->storeAs('/temp/image', $fileName);
 
         TempMedia::create([
@@ -31,7 +31,7 @@ class MediaController extends Controller
         ]);
 
         return response()->json([
-            'file' => $fileName
+            'file' => $fileName,
         ]);
     }
 }

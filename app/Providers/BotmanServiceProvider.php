@@ -8,7 +8,6 @@
 
 namespace App\Providers;
 
-
 use App\Botman\Controllers\Commands\DisconnectCommand;
 use App\Botman\Controllers\Commands\StartCommand;
 use App\Contracts\BotAuth as BotAuthContract;

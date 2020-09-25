@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\Easystore\Syncs;
-
 
 use App\Contracts\Sync;
 use App\DTO\SyncState;
@@ -37,13 +35,13 @@ class SyncProduct implements Sync
 
             //update model with easystore meta
             $product->update([
-                'meta->easystore_product_id' => Arr::get($response, 'product.id')
+                'meta->easystore_product_id' => Arr::get($response, 'product.id'),
             ]);
 
             $product->productVariants
                 ->find($product->productVariants->first()['id'])
                 ->update([
-                    'meta->easystore_variant_id' => Arr::get($response, 'product.variants.0.id')
+                    'meta->easystore_variant_id' => Arr::get($response, 'product.variants.0.id'),
                 ]);
 
             return new SyncState(State::Success());
@@ -124,14 +122,14 @@ class SyncProduct implements Sync
         return [
             'name' => $product->name,
             'body_html' => $product->description,
-            "inventory_management" => 'none',
+            'inventory_management' => 'none',
             'published_at' => now()->toDateTimeString(),
             'images' => $images,
             'variants' => [
                 [
                     'price' => $newVariants['price'],
-                    'inventory_quantity' => $newVariants['stock']
-                ]
+                    'inventory_quantity' => $newVariants['stock'],
+                ],
             ],
         ];
     }

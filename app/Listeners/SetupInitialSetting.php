@@ -19,18 +19,18 @@ class SetupInitialSetting
                 'setting_value' => true,
                 'type' => 'boolean',
             ],
-//            [
-//                'label' => 'Order Sync',
-//                'setting_key' => 'is_order_sync_activated',
-//                'setting_value' => true,
-//                'type' => 'boolean'
-//            ],
+            //            [
+            //                'label' => 'Order Sync',
+            //                'setting_key' => 'is_order_sync_activated',
+            //                'setting_value' => true,
+            //                'type' => 'boolean'
+            //            ],
             [
                 'label' => 'Customer Sync',
                 'setting_key' => 'is_customer_sync_activated',
                 'setting_value' => true,
-                'type' => 'boolean'
-            ]
+                'type' => 'boolean',
+            ],
         ], 'sync');
     }
 }

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Requests;
-
 
 use App\Contracts\RequestValidation;
 use App\Exceptions\NotSupportedException;
@@ -15,13 +13,13 @@ class ConnectorRequest extends BaseRequest
         'post_oauth' => 'onInstall',
         'delete_oauth' => 'onDeleteAuth',
         'post_callback' => 'onInstallCallback',
-        'get_oauth' => 'onInstallCallback'
+        'get_oauth' => 'onInstallCallback',
     ];
 
     public function rules()
     {
         // find rules from oauth configurations
-        if (!$functionName = $this->mapUriToFunction()) {
+        if (! $functionName = $this->mapUriToFunction()) {
             throw new NotSupportedException('this url is not supported');
         }
 
@@ -46,7 +44,7 @@ class ConnectorRequest extends BaseRequest
         $uri = Arr::last($this->segments());
         $method = strtolower($this->getMethod());
 
-        return Arr::get($this->uriToFuncMapper, $method . '_' . $uri);
+        return Arr::get($this->uriToFuncMapper, $method.'_'.$uri);
     }
 
     protected function wrapRules($rules): array
@@ -59,8 +57,8 @@ class ConnectorRequest extends BaseRequest
             $rules = app($rules);
         }
 
-        if (!($rules instanceof RequestValidation)) {
-            throw new \InvalidArgumentException("validation rules ($rules) has to be an array or implement " . RequestValidation::class);
+        if (! ($rules instanceof RequestValidation)) {
+            throw new \InvalidArgumentException("validation rules ($rules) has to be an array or implement ".RequestValidation::class);
         }
 
         return $rules->rules();

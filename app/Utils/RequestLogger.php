@@ -8,7 +8,6 @@
 
 namespace App\Utils;
 
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Spatie\HttpLogger\LogProfile;
@@ -33,7 +32,7 @@ class RequestLogger implements LogWriter, LogProfile
             'method' => $method,
             'uri' => $uri,
             'header' => $header,
-            'body' => $body
+            'body' => $body,
         ];
         \Log::channel('requestlog')->info(json_encode($message, JSON_UNESCAPED_SLASHES));
     }
