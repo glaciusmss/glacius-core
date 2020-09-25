@@ -16,7 +16,7 @@ class PaginationRequest extends BaseRequest
     {
         return [
             'page' => 'numeric',
-            'size_per_page' => 'numeric',
+            'per_page' => 'numeric',
             'sort_field' => 'string',
             'sort_order' => 'string'
         ];
@@ -26,7 +26,7 @@ class PaginationRequest extends BaseRequest
     {
         $this->merge([
             'page' => (int)$this->page,
-            'size_per_page' => (int)$this->size_per_page,
+            'per_page' => (int)$this->per_page,
         ]);
     }
 }

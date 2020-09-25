@@ -11,17 +11,29 @@ use App\Http\Requests\Product\StoreRequest;
 use App\Http\Requests\Product\UpdateRequest;
 use App\Http\Resources\ProductResource;
 use App\Product;
+use App\SearchEngine\SearchRules\PartialSearchRule;
+use App\Utils\Helper;
 use Illuminate\Support\Arr;
 
 class ProductController extends Controller
 {
     public function index(RetrieveRequest $request)
     {
+        $searchData = $request->get('search');
         $pagination = Pagination::makePaginationFromRequest($request);
 
-        $productsData = $this->getShop()->products()
-            ->with('productVariants')
-            ->withPagination($pagination);
+        if ($searchData !== null) {
+            $productsData = Product::search(Helper::escapeElasticReservedChars($searchData))
+                ->rule(PartialSearchRule::class)
+                ->with('productVariants')
+                ->where('shop_id', $this->getShop()->id)
+                ->orderBy($pagination->getSortField(), $pagination->getSortOrder())
+                ->paginate($pagination->getPerPage());
+        } else {
+            $productsData = $this->getShop()->products()
+                ->with('productVariants')
+                ->withPagination($pagination);
+        }
 
         return ProductResource::collection($productsData)->additional([
             'meta' => [

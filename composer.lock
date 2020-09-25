@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "84ce1fefe4d4ddaf2dc6b66a0f4458ac",
+    "content-hash": "309317de73f3703daa13e0b44cad1846",
     "packages": [
         {
             "name": "ajcastro/eager-load-pivot-relations",
@@ -218,6 +218,67 @@
             "time": "2019-01-16T20:28:40+00:00"
         },
         {
+            "name": "babenkoivan/scout-elasticsearch-driver",
+            "version": "v4.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/babenkoivan/scout-elasticsearch-driver.git",
+                "reference": "6daad2e7899936c11c227637f0c49a93a86e28b4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/babenkoivan/scout-elasticsearch-driver/zipball/6daad2e7899936c11c227637f0c49a93a86e28b4",
+                "reference": "6daad2e7899936c11c227637f0c49a93a86e28b4",
+                "shasum": ""
+            },
+            "require": {
+                "elasticsearch/elasticsearch": ">=7.0 <7.4.0",
+                "laravel/scout": "^7.0|^8.0",
+                "php": "^7.1.3"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "phpunit/phpunit": "^7.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ScoutElastic\\ScoutElasticServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ScoutElastic\\Tests\\": "tests/",
+                    "ScoutElastic\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Babenko Ivan",
+                    "email": "babenko.i.a@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The Elasticsearch Driver for Laravel Scout",
+            "homepage": "https://babenkoivan.github.io/scout-elasticsearch-driver/",
+            "keywords": [
+                "driver",
+                "elastic",
+                "elasticsearch",
+                "engine",
+                "laravel",
+                "scout",
+                "search"
+            ],
+            "time": "2020-08-13T17:57:09+00:00"
+        },
+        {
             "name": "bensampo/laravel-enum",
             "version": "v3.0.0",
             "source": {
@@ -369,38 +430,36 @@
         },
         {
             "name": "botman/botman",
-            "version": "2.6.0",
+            "version": "2.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/botman/botman.git",
-                "reference": "a3da1d66da62392b70c700c0f5583092be55a3ba"
+                "reference": "127f7dc0aef5bc0561f8a2a8a3b246fe951b63e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/botman/botman/zipball/a3da1d66da62392b70c700c0f5583092be55a3ba",
-                "reference": "a3da1d66da62392b70c700c0f5583092be55a3ba",
+                "url": "https://api.github.com/repos/botman/botman/zipball/127f7dc0aef5bc0561f8a2a8a3b246fe951b63e7",
+                "reference": "127f7dc0aef5bc0561f8a2a8a3b246fe951b63e7",
                 "shasum": ""
             },
             "require": {
-                "mpociot/pipeline": "^1.0",
+                "mpociot/pipeline": "^1.0.2",
                 "opis/closure": "^2.3 || ^3.0",
                 "php": ">=7.1",
                 "psr/container": "^1.0",
                 "react/socket": "~1.0",
                 "spatie/macroable": "^1.0",
                 "symfony/http-foundation": "^2.8 || ^3.0 || ^4.0 || ^5.0",
-                "tightenco/collect": "~5.0 || ~6.0"
+                "tightenco/collect": "^5.0 || ^6.0 || ^7.0 || ^8.0"
             },
             "require-dev": {
                 "codeigniter/framework": "~3.0",
                 "doctrine/cache": "^1.6",
                 "ext-curl": "*",
-                "illuminate/support": "^5.4",
                 "mockery/mockery": "^1.1",
-                "orchestra/testbench": "~3.0",
-                "phpunit/phpunit": "~6.4",
-                "sllh/php-cs-fixer-styleci-bridge": "^2.1",
-                "symfony/cache": "^3.1"
+                "orchestra/testbench": "^3.4 || ^4.0 || ^5.0 || ^6.0",
+                "phpunit/phpunit": "^6.0 || ^7.0 || ^8.0",
+                "symfony/cache": "^3.4.35 || ^4.3.7 || ^5.0"
             },
             "suggest": {
                 "doctrine/cache": "Use any Doctrine cache driver for cache",
@@ -442,7 +501,7 @@
                 "bot",
                 "chatbot"
             ],
-            "time": "2020-05-29T14:47:18+00:00"
+            "time": "2020-09-10T04:44:03+00:00"
         },
         {
             "name": "botman/driver-facebook",
@@ -948,16 +1007,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.20",
+            "version": "2.1.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "f46887bc48db66c7f38f668eb7d6ae54583617ff"
+                "reference": "563d0cdde5d862235ffe24a158497f4d490191b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/f46887bc48db66c7f38f668eb7d6ae54583617ff",
-                "reference": "f46887bc48db66c7f38f668eb7d6ae54583617ff",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/563d0cdde5d862235ffe24a158497f4d490191b5",
+                "reference": "563d0cdde5d862235ffe24a158497f4d490191b5",
                 "shasum": ""
             },
             "require": {
@@ -1002,7 +1061,67 @@
                 "validation",
                 "validator"
             ],
-            "time": "2020-09-06T13:44:32+00:00"
+            "time": "2020-09-19T14:37:56+00:00"
+        },
+        {
+            "name": "elasticsearch/elasticsearch",
+            "version": "v7.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/elastic/elasticsearch-php.git",
+                "reference": "f8b5d2beeeb22a5a59aabb183b5bcd7e70878d2f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/elastic/elasticsearch-php/zipball/f8b5d2beeeb22a5a59aabb183b5bcd7e70878d2f",
+                "reference": "f8b5d2beeeb22a5a59aabb183b5bcd7e70878d2f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": ">=1.3.7",
+                "guzzlehttp/ringphp": "~1.0",
+                "php": "^7.1",
+                "psr/log": "~1.0"
+            },
+            "require-dev": {
+                "cpliakas/git-wrapper": "~2.0",
+                "doctrine/inflector": "^1.3",
+                "mockery/mockery": "^1.2",
+                "phpstan/phpstan-shim": "^0.11",
+                "phpunit/phpunit": "^7.5",
+                "squizlabs/php_codesniffer": "^3.4",
+                "symfony/finder": "~4.0",
+                "symfony/yaml": "~4.0"
+            },
+            "suggest": {
+                "ext-curl": "*",
+                "monolog/monolog": "Allows for client-level logging and tracing"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Elasticsearch\\": "src/Elasticsearch/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Zachary Tong"
+                },
+                {
+                    "name": "Enrico Zimuel"
+                }
+            ],
+            "description": "PHP Client for Elasticsearch",
+            "keywords": [
+                "client",
+                "elasticsearch",
+                "search"
+            ],
+            "time": "2019-09-30T12:52:38+00:00"
         },
         {
             "name": "evenement/evenement",
@@ -1331,16 +1450,16 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.146",
+            "version": "v0.147",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
-                "reference": "029e20e81508cee6dc652529514eeeb1cf56ce54"
+                "reference": "8624bd004cfccb33b760ae7650d0b750168cd7f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/029e20e81508cee6dc652529514eeeb1cf56ce54",
-                "reference": "029e20e81508cee6dc652529514eeeb1cf56ce54",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/8624bd004cfccb33b760ae7650d0b750168cd7f7",
+                "reference": "8624bd004cfccb33b760ae7650d0b750168cd7f7",
                 "shasum": ""
             },
             "require": {
@@ -1364,7 +1483,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2020-09-12T00:24:59+00:00"
+            "time": "2020-09-20T00:24:43+00:00"
         },
         {
             "name": "google/auth",
@@ -1472,16 +1591,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "7.0.1",
+            "version": "7.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "2d9d3c186a6637a43193e66b097c50e4451eaab2"
+                "reference": "7edeaa528fbb57123028bd5a76b9ce9540194e26"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/2d9d3c186a6637a43193e66b097c50e4451eaab2",
-                "reference": "2d9d3c186a6637a43193e66b097c50e4451eaab2",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/7edeaa528fbb57123028bd5a76b9ce9540194e26",
+                "reference": "7edeaa528fbb57123028bd5a76b9ce9540194e26",
                 "shasum": ""
             },
             "require": {
@@ -1495,7 +1614,6 @@
                 "psr/http-client-implementation": "1.0"
             },
             "require-dev": {
-                "ergebnis/composer-normalize": "^2.0",
                 "ext-curl": "*",
                 "php-http/client-integration-tests": "dev-phpunit8",
                 "phpunit/phpunit": "^8.5.5",
@@ -1509,7 +1627,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "7.0-dev"
+                    "dev-master": "7.1-dev"
                 }
             },
             "autoload": {
@@ -1549,7 +1667,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2020-06-27T10:33:25+00:00"
+            "time": "2020-09-22T09:10:04+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -1672,6 +1790,109 @@
                 "url"
             ],
             "time": "2019-07-01T23:21:34+00:00"
+        },
+        {
+            "name": "guzzlehttp/ringphp",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/RingPHP.git",
+                "reference": "5e2a174052995663dd68e6b5ad838afd47dd615b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/RingPHP/zipball/5e2a174052995663dd68e6b5ad838afd47dd615b",
+                "reference": "5e2a174052995663dd68e6b5ad838afd47dd615b",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/streams": "~3.0",
+                "php": ">=5.4.0",
+                "react/promise": "~2.0"
+            },
+            "require-dev": {
+                "ext-curl": "*",
+                "phpunit/phpunit": "~4.0"
+            },
+            "suggest": {
+                "ext-curl": "Guzzle will use specific adapters if cURL is present"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GuzzleHttp\\Ring\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                }
+            ],
+            "description": "Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function.",
+            "abandoned": true,
+            "time": "2018-07-31T13:22:33+00:00"
+        },
+        {
+            "name": "guzzlehttp/streams",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/streams.git",
+                "reference": "47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/streams/zipball/47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5",
+                "reference": "47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GuzzleHttp\\Stream\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                }
+            ],
+            "description": "Provides a simple abstraction over streams of data",
+            "homepage": "http://guzzlephp.org/",
+            "keywords": [
+                "Guzzle",
+                "stream"
+            ],
+            "abandoned": true,
+            "time": "2014-10-12T19:18:40+00:00"
         },
         {
             "name": "hanneskod/classtools",
@@ -1957,16 +2178,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v8.5.0",
+            "version": "v8.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "5a748eecae35fd453e0b1e4d4b6f4fadf0d3e7ac"
+                "reference": "a71952a6dba55de0bb11b5fbbd84874eda2a755c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/5a748eecae35fd453e0b1e4d4b6f4fadf0d3e7ac",
-                "reference": "5a748eecae35fd453e0b1e4d4b6f4fadf0d3e7ac",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/a71952a6dba55de0bb11b5fbbd84874eda2a755c",
+                "reference": "a71952a6dba55de0bb11b5fbbd84874eda2a755c",
                 "shasum": ""
             },
             "require": {
@@ -2116,20 +2337,20 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2020-09-18T21:27:11+00:00"
+            "time": "2020-09-22T13:42:02+00:00"
         },
         {
             "name": "laravel/horizon",
-            "version": "v5.0.0",
+            "version": "v5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/horizon.git",
-                "reference": "1093218e2bad6a5037389a72b4ecef19af763c10"
+                "reference": "09173d933845cb035eeee19ce8debf94b28bb717"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/horizon/zipball/1093218e2bad6a5037389a72b4ecef19af763c10",
-                "reference": "1093218e2bad6a5037389a72b4ecef19af763c10",
+                "url": "https://api.github.com/repos/laravel/horizon/zipball/09173d933845cb035eeee19ce8debf94b28bb717",
+                "reference": "09173d933845cb035eeee19ce8debf94b28bb717",
                 "shasum": ""
             },
             "require": {
@@ -2189,7 +2410,73 @@
                 "laravel",
                 "queue"
             ],
-            "time": "2020-09-08T15:23:07+00:00"
+            "time": "2020-09-22T16:21:33+00:00"
+        },
+        {
+            "name": "laravel/scout",
+            "version": "v8.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/scout.git",
+                "reference": "e168e5cf3e26372bcfe770e01577903a6fa05077"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/scout/zipball/e168e5cf3e26372bcfe770e01577903a6fa05077",
+                "reference": "e168e5cf3e26372bcfe770e01577903a6fa05077",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/bus": "^6.0|^7.0|^8.0",
+                "illuminate/contracts": "^6.0|^7.0|^8.0",
+                "illuminate/database": "^6.0|^7.0|^8.0",
+                "illuminate/http": "^6.0|^7.0|^8.0",
+                "illuminate/pagination": "^6.0|^7.0|^8.0",
+                "illuminate/queue": "^6.0|^7.0|^8.0",
+                "illuminate/support": "^6.0|^7.0|^8.0",
+                "php": "^7.2"
+            },
+            "require-dev": {
+                "algolia/algoliasearch-client-php": "^2.2",
+                "mockery/mockery": "^1.0",
+                "phpunit/phpunit": "^8.0|^9.3"
+            },
+            "suggest": {
+                "algolia/algoliasearch-client-php": "Required to use the Algolia engine (^2.2)."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "8.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Laravel\\Scout\\ScoutServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Scout\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "Laravel Scout provides a driver based solution to searching your Eloquent models.",
+            "keywords": [
+                "algolia",
+                "laravel",
+                "search"
+            ],
+            "time": "2020-09-01T16:19:15+00:00"
         },
         {
             "name": "laravel/socialite",
@@ -2258,16 +2545,16 @@
         },
         {
             "name": "laravel/telescope",
-            "version": "v4.0.0",
+            "version": "v4.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/telescope.git",
-                "reference": "ff4594284ad73e895070265a26e1c0538b984191"
+                "reference": "4bd0a8b01b889c7704cd0a1d04a849c8da993f43"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/telescope/zipball/ff4594284ad73e895070265a26e1c0538b984191",
-                "reference": "ff4594284ad73e895070265a26e1c0538b984191",
+                "url": "https://api.github.com/repos/laravel/telescope/zipball/4bd0a8b01b889c7704cd0a1d04a849c8da993f43",
+                "reference": "4bd0a8b01b889c7704cd0a1d04a849c8da993f43",
                 "shasum": ""
             },
             "require": {
@@ -2313,7 +2600,7 @@
                 "laravel",
                 "monitoring"
             ],
-            "time": "2020-09-08T14:55:22+00:00"
+            "time": "2020-09-22T16:49:01+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -2698,16 +2985,16 @@
         },
         {
             "name": "league/mime-type-detection",
-            "version": "1.4.0",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/mime-type-detection.git",
-                "reference": "fda190b62b962d96a069fcc414d781db66d65b69"
+                "reference": "ea2fbfc988bade315acd5967e6d02274086d0f28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/mime-type-detection/zipball/fda190b62b962d96a069fcc414d781db66d65b69",
-                "reference": "fda190b62b962d96a069fcc414d781db66d65b69",
+                "url": "https://api.github.com/repos/thephpleague/mime-type-detection/zipball/ea2fbfc988bade315acd5967e6d02274086d0f28",
+                "reference": "ea2fbfc988bade315acd5967e6d02274086d0f28",
                 "shasum": ""
             },
             "require": {
@@ -2735,7 +3022,7 @@
                 }
             ],
             "description": "Mime-type detection for Flysystem",
-            "time": "2020-08-09T10:34:01+00:00"
+            "time": "2020-09-21T18:10:53+00:00"
         },
         {
             "name": "league/oauth1-client",
@@ -3240,16 +3527,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.40.0",
+            "version": "2.40.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "6c7646154181013ecd55e80c201b9fd873c6ee5d"
+                "reference": "d9a76d8b7eb0f97cf3a82529393245212f40ba3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/6c7646154181013ecd55e80c201b9fd873c6ee5d",
-                "reference": "6c7646154181013ecd55e80c201b9fd873c6ee5d",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/d9a76d8b7eb0f97cf3a82529393245212f40ba3b",
+                "reference": "d9a76d8b7eb0f97cf3a82529393245212f40ba3b",
                 "shasum": ""
             },
             "require": {
@@ -3315,20 +3602,20 @@
                 "datetime",
                 "time"
             ],
-            "time": "2020-09-11T19:00:58+00:00"
+            "time": "2020-09-23T08:17:37+00:00"
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.10.0",
+            "version": "v4.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "1c13d05035deff45f1230ca68bd7d74d621762d9"
+                "reference": "1b479e7592812411c20c34d9ed33db3957bde66e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/1c13d05035deff45f1230ca68bd7d74d621762d9",
-                "reference": "1c13d05035deff45f1230ca68bd7d74d621762d9",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/1b479e7592812411c20c34d9ed33db3957bde66e",
+                "reference": "1b479e7592812411c20c34d9ed33db3957bde66e",
                 "shasum": ""
             },
             "require": {
@@ -3367,7 +3654,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2020-09-19T14:52:48+00:00"
+            "time": "2020-09-23T18:23:49+00:00"
         },
         {
             "name": "opis/closure",
@@ -5277,16 +5564,16 @@
         },
         {
             "name": "spatie/laravel-medialibrary",
-            "version": "8.7.1",
+            "version": "8.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-medialibrary.git",
-                "reference": "316bdc11fbca573415b99eaed9830bdeb383ad44"
+                "reference": "a2fc872e3daa9b8a3473eaf02d86a8ad0112fe1b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/316bdc11fbca573415b99eaed9830bdeb383ad44",
-                "reference": "316bdc11fbca573415b99eaed9830bdeb383ad44",
+                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/a2fc872e3daa9b8a3473eaf02d86a8ad0112fe1b",
+                "reference": "a2fc872e3daa9b8a3473eaf02d86a8ad0112fe1b",
                 "shasum": ""
             },
             "require": {
@@ -5312,7 +5599,7 @@
                 "doctrine/dbal": "^2.5.2",
                 "ext-pdo_sqlite": "*",
                 "ext-zip": "*",
-                "guzzlehttp/guzzle": "^6.3",
+                "guzzlehttp/guzzle": "^6.3|^7.0",
                 "league/flysystem-aws-s3-v3": "^1.0.23",
                 "mockery/mockery": "^1.3",
                 "orchestra/testbench": "^4.0|^5.0|^6.0",
@@ -5363,7 +5650,7 @@
                 "media",
                 "spatie"
             ],
-            "time": "2020-09-08T17:55:03+00:00"
+            "time": "2020-09-20T21:17:45+00:00"
         },
         {
             "name": "spatie/macroable",
@@ -7505,16 +7792,16 @@
         },
         {
             "name": "tightenco/collect",
-            "version": "v6.18.34",
+            "version": "v8.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tighten/collect.git",
-                "reference": "624b86cde21f8d9ba14ec0e4974ef0aca3922a1c"
+                "reference": "0d261a13c36fe964449d0240744eb4094ac3cd12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tighten/collect/zipball/624b86cde21f8d9ba14ec0e4974ef0aca3922a1c",
-                "reference": "624b86cde21f8d9ba14ec0e4974ef0aca3922a1c",
+                "url": "https://api.github.com/repos/tighten/collect/zipball/0d261a13c36fe964449d0240744eb4094ac3cd12",
+                "reference": "0d261a13c36fe964449d0240744eb4094ac3cd12",
                 "shasum": ""
             },
             "require": {
@@ -7551,7 +7838,7 @@
                 "collection",
                 "laravel"
             ],
-            "time": "2020-08-21T22:25:58+00:00"
+            "time": "2020-09-14T22:38:08+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -8369,30 +8656,30 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "2.10.4",
+            "version": "2.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "47433196b6390d14409a33885ee42b6208160643"
+                "reference": "0d4e1a8b29dd987704842f0465aded378f441dca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/47433196b6390d14409a33885ee42b6208160643",
-                "reference": "47433196b6390d14409a33885ee42b6208160643",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/0d4e1a8b29dd987704842f0465aded378f441dca",
+                "reference": "0d4e1a8b29dd987704842f0465aded378f441dca",
                 "shasum": ""
             },
             "require": {
                 "doctrine/cache": "^1.0",
                 "doctrine/event-manager": "^1.0",
                 "ext-pdo": "*",
-                "php": "^7.2"
+                "php": "^7.3"
             },
             "require-dev": {
                 "doctrine/coding-standard": "^8.1",
                 "jetbrains/phpstorm-stubs": "^2019.1",
                 "nikic/php-parser": "^4.4",
                 "phpstan/phpstan": "^0.12.40",
-                "phpunit/phpunit": "^8.5.5",
+                "phpunit/phpunit": "^9.3",
                 "psalm/plugin-phpunit": "^0.10.0",
                 "symfony/console": "^2.0.5|^3.0|^4.0|^5.0",
                 "vimeo/psalm": "^3.14.2"
@@ -8406,8 +8693,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.10.x-dev",
-                    "dev-develop": "3.0.x-dev"
+                    "dev-master": "4.0.x-dev"
                 }
             },
             "autoload": {
@@ -8460,7 +8746,7 @@
                 "sqlserver",
                 "sqlsrv"
             ],
-            "time": "2020-09-12T21:20:41+00:00"
+            "time": "2020-09-20T23:24:53+00:00"
         },
         {
             "name": "doctrine/event-manager",
@@ -9713,16 +9999,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "9.3.10",
+            "version": "9.3.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "919333f2d046a89f9238f15d09f17a8f0baa5cc2"
+                "reference": "f7316ea106df7c9507f4fdaa88c47bc10a3b27a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/919333f2d046a89f9238f15d09f17a8f0baa5cc2",
-                "reference": "919333f2d046a89f9238f15d09f17a8f0baa5cc2",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/f7316ea106df7c9507f4fdaa88c47bc10a3b27a1",
+                "reference": "f7316ea106df7c9507f4fdaa88c47bc10a3b27a1",
                 "shasum": ""
             },
             "require": {
@@ -9738,7 +10024,7 @@
                 "phar-io/version": "^3.0.2",
                 "php": ">=7.3",
                 "phpspec/prophecy": "^1.11.1",
-                "phpunit/php-code-coverage": "^9.1.5",
+                "phpunit/php-code-coverage": "^9.1.11",
                 "phpunit/php-file-iterator": "^3.0.4",
                 "phpunit/php-invoker": "^3.1",
                 "phpunit/php-text-template": "^2.0.2",
@@ -9798,7 +10084,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2020-09-12T09:34:39+00:00"
+            "time": "2020-09-24T08:08:49+00:00"
         },
         {
             "name": "scrivo/highlight.php",

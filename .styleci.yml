@@ -1,10 +1,7 @@
-php:
-  preset: laravel
-  disabled:
-    - no_unused_imports
-  finder:
-    exclude:
-      - "public/vendor"
-    not-name:
-      - index.php
-      - server.php
+preset: laravel
+disabled:
+  - no_unused_imports
+finder:
+  not-name:
+    - index.php
+    - server.php

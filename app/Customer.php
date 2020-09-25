@@ -5,9 +5,11 @@ namespace App;
 use App\Scopes\OrderScope;
 use App\Scopes\PaginationScope;
 use App\Scopes\PeriodScope;
+use App\SearchEngine\IndexConfigurators\CustomerIndexConfigurator;
 use App\Utils\HasAddresses;
 use App\Utils\HasContact;
 use Illuminate\Database\Eloquent\Model;
+use ScoutElastic\Searchable;
 
 /**
  * App\Customer
@@ -51,13 +53,42 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Customer extends Model
 {
-    use HasAddresses, HasContact, OrderScope, PeriodScope, PaginationScope;
+    use HasAddresses, HasContact, OrderScope, PeriodScope, PaginationScope, Searchable;
+
+    protected $indexConfigurator = CustomerIndexConfigurator::class;
+
+    protected $mapping = [
+        'properties' => [
+            'id' => ['type' => 'keyword'],
+            'email' => ['type' => 'keyword'],
+            'first_name' => ['type' => 'keyword'],
+            'last_name' => ['type' => 'keyword'],
+            'phone' => ['type' => 'keyword'],
+            'marketplace_name' => ['type' => 'text'],
+            'shop_id' => ['type' => 'keyword'],
+            'created_at' => ['type' => 'keyword'],
+        ]
+    ];
 
     protected $guarded = [];
 
     protected $casts = [
         'meta' => 'array'
     ];
+
+    public function toSearchableArray()
+    {
+        return [
+            'id' => $this->id,
+            'email' => $this->contact->email,
+            'first_name' => $this->contact->first_name,
+            'last_name' => $this->contact->last_name,
+            'phone' => $this->contact->phone,
+            'marketplace_name' => $this->marketplace->name,
+            'shop_id' => $this->shop_id,
+            'created_at' => $this->created_at,
+        ];
+    }
 
     public function shop()
     {

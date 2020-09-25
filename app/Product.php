@@ -4,10 +4,12 @@ namespace App;
 
 use App\Scopes\OrderScope;
 use App\Scopes\PaginationScope;
+use App\SearchEngine\IndexConfigurators\ProductIndexConfigurator;
 use App\Utils\HasSyncTrasactions;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use ScoutElastic\Searchable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -45,13 +47,36 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  */
 class Product extends Model implements HasMedia
 {
-    use InteractsWithMedia, HasSyncTrasactions, OrderScope, PaginationScope;
+    use InteractsWithMedia, HasSyncTrasactions, OrderScope, PaginationScope, Searchable;
+
+    protected $indexConfigurator = ProductIndexConfigurator::class;
+
+    protected $mapping = [
+        'properties' => [
+            'id' => ['type' => 'keyword'],
+            'name' => ['type' => 'keyword'],
+            'price' => ['type' => 'keyword'],
+            'shop_id' => ['type' => 'keyword'],
+            'updated_at' => ['type' => 'keyword'],
+        ]
+    ];
 
     protected $guarded = [];
 
     protected $casts = [
         'meta' => 'array'
     ];
+
+    public function toSearchableArray()
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'price' => $this->productVariants[0]->price,
+            'shop_id' => $this->shop_id,
+            'updated_at' => $this->updated_at,
+        ];
+    }
 
     public function attachNewMedia($newMedias)
     {

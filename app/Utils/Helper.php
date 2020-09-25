@@ -38,4 +38,11 @@ class Helper
             ->collapse()
             ->toArray();
     }
+
+    public static function escapeElasticReservedChars($string)
+    {
+        $regex = "/[\\+\\-\\=\\&\\|\\!\\(\\)\\{\\}\\[\\]\\^\\\"\\~\\*\\<\\>\\?\\:\\\\\\/]/";
+
+        return preg_replace($regex, addslashes('\\$0'), $string);
+    }
 }

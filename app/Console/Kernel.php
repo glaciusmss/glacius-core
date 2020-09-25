@@ -6,6 +6,7 @@ use App\Console\Commands\ClearExpiredImage;
 use App\Console\Commands\ClearExpiredToken;
 use App\Console\Commands\MigrateRollbackWebsocket;
 use App\Console\Commands\MigrateWebsocket;
+use App\Console\Commands\ScoutImportAll;
 use BeyondCode\LaravelWebSockets\Console\CleanStatistics;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -25,6 +26,7 @@ class Kernel extends ConsoleKernel
         ClearExpiredImage::class,
         MigrateWebsocket::class,
         MigrateRollbackWebsocket::class,
+        ScoutImportAll::class,
     ];
 
     /**

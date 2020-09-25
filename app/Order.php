@@ -2,10 +2,12 @@
 
 namespace App;
 
+use App\SearchEngine\IndexConfigurators\OrderIndexConfigurator;
 use App\Scopes\PaginationScope;
 use App\Scopes\PeriodScope;
 use App\Utils\HasAddresses;
 use Illuminate\Database\Eloquent\Model;
+use ScoutElastic\Searchable;
 
 /**
  * App\Order
@@ -55,7 +57,20 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Order extends Model
 {
-    use HasAddresses, PeriodScope, PaginationScope;
+    use HasAddresses, PeriodScope, PaginationScope, Searchable;
+
+    protected $indexConfigurator = OrderIndexConfigurator::class;
+
+    protected $mapping = [
+        'properties' => [
+            'id' => ['type' => 'keyword'],
+            'total_price' => ['type' => 'keyword'],
+            'subtotal_price' => ['type' => 'keyword'],
+            'marketplace_name' => ['type' => 'text'],
+            'shop_id' => ['type' => 'keyword'],
+            'created_at' => ['type' => 'keyword'],
+        ]
+    ];
 
     protected $perPage = 10;
 
@@ -64,6 +79,18 @@ class Order extends Model
     protected $casts = [
         'meta' => 'array'
     ];
+
+    public function toSearchableArray()
+    {
+        return [
+            'id' => $this->id,
+            'total_price' => $this->total_price,
+            'subtotal_price' => $this->subtotal_price,
+            'marketplace_name' => $this->marketplace->name,
+            'shop_id' => $this->shop_id,
+            'created_at' => $this->created_at,
+        ];
+    }
 
     public function shop()
     {
