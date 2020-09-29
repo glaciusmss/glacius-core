@@ -9,7 +9,6 @@ addons:
   mariadb: '10.5'
 
 before_install:
-  - which php
   - echo "memory_limit=2G" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 
 install:
@@ -21,7 +20,7 @@ before_script:
   - cp .env.testing.example .env
   - php artisan key:generate
   - php artisan jwt:secret --force
-  - sudo /usr/local/bin/php artisan migrate
+  - sudo `which php` artisan migrate
 
 script: vendor/bin/phpunit --coverage-clover=coverage.xml
 
