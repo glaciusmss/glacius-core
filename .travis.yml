@@ -3,7 +3,6 @@ language: php
 dist: xenial
 
 php:
-  - 7.3
   - 7.4
 
 before_install:
@@ -11,7 +10,7 @@ before_install:
 
 before_script:
   - composer self-update
-  - cp .env.testing .env
+  - cp .env.testing.example .env
   - php artisan key:generate
   - php artisan jwt:secret
 
