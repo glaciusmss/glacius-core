@@ -20,7 +20,7 @@ before_script:
   - cp .env.testing.example .env
   - php artisan key:generate
   - php artisan jwt:secret --force
-  - sudo php artisan migrate
+  - sudo /usr/bin/php artisan migrate
 
 script: vendor/bin/phpunit --coverage-clover=coverage.xml
 
