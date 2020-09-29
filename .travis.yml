@@ -1,0 +1,23 @@
+language: php
+dist: xenial
+
+php:
+  - 7.3
+  - 7.4
+
+before_install:
+  - echo "memory_limit=2G" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+
+before_script:
+  - composer self-update
+  - cp .env.testing .env
+  - php artisan key:generate
+  - php artisan jwt:secret
+
+install:
+  - composer install
+
+script: vendor/bin/phpunit --coverage-clover=coverage.xml
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
