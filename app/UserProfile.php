@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Enums\GenderEnum;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -30,6 +31,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class UserProfile extends Model
 {
+    use HasFactory;
+
     protected $guarded = [];
 
     protected $casts = [

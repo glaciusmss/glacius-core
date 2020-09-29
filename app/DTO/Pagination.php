@@ -10,9 +10,7 @@ namespace App\DTO;
 
 
 use App\Http\Requests\PaginationRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Pagination
 {
@@ -33,17 +31,13 @@ class Pagination
         $this->sortOrder = $sortOrder;
     }
 
-    public static function makePaginationFromRequest(Request $request)
+    public static function makePaginationFromRequest(PaginationRequest $request)
     {
-        if ($request instanceof PaginationRequest) {
-            return new self(
-                $request->input('per_page'),
-                $request->input('sort_field', 'id'),
-                $request->input('sort_order', 'desc')
-            );
-        }
-
-        throw new HttpException(500, 'request is not an instance of PaginationRequest');
+        return new self(
+            $request->input('per_page', 10),
+            $request->input('sort_field', 'id'),
+            $request->input('sort_order', 'desc')
+        );
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App;
 
 use App\Enums\AddressType;
 use App\Utils\HasContact;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -42,7 +43,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Address extends Model
 {
-    use HasContact;
+    use HasContact, HasFactory;
 
     protected $guarded = [];
 

@@ -5,6 +5,7 @@ namespace App;
 use App\Enums\NotificationChannelEnum;
 use App\Scopes\OrderScope;
 use App\Utils\HasSettings;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
@@ -43,7 +44,7 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  */
 class Shop extends Model
 {
-    use Notifiable, HasSettings, OrderScope, HasRelationships;
+    use Notifiable, HasSettings, OrderScope, HasRelationships, HasFactory;
 
     protected $guarded = [];
 

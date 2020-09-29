@@ -6,6 +6,7 @@ use App\Scopes\OrderScope;
 use App\Scopes\PaginationScope;
 use App\SearchEngine\IndexConfigurators\ProductIndexConfigurator;
 use App\Utils\HasSyncTrasactions;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -27,7 +28,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property-read int|null $media_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Order[] $orders
  * @property-read int|null $orders_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\ProductVariants[] $productVariants
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\ProductVariant[] $productVariants
  * @property-read int|null $product_variants_count
  * @property-read \App\Shop $shop
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\SyncTransaction[] $syncTransactions
@@ -47,7 +48,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  */
 class Product extends Model implements HasMedia
 {
-    use InteractsWithMedia, HasSyncTrasactions, OrderScope, PaginationScope, Searchable;
+    use InteractsWithMedia, HasSyncTrasactions, OrderScope, PaginationScope, Searchable, HasFactory;
 
     protected $indexConfigurator = ProductIndexConfigurator::class;
 
@@ -125,7 +126,7 @@ class Product extends Model implements HasMedia
 
     public function productVariants()
     {
-        return $this->hasMany(ProductVariants::class);
+        return $this->hasMany(ProductVariant::class);
     }
 
     public function orders()
@@ -133,6 +134,6 @@ class Product extends Model implements HasMedia
         return $this->belongsToMany(Order::class, 'order_details')
             ->withTimestamps()
             ->withPivot(['quantity'])
-            ->using(OrderDetails::class);
+            ->using(OrderDetail::class);
     }
 }

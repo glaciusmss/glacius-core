@@ -55,7 +55,7 @@ class ProductController extends Controller
         );
 
         $createdProduct->attachNewMedia(
-            $request->input('images')
+            $request->input('images', [])
         );
 
         //fire product created event
@@ -80,7 +80,7 @@ class ProductController extends Controller
         );
 
         $product->attachNewMedia(
-            $request->input('images')
+            $request->input('images', [])
         );
 
         //fire product updated event

@@ -13,11 +13,6 @@ class UserProfileController extends Controller
         return new UserProfileResource($this->getUser()->userProfile);
     }
 
-    public function show(UserProfile $userProfile)
-    {
-        //
-    }
-
     public function update(UpdateRequest $request, UserProfile $userProfile)
     {
         $userProfileData = $request->validated();

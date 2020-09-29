@@ -8,6 +8,7 @@ use App\Scopes\PeriodScope;
 use App\SearchEngine\IndexConfigurators\CustomerIndexConfigurator;
 use App\Utils\HasAddresses;
 use App\Utils\HasContact;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use ScoutElastic\Searchable;
 
@@ -53,7 +54,7 @@ use ScoutElastic\Searchable;
  */
 class Customer extends Model
 {
-    use HasAddresses, HasContact, OrderScope, PeriodScope, PaginationScope, Searchable;
+    use HasAddresses, HasContact, OrderScope, PeriodScope, PaginationScope, Searchable, HasFactory;
 
     protected $indexConfigurator = CustomerIndexConfigurator::class;
 

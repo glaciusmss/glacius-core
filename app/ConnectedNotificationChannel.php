@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
@@ -26,6 +27,8 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  */
 class ConnectedNotificationChannel extends Pivot
 {
+    use HasFactory;
+
     protected $guarded = [];
 
     protected $table = 'connected_notification_channels';

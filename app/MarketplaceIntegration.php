@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Utils\HasSettings;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
@@ -32,7 +33,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  */
 class MarketplaceIntegration extends Pivot
 {
-    use HasSettings;
+    use HasSettings, HasFactory;
 
     protected $guarded = [];
 

@@ -6,6 +6,7 @@ use App\SearchEngine\IndexConfigurators\OrderIndexConfigurator;
 use App\Scopes\PaginationScope;
 use App\Scopes\PeriodScope;
 use App\Utils\HasAddresses;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use ScoutElastic\Searchable;
 
@@ -57,7 +58,7 @@ use ScoutElastic\Searchable;
  */
 class Order extends Model
 {
-    use HasAddresses, PeriodScope, PaginationScope, Searchable;
+    use HasAddresses, PeriodScope, PaginationScope, Searchable, HasFactory;
 
     protected $indexConfigurator = OrderIndexConfigurator::class;
 
@@ -112,6 +113,6 @@ class Order extends Model
         return $this->belongsToMany(Product::class, 'order_details')
             ->withTimestamps()
             ->withPivot(['quantity'])
-            ->using(OrderDetails::class);
+            ->using(OrderDetail::class);
     }
 }

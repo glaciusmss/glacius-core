@@ -2,9 +2,18 @@
 
 namespace Tests;
 
+use Illuminate\Contracts\Auth\Authenticatable as UserContract;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-    use CreatesApplication;
+    use CreatesApplication, RefreshDatabase;
+
+    public function logout(UserContract $user)
+    {
+        // nid to explicit login user to jwt to get the token first
+        \Auth::login($user);
+        \Auth::logout();
+    }
 }

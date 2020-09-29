@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Utils\HasSettings;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
@@ -26,7 +27,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class UserShop extends Pivot
 {
     // this setting is used to control user setting for specific shop
-    use HasSettings;
+    use HasSettings, HasFactory;
 
     protected $guarded = [];
 
