@@ -5,8 +5,8 @@ dist: xenial
 php:
   - 7.4
 
-services:
-  - mysql
+addons:
+  mariadb: '10.5'
 
 before_install:
   - echo "memory_limit=2G" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
