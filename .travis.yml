@@ -5,14 +5,19 @@ dist: xenial
 php:
   - 7.4
 
+services:
+  - mysql
+
 before_install:
   - echo "memory_limit=2G" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 
 before_script:
+  - sudo mysql -e 'create database homestead;'
   - composer self-update
   - cp .env.testing.example .env
   - php artisan key:generate
   - php artisan jwt:secret --force
+  - php artisan migrate
 
 install:
   - composer install
