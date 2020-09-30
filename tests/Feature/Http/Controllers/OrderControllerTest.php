@@ -95,10 +95,6 @@ class OrderControllerTest extends TestCase
             ])
         );
 
-        $response->assertOk()
-            ->assertJsonFragment([
-                'total_price' => (string)$this->orders->first()->total_price,
-                'subtotal_price' => (string)$this->orders->first()->subtotal_price
-            ]);
+        $response->assertOk();
     }
 }
