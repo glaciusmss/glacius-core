@@ -6,7 +6,7 @@ use App\Http\Requests\User\ChangePasswordRequest;
 use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\RegisterRequest;
 use App\Services\SocialLoginService;
-use App\User;
+use App\Models\User;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Logout;

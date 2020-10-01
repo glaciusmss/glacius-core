@@ -8,7 +8,7 @@
 
 namespace App\Utils;
 
-use App\Setting;
+use App\Models\Setting;
 
 trait HasSettings
 {

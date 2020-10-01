@@ -10,7 +10,7 @@ use App\Http\Requests\Order\RetrieveRequest;
 use App\Http\Requests\Product\StoreRequest;
 use App\Http\Requests\Product\UpdateRequest;
 use App\Http\Resources\ProductResource;
-use App\Product;
+use App\Models\Product;
 use App\SearchEngine\SearchRules\PartialSearchRule;
 use App\Utils\Helper;
 use Illuminate\Support\Arr;

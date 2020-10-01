@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Marketplace;
-use App\MarketplaceIntegration;
-use App\Shop;
+use App\Models\Marketplace;
+use App\Models\MarketplaceIntegration;
+use App\Models\Shop;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class MarketplaceIntegrationFactory extends Factory

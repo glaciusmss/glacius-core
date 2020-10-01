@@ -8,7 +8,7 @@
 
 namespace App\Utils;
 
-use App\Contact;
+use App\Models\Contact;
 
 trait HasContact
 {

@@ -2,7 +2,7 @@
 
 namespace App\Contracts;
 
-use App\Shop;
+use App\Models\Shop;
 
 interface HasShop
 {

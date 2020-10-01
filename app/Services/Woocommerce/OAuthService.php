@@ -8,7 +8,7 @@ use App\Enums\TokenType;
 use App\Exceptions\NotSupportedException;
 use App\Services\Woocommerce\Helpers\HasSdk;
 use App\Services\Woocommerce\Validations\OAuth\OnInstallRule;
-use App\Token;
+use App\Models\Token;
 use App\Utils\HasMarketplace;
 use App\Utils\HasShop;
 use Illuminate\Contracts\Cache\Repository as CacheContract;

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserProfile\UpdateRequest;
 use App\Http\Resources\UserProfileResource;
-use App\UserProfile;
+use App\Models\UserProfile;
 
 class UserProfileController extends Controller
 {

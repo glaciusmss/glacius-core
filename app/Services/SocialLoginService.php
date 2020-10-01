@@ -9,8 +9,8 @@
 namespace App\Services;
 
 use App\Enums\SocialProvider;
-use App\SocialLogin;
-use App\User;
+use App\Models\SocialLogin;
+use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Contracts\Factory as SocialiteFactory;

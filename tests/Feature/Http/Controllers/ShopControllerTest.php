@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Http\Controllers;
 
-use App\Shop;
-use App\User;
+use App\Models\Shop;
+use App\Models\User;
 use Tests\TestCase;
 
 class ShopControllerTest extends TestCase

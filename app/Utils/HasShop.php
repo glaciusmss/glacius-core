@@ -8,7 +8,7 @@
 
 namespace App\Utils;
 
-use App\Shop;
+use App\Models\Shop;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 trait HasShop
@@ -17,7 +17,7 @@ trait HasShop
 
     /**
      * @param null $withRelations
-     * @return \App\Shop
+     * @return \App\Models\Shop
      */
     public function getShop(): Shop
     {

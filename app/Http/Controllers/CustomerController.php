@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Customer;
+use App\Models\Customer;
 use App\DTO\Pagination;
 use App\Http\Requests\Customer\RetrieveRequest;
 use App\Http\Resources\CustomerResource;

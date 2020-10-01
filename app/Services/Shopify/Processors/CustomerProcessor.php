@@ -3,7 +3,7 @@
 namespace App\Services\Shopify\Processors;
 
 use App\Contracts\Processor;
-use App\Customer;
+use App\Models\Customer;
 use App\Events\Webhook\WebhookReceived;
 use App\Utils\Helper;
 

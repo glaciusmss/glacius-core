@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Address;
+use App\Models\Address;
 use App\Enums\AddressType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

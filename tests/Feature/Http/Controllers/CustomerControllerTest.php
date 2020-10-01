@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\Http\Controllers;
 
-use App\Address;
-use App\Contact;
-use App\Customer;
-use App\Marketplace;
-use App\Shop;
-use App\User;
+use App\Models\Address;
+use App\Models\Contact;
+use App\Models\Customer;
+use App\Models\Marketplace;
+use App\Models\Shop;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use ScoutElastic\Facades\ElasticClient;
 use Tests\ElasticSearchTestingHelper;

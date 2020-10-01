@@ -8,7 +8,7 @@
 
 namespace App\Contracts;
 
-use App\MarketplaceIntegration;
+use App\Models\MarketplaceIntegration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Enumerable;
 

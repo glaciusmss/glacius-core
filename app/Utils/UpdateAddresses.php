@@ -2,7 +2,7 @@
 
 namespace App\Utils;
 
-use App\Address;
+use App\Models\Address;
 use App\Enums\AddressType;
 use Illuminate\Support\Arr;
 

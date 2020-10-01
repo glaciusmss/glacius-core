@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use App\Scopes\OrderScope;
 use App\Scopes\PaginationScope;

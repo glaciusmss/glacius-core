@@ -19,7 +19,7 @@ abstract class BaseNotificationChannel implements NotificationChannel
     protected $bot;
 
     /**
-     * @return \App\NotificationChannel
+     * @return \App\Models\NotificationChannel
      */
     protected function getNotificationChannel()
     {
@@ -29,7 +29,7 @@ abstract class BaseNotificationChannel implements NotificationChannel
 
         $name = ($this->name() instanceof NotificationChannelEnum) ? $this->name()->key : $this->name();
 
-        return $this->notificationChannel = \App\NotificationChannel::whereName($name)->first();
+        return $this->notificationChannel = \App\Models\NotificationChannel::whereName($name)->first();
     }
 
     protected function getBot()

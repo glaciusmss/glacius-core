@@ -11,7 +11,7 @@
 |
 */
 
-Broadcast::channel('App.Shop.{shop}', function ($user, App\Shop $shop) {
+Broadcast::channel('App.Shop.{shop}', function ($user, App\Models\Shop $shop) {
     //shop authentication has been resolve through binding,
     //means that when it reach here, the user is authenticated,
     //so we simply return true

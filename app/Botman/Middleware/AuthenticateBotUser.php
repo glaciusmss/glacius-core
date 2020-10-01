@@ -8,7 +8,7 @@
 
 namespace App\Botman\Middleware;
 
-use App\NotificationChannel;
+use App\Models\NotificationChannel;
 use BotMan\BotMan\BotMan;
 use BotMan\BotMan\Interfaces\Middleware\Received;
 use BotMan\BotMan\Messages\Incoming\IncomingMessage;

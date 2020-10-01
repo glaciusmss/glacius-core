@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Http\Controllers;
 
-use App\NotificationChannel;
-use App\User;
+use App\Models\NotificationChannel;
+use App\Models\User;
 use Tests\TestCase;
 
 class ConnectedNotificationChannelControllerTest extends TestCase

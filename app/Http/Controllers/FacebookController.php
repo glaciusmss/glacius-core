@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contracts\BotAuth;
 use App\Enums\TokenType;
-use App\Token;
+use App\Models\Token;
 use Illuminate\Auth\AuthManager;
 
 class FacebookController extends Controller

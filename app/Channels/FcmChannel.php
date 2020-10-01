@@ -2,7 +2,7 @@
 
 namespace App\Channels;
 
-use App\Shop;
+use App\Models\Shop;
 use FCM;
 use Illuminate\Notifications\Notification;
 use LaravelFCM\Message\OptionsBuilder;

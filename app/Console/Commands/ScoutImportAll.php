@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Customer;
-use App\Order;
-use App\Product;
+use App\Models\Customer;
+use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Console\Command;
 use Laravel\Scout\Console\ImportCommand;
 

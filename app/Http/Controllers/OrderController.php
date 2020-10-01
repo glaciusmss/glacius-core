@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\DTO\Pagination;
 use App\Http\Requests\Order\RetrieveRequest;
 use App\Http\Resources\OrderResource;
-use App\Order;
+use App\Models\Order;
 use App\SearchEngine\SearchRules\PartialSearchRule;
 use App\Utils\Helper;
 use Illuminate\Http\Request;

@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use App\ConnectedNotificationChannel;
-use App\NotificationChannel;
-use App\User;
+use App\Models\ConnectedNotificationChannel;
+use App\Models\NotificationChannel;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ConnectedNotificationChannelFactory extends Factory

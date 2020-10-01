@@ -1,6 +1,6 @@
 <?php
 
-use App\NotificationChannel;
+use App\Models\NotificationChannel;
 use Illuminate\Database\Seeder;
 
 class NotificationChannelSeeder extends Seeder

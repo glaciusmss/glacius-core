@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\ConnectedNotificationChannel;
+use App\Models\ConnectedNotificationChannel;
 use App\Http\Resources\ConnectedNotificationChannelResource;
 use Illuminate\Http\Request;
 

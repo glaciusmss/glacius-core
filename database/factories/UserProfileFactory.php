@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Enums\GenderEnum;
-use App\User;
-use App\UserProfile;
+use App\Models\User;
+use App\Models\UserProfile;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserProfileFactory extends Factory

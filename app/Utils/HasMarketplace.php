@@ -14,7 +14,7 @@ trait HasMarketplace
 
     /**
      * @param string $name
-     * @return \App\Marketplace
+     * @return \App\Models\Marketplace
      */
     protected function getMarketplace(string $name)
     {
@@ -22,6 +22,6 @@ trait HasMarketplace
             return $this->marketplace;
         }
 
-        return $this->marketplace = \App\Marketplace::whereName($name)->first();
+        return $this->marketplace = \App\Models\Marketplace::whereName($name)->first();
     }
 }
