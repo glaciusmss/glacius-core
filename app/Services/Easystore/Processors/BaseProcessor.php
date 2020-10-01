@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\Easystore\Processors;
-
 
 use App\Events\Webhook\WebhookReceived;
 use App\Utils\HasMarketplace;

@@ -8,7 +8,6 @@
 
 namespace App\Services\NotificationChannels;
 
-
 use App\Contracts\NotificationChannel;
 use App\Enums\NotificationChannelEnum;
 

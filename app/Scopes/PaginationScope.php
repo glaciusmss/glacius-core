@@ -27,6 +27,6 @@ trait PaginationScope
             return $pagination->getSortField();
         }
 
-        return $this->getTable() . '.' . $pagination->getSortField();
+        return $this->getTable().'.'.$pagination->getSortField();
     }
 }

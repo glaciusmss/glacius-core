@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Jobs\Bot;
 
 use App\Enums\QueueGroup;

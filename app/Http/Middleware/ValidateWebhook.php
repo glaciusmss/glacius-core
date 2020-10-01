@@ -38,7 +38,7 @@ class ValidateWebhook
         /** @var Webhook $webhookService */
         $webhookService = $this->connectorManager->makeService($connector->getWebhookService());
 
-        if (!$webhookService->validateHmac($request)) {
+        if (! $webhookService->validateHmac($request)) {
             throw new AccessDeniedHttpException('invalid token');
         }
 

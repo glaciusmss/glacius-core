@@ -20,7 +20,7 @@ class FcmChannel
 
         $message = $notification->toFcm($notifiable);
 
-        if (!is_array($message)) {
+        if (! is_array($message)) {
             return;
         }
 
@@ -41,14 +41,14 @@ class FcmChannel
         /** @var Shop $notifiable */
         $class = str_replace('\\', '.', get_class($notifiable));
 
-        $topic = $class . '.' . $notifiable->getKey();
+        $topic = $class.'.'.$notifiable->getKey();
 
         return (new Topics())->topic($topic);
     }
 
     protected function buildOptionsFromMessage($message)
     {
-        if (!isset($message['options'])) {
+        if (! isset($message['options'])) {
             return null;
         }
 
@@ -61,7 +61,7 @@ class FcmChannel
 
     protected function buildNotificationFromMessage($message)
     {
-        if (!isset($message['notification'])) {
+        if (! isset($message['notification'])) {
             return null;
         }
 
@@ -74,7 +74,7 @@ class FcmChannel
 
     protected function buildDataFromMessage($message)
     {
-        if (!isset($message['data'])) {
+        if (! isset($message['data'])) {
             return null;
         }
 

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- * App\UserShop
+ * App\UserShop.
  *
  * @property int $id
  * @property int $user_id

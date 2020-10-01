@@ -30,7 +30,7 @@ class OrderFactory extends Factory
             'meta' => [],
             'shop_id' => Shop::factory(),
             'marketplace_id' => Marketplace::factory(),
-            'customer_id' => Customer::factory()
+            'customer_id' => Customer::factory(),
         ];
     }
 
@@ -38,7 +38,7 @@ class OrderFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'customer_id' => null
+                'customer_id' => null,
             ];
         });
     }

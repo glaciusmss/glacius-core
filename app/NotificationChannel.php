@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\NotificationChannel
+ * App\NotificationChannel.
  *
  * @property int $id
  * @property string $name

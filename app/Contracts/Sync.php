@@ -8,7 +8,6 @@
 
 namespace App\Contracts;
 
-
 use App\DTO\SyncState;
 use App\Events\SyncEvent;
 use App\MarketplaceIntegration;

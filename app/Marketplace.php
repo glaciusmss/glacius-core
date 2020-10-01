@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Marketplace
+ * App\Marketplace.
  *
  * @property int $id
  * @property string $name

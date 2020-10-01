@@ -10,7 +10,7 @@ class TelegramChannel
 {
     public function send($notifiable, Notification $notification)
     {
-        if (!$toBotId = $notifiable->routeNotificationFor('telegram', $notification)) {
+        if (! $toBotId = $notifiable->routeNotificationFor('telegram', $notification)) {
             return;
         }
 

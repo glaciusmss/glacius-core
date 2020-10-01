@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Contracts;
 
 use Illuminate\Support\Enumerable;

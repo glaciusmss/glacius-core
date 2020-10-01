@@ -12,7 +12,7 @@ class AddTransaction implements ShouldQueue
 
     public function handle(MarketplaceSynced $marketplaceSynced)
     {
-        if (!method_exists($marketplaceSynced->model, 'addSyncTransaction')) {
+        if (! method_exists($marketplaceSynced->model, 'addSyncTransaction')) {
             return;
         }
 

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 /**
- * App\Token
+ * App\Token.
  *
  * @property int $id
  * @property string $token
@@ -40,7 +40,7 @@ class Token extends Model
     protected $guarded = [];
 
     protected $dates = [
-        'expired_at'
+        'expired_at',
     ];
 
     protected $casts = [
@@ -67,13 +67,13 @@ class Token extends Model
     {
         $expiredAt = now()->addMinutes($duration);
 
-        $token = md5(Str::random($length) . microtime());
+        $token = md5(Str::random($length).microtime());
 
         return self::make([
             'token' => $token,
             'type' => $type,
             'meta' => $meta,
-            'expired_at' => $expiredAt
+            'expired_at' => $expiredAt,
         ]);
     }
 
@@ -92,7 +92,7 @@ class Token extends Model
             ->isValid()
             ->first();
 
-        if (!$instance) {
+        if (! $instance) {
             return false;
         }
 
@@ -101,7 +101,7 @@ class Token extends Model
 
     public static function validateAndDelete(string $token, TokenType $type)
     {
-        if (!$instance = self::validate($token, $type)) {
+        if (! $instance = self::validate($token, $type)) {
             return false;
         }
 

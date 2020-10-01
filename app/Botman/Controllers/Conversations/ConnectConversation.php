@@ -8,7 +8,6 @@
 
 namespace App\Botman\Controllers\Conversations;
 
-
 use App\Contracts\BotAuth;
 use App\Exceptions\BotException;
 use App\Jobs\Bot\ReplyJob;
@@ -37,7 +36,7 @@ class ConnectConversation extends BaseConversation
                     $answer->getText()
                 );
 
-                ReplyJob::dispatch($this->bot, 'Successfully connected to Glacius with ' . $connectedUser->email);
+                ReplyJob::dispatch($this->bot, 'Successfully connected to Glacius with '.$connectedUser->email);
             } catch (BotException $exception) {
                 app(\App\Exceptions\BotHandler::class)->render($exception, $this->bot);
                 $this->askForToken();

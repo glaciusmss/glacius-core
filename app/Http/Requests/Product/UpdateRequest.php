@@ -5,7 +5,6 @@
 
 namespace App\Http\Requests\Product;
 
-
 use App\Http\Requests\BaseRequest;
 
 class UpdateRequest extends BaseRequest
@@ -21,7 +20,7 @@ class UpdateRequest extends BaseRequest
             'name' => 'string',
             'description' => 'string',
             'product_variants.*.price' => 'numeric|gt:0',
-            'product_variants.*.stock' => 'nullable|numeric|min:0'
+            'product_variants.*.stock' => 'nullable|numeric|min:0',
         ];
     }
 

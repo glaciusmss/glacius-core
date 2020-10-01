@@ -8,7 +8,6 @@
 
 namespace App\Exceptions;
 
-
 use App\Jobs\Bot\ReplyJob;
 use BotMan\BotMan\BotMan;
 use Illuminate\Contracts\Container\Container;
@@ -92,7 +91,7 @@ class BotHandler
             BotException::class,
         ];
 
-        return !is_null(Arr::first($dontReport, function ($type) use ($e) {
+        return ! is_null(Arr::first($dontReport, function ($type) use ($e) {
             return $e instanceof $type;
         }));
     }

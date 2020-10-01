@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\Easystore\Processors;
-
 
 use App\Contracts\Processor;
 use App\Customer;

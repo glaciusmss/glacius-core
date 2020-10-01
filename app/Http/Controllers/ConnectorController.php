@@ -13,7 +13,7 @@ class ConnectorController extends Controller
     public function create(string $identifier, ConnectorRequest $request, ConnectorManager $connectorManager)
     {
         // store the return url to cache
-        \Cache::put($identifier . ':' . $this->getShop()->id . ':rtn_url', $request->input('rtn_url'));
+        \Cache::put($identifier.':'.$this->getShop()->id.':rtn_url', $request->input('rtn_url'));
 
         return response()->json(
             $connectorManager->processOAuth($identifier, 'onInstall', $request)
@@ -32,7 +32,7 @@ class ConnectorController extends Controller
         $shop = $connectorManager->processOAuth($identifier, 'onInstallCallback', $request);
 
         return response()->redirectTo(
-            \Cache::pull($identifier . ':' . $shop->id . ':rtn_url')
+            \Cache::pull($identifier.':'.$shop->id.':rtn_url')
 //            config('app.frontend_url') . '/portal/account/marketplace-connections'
         );
     }
@@ -49,7 +49,7 @@ class ConnectorController extends Controller
         $token = Token::validateAndDelete(trim($request->input('user_id')), TokenType::WoocommerceConnect());
 
         return response()->redirectTo(
-            \Cache::pull($identifier . ':' . $token->meta['id'] . ':rtn_url')
+            \Cache::pull($identifier.':'.$token->meta['id'].':rtn_url')
         );
 
 //        $device = \Cache::pull($identifier . ':' . $request->input('user_id') . ':device', DeviceType::Web());

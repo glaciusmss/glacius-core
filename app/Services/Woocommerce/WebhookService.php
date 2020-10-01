@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\Woocommerce;
-
 
 use App\Contracts\Webhook;
 use App\MarketplaceIntegration;
@@ -33,7 +31,7 @@ class WebhookService implements Webhook
 
         try {
             $sdk->post('webhooks/batch', [
-                'create' => $createParam
+                'create' => $createParam,
             ]);
 
             $response = json_decode($sdk->http->getResponse()->getBody(), true);
@@ -46,7 +44,7 @@ class WebhookService implements Webhook
         }
 
         $marketplaceIntegration->update([
-            'meta->webhook_id' => $webhookIds
+            'meta->webhook_id' => $webhookIds,
         ]);
     }
 
@@ -59,7 +57,7 @@ class WebhookService implements Webhook
         ]);
 
         $sdk->post('webhooks/batch', [
-            'delete' => $marketplaceIntegration->meta['webhook_id']
+            'delete' => $marketplaceIntegration->meta['webhook_id'],
         ]);
     }
 

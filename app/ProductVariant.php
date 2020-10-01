@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\ProductVariants
+ * App\ProductVariants.
  *
  * @property int $id
  * @property string $name
@@ -37,7 +37,7 @@ class ProductVariant extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'meta' => 'array'
+        'meta' => 'array',
     ];
 
     public function product()

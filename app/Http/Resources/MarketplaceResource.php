@@ -5,9 +5,8 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * Class MarketplaceResource
+ * Class MarketplaceResource.
  * @mixin \App\Marketplace
- * @package App\Http\Resources
  */
 class MarketplaceResource extends JsonResource
 {

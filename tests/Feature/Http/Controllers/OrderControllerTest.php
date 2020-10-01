@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Tests\Feature\Http\Controllers;
 
 use App\Marketplace;
@@ -46,16 +45,16 @@ class OrderControllerTest extends TestCase
 
     public function testGetOrdersSuccess()
     {
-        $response = $this->getJson('/order?' . http_build_query([
-                'shop_id' => $this->user->shops->first()->id
-            ])
+        $response = $this->getJson('/order?'.http_build_query([
+            'shop_id' => $this->user->shops->first()->id,
+        ])
         );
 
         $response->assertOk()
             ->assertJsonStructure([
                 'data',
                 'meta',
-                'links'
+                'links',
             ]);
 
         $this->assertCount(2, $response->decodeResponseJson()['data']);
@@ -72,17 +71,17 @@ class OrderControllerTest extends TestCase
             ->once()
             ->andReturn(ElasticSearchTestingHelper::makeSearchResponse([$this->orders->first()->attributesToArray()], $this->orders->first()));
 
-        $response = $this->getJson('/order?' . http_build_query([
-                'shop_id' => $this->user->shops->first()->id,
-                'search' => $this->orders->first()->total_price,
-            ])
+        $response = $this->getJson('/order?'.http_build_query([
+            'shop_id' => $this->user->shops->first()->id,
+            'search' => $this->orders->first()->total_price,
+        ])
         );
 
         $response->assertOk()
             ->assertJsonStructure([
                 'data',
                 'meta',
-                'links'
+                'links',
             ]);
 
         $this->assertCount(1, $response->decodeResponseJson()['data']);
@@ -90,9 +89,9 @@ class OrderControllerTest extends TestCase
 
     public function testShowSingleOrder()
     {
-        $response = $this->getJson('/order/' . $this->orders->first()->id . '?' . http_build_query([
-                'shop_id' => $this->user->shops->first()->id,
-            ])
+        $response = $this->getJson('/order/'.$this->orders->first()->id.'?'.http_build_query([
+            'shop_id' => $this->user->shops->first()->id,
+        ])
         );
 
         $response->assertOk();

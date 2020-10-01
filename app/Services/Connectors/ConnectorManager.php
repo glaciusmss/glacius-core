@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\Connectors;
-
 
 use App\Contracts\Configurable;
 use App\Contracts\Connector;
@@ -56,7 +54,7 @@ class ConnectorManager
 
     protected function registerWebhook(string $identifier, string $methodToBeCalled, OAuth $authService)
     {
-        if ($methodToBeCalled === 'onInstall' && !$this->hasMethodEnabled($authService, 'onInstallCallback')) {
+        if ($methodToBeCalled === 'onInstall' && ! $this->hasMethodEnabled($authService, 'onInstallCallback')) {
             $marketplace = $authService->getShop()->marketplaces()->whereName($identifier)->firstOrFail();
 
             $webhookService = $this->makeService(
@@ -64,6 +62,7 @@ class ConnectorManager
             );
 
             $webhookService->register($marketplace->pivot);
+
             return;
         }
 
@@ -80,7 +79,7 @@ class ConnectorManager
 
     protected function removeWebhook(string $identifier, string $methodToBeCalled, OAuth $authService)
     {
-        if ($methodToBeCalled === 'onDeleteAuth' && !$this->hasMethodEnabled($authService, 'onDeleteAuthCallback')) {
+        if ($methodToBeCalled === 'onDeleteAuth' && ! $this->hasMethodEnabled($authService, 'onDeleteAuthCallback')) {
             $marketplace = $authService->getShop()->marketplaces()->whereName($identifier)->firstOrFail();
 
             $webhookService = $this->makeService(
@@ -88,6 +87,7 @@ class ConnectorManager
             );
 
             $webhookService->remove($marketplace->pivot);
+
             return;
         }
 
@@ -104,20 +104,23 @@ class ConnectorManager
 
     protected function fireOAuthEvents(string $identifier, string $methodToBeCalled, OAuth $authService): void
     {
-        if ($methodToBeCalled === 'onInstall' && !$this->hasMethodEnabled($authService, 'onInstallCallback')) {
+        if ($methodToBeCalled === 'onInstall' && ! $this->hasMethodEnabled($authService, 'onInstallCallback')) {
             // this will be fire if onInstallCallback is not enabled
             event(new OAuthConnected($authService->getShop(), $identifier));
+
             return;
         }
 
         if ($methodToBeCalled === 'onInstallCallback') {
             event(new OAuthConnected($authService->getShop(), $identifier));
+
             return;
         }
 
-        if ($methodToBeCalled === 'onDeleteAuth' && !$this->hasMethodEnabled($authService, 'onDeleteAuthCallback')) {
+        if ($methodToBeCalled === 'onDeleteAuth' && ! $this->hasMethodEnabled($authService, 'onDeleteAuthCallback')) {
             // this will be fire if onDeleteAuthCallback is not enabled
             event(new OAuthDisconnected($authService->getShop(), $identifier));
+
             return;
         }
 
@@ -128,7 +131,7 @@ class ConnectorManager
 
     protected function hasMethodEnabled(Configurable $configurable, $method): bool
     {
-        if (!Arr::get($configurable->configurations(), "config.$method", true)) {
+        if (! Arr::get($configurable->configurations(), "config.$method", true)) {
             return false;
         }
 

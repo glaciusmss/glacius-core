@@ -2,7 +2,6 @@
 
 namespace App\Scopes;
 
-
 use App\Enums\PeriodEnum;
 
 trait CustomerScope

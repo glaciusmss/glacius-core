@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- * App\MarketplaceIntegration
+ * App\MarketplaceIntegration.
  *
  * @property int $id
  * @property string|null $token
@@ -40,12 +40,12 @@ class MarketplaceIntegration extends Pivot
     protected $table = 'marketplace_integrations';
 
     protected $casts = [
-        'meta' => 'array'
+        'meta' => 'array',
     ];
 
     public function delete()
     {
-        if (!isset($this->attributes[$this->getKeyName()])) {
+        if (! isset($this->attributes[$this->getKeyName()])) {
             // we nid this id to delete the settings associated to this
             try {
                 $this->id = self::whereShopId($this->shop_id)

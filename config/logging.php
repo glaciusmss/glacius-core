@@ -122,7 +122,7 @@ return [
             'path' => storage_path('/logs/process/customer.log'),
             'level' => 'info',
             'days' => 14,
-        ]
+        ],
     ],
 
 ];

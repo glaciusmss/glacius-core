@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Listeners\Sync;
-
 
 use App\Contracts\Sync;
 use App\Enums\QueueGroup;
@@ -47,7 +45,7 @@ class ProcessSync implements ShouldQueue
                 return $syncService->processFor() === $modelClassName;
             });
 
-            if (!$resolvedSync || !$this->isSyncEnabled($marketplace, $syncEvent)) {
+            if (! $resolvedSync || ! $this->isSyncEnabled($marketplace, $syncEvent)) {
                 // sync service not activated for current marketplace
                 // or is disabled
                 continue;
@@ -63,7 +61,7 @@ class ProcessSync implements ShouldQueue
 
     protected function isSyncEnabled(Marketplace $marketplace, SyncEvent $syncEvent)
     {
-        $optionKey = 'is_' . strtolower(class_basename($syncEvent->model)) . '_sync_activated';
+        $optionKey = 'is_'.strtolower(class_basename($syncEvent->model)).'_sync_activated';
 
         return $syncEvent->shop->getSetting($optionKey, true, $marketplace->name);
     }

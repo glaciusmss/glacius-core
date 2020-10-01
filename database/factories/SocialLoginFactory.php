@@ -26,7 +26,7 @@ class SocialLoginFactory extends Factory
         return [
             'provider_user_id' => $this->faker->asciify(str_repeat('*', 20)),
             'provider' => $this->faker->randomElement(SocialProvider::getValues()),
-            'user_id' => User::factory()
+            'user_id' => User::factory(),
         ];
     }
 }

@@ -6,9 +6,8 @@ use App\Enums\AddressType;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * Class AddressResource
+ * Class AddressResource.
  * @mixin \App\Address
- * @package App\Http\Resources
  */
 class AddressResource extends JsonResource
 {

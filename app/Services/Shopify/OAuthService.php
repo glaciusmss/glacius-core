@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\Shopify;
-
 
 use App\Contracts\OAuth;
 use App\Enums\DeviceType;
@@ -36,23 +34,23 @@ class OAuthService implements OAuth
     {
         return [
             'config' => [
-                'onDeleteAuthCallback' => false
+                'onDeleteAuthCallback' => false,
             ],
             'validation' => [
-                'onInstall' => OnInstallRule::class
-            ]
+                'onInstall' => OnInstallRule::class,
+            ],
         ];
     }
 
     public function onInstall(Request $request)
     {
-        $this->cache->put('shopify:' . $this->getShopifyShop($request) . ':shop', $this->getShop());
+        $this->cache->put('shopify:'.$this->getShopifyShop($request).':shop', $this->getShop());
         if ($request->header('x-request-from') === 'mobile') {
-            $this->cache->put('shopify:' . $this->getShopifyShop($request) . ':device', DeviceType::Mobile());
+            $this->cache->put('shopify:'.$this->getShopifyShop($request).':device', DeviceType::Mobile());
         }
 
         $this->configureSdk([
-            'ShopUrl' => $this->getShopifyShop($request)
+            'ShopUrl' => $this->getShopifyShop($request),
         ]);
 
         $url = AuthHelper::createAuthRequest(
@@ -70,13 +68,13 @@ class OAuthService implements OAuth
     {
         $this->setShop(
             throw_unless(
-                $this->cache->pull('shopify:' . $this->getShopifyShop($request) . ':shop'),
+                $this->cache->pull('shopify:'.$this->getShopifyShop($request).':shop'),
                 new NotFoundHttpException('please try again')
             )
         );
 
         $this->configureSdk([
-            'ShopUrl' => $this->getShopifyShop($request)
+            'ShopUrl' => $this->getShopifyShop($request),
         ]);
 
         $accessToken = AuthHelper::getAccessToken();
@@ -99,12 +97,12 @@ class OAuthService implements OAuth
             ->first();
 
         $this->configureSdk([
-            'ShopUrl' => $marketplace->pivot->meta['shopify_shop']
+            'ShopUrl' => $marketplace->pivot->meta['shopify_shop'],
         ]);
 
         $response = Http::withHeaders([
-            'X-Shopify-Access-Token' => $marketplace->pivot->token
-        ])->delete(ShopifySDK::getAdminUrl() . 'api_permissions/current.json');
+            'X-Shopify-Access-Token' => $marketplace->pivot->token,
+        ])->delete(ShopifySDK::getAdminUrl().'api_permissions/current.json');
 
         try {
             $response->throw();
@@ -128,7 +126,7 @@ class OAuthService implements OAuth
             $shopifyShop = substr($shopifyShop, 0, -1);
         }
 
-        if (!Str::contains($shopifyShop, '.myshopify.com')) {
+        if (! Str::contains($shopifyShop, '.myshopify.com')) {
             $shopifyShop .= '.myshopify.com';
         }
 

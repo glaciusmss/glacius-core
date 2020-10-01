@@ -47,6 +47,7 @@ class StatisticController extends Controller
 
         $finalResult['total_count_percentage'] = Helper::calculatePercentage($finalResult['total_previous_count'], $finalResult['total_current_count']);
         $finalResult['total_sales_percentage'] = Helper::calculatePercentage($finalResult['total_previous_sales'], $finalResult['total_current_sales']);
+
         return response()->json($finalResult);
     }
 
@@ -76,6 +77,7 @@ class StatisticController extends Controller
         }
 
         $finalResult['total_count_percentage'] = Helper::calculatePercentage($finalResult['total_previous_count'], $finalResult['total_current_count']);
+
         return response()->json($finalResult);
     }
 }

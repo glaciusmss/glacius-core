@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Tests\Feature\Http\Controllers;
-
 
 use App\Address;
 use App\Contact;
@@ -50,16 +48,16 @@ class CustomerControllerTest extends TestCase
 
     public function testGetCustomersSuccess()
     {
-        $response = $this->getJson('/customer?' . http_build_query([
-                'shop_id' => $this->user->shops->first()->id
-            ])
+        $response = $this->getJson('/customer?'.http_build_query([
+            'shop_id' => $this->user->shops->first()->id,
+        ])
         );
 
         $response->assertOk()
             ->assertJsonStructure([
                 'data',
                 'meta',
-                'links'
+                'links',
             ]);
 
         $this->assertCount(2, $response->decodeResponseJson()['data']);
@@ -76,17 +74,17 @@ class CustomerControllerTest extends TestCase
             ->once()
             ->andReturn(ElasticSearchTestingHelper::makeSearchResponse([$this->customers->first()->attributesToArray()], $this->customers->first()));
 
-        $response = $this->getJson('/customer?' . http_build_query([
-                'shop_id' => $this->user->shops->first()->id,
-                'search' => $this->customers->first()->contact->first_name
-            ])
+        $response = $this->getJson('/customer?'.http_build_query([
+            'shop_id' => $this->user->shops->first()->id,
+            'search' => $this->customers->first()->contact->first_name,
+        ])
         );
 
         $response->assertOk()
             ->assertJsonStructure([
                 'data',
                 'meta',
-                'links'
+                'links',
             ]);
 
         $this->assertCount(1, $response->decodeResponseJson()['data']);

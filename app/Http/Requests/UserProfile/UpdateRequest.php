@@ -5,7 +5,6 @@
 
 namespace App\Http\Requests\UserProfile;
 
-
 use App\Enums\GenderEnum;
 use App\Http\Requests\BaseRequest;
 use BenSampo\Enum\Rules\EnumValue;
@@ -29,7 +28,7 @@ class UpdateRequest extends BaseRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'gender' => (int)$this->input('gender')
+            'gender' => (int) $this->input('gender'),
         ]);
     }
 }

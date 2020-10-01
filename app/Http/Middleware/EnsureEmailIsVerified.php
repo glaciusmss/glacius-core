@@ -24,9 +24,9 @@ class EnsureEmailIsVerified
      */
     public function handle($request, Closure $next)
     {
-        if (!$request->user() ||
+        if (! $request->user() ||
             ($request->user() instanceof MustVerifyEmail &&
-                !$request->user()->hasVerifiedEmail())) {
+                ! $request->user()->hasVerifiedEmail())) {
             throw new AccessDeniedHttpException('your email address is not verified.');
         }
 

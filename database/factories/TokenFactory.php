@@ -26,7 +26,7 @@ class TokenFactory extends Factory
             'token' => $this->faker->asciify(str_repeat('*', 16)),
             'type' => $this->faker->randomElement(TokenType::getValues()),
             'meta' => [],
-            'expired_at' => now()->addMinutes(15)
+            'expired_at' => now()->addMinutes(15),
         ];
     }
 }

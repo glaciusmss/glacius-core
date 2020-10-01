@@ -16,7 +16,7 @@ class UserProfileResource extends JsonResource
     public function toArray($request)
     {
         $userProfileData = parent::toArray($request);
-        $userProfileData['gender'] = (string)$userProfileData['gender'];
+        $userProfileData['gender'] = (string) $userProfileData['gender'];
 
         return Arr::except($userProfileData, 'user_id');
     }

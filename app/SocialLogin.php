@@ -6,7 +6,7 @@ use App\Enums\SocialProvider;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\SocialLogin
+ * App\SocialLogin.
  *
  * @property int $id
  * @property string $provider_user_id
@@ -31,7 +31,7 @@ class SocialLogin extends Model
     protected $guarded = [];
 
     public $casts = [
-        'provider' => SocialProvider::class
+        'provider' => SocialProvider::class,
     ];
 
     public function user()

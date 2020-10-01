@@ -8,7 +8,6 @@
 
 namespace App\Services\NotificationChannels\Telegram;
 
-
 use App\Contracts\BotAuth as BotAuthContract;
 use App\Enums\NotificationChannelEnum;
 use App\Enums\TokenType;
@@ -34,8 +33,8 @@ class BotAuth extends BaseNotificationChannel implements BotAuthContract
         $user = User::find($token->meta['user_id']);
 
         $this->getNotificationChannel()->users()->attach($user, [
-            'meta->' . $this->getBotIdKey() => $this->getBot()->getUser()->getId(),
-            'meta->' . $this->getBotUsernameKey() => $this->getBot()->getUser()->getUsername(),
+            'meta->'.$this->getBotIdKey() => $this->getBot()->getUser()->getId(),
+            'meta->'.$this->getBotUsernameKey() => $this->getBot()->getUser()->getUsername(),
         ]);
 
         return $user;
@@ -58,7 +57,7 @@ class BotAuth extends BaseNotificationChannel implements BotAuthContract
     public function isBotConnectedToUser($botId)
     {
         return $this->getNotificationChannel()->users()
-            ->wherePivot('meta->' . $this->getBotIdKey(), $botId)
+            ->wherePivot('meta->'.$this->getBotIdKey(), $botId)
             ->first(['email']);
     }
 }

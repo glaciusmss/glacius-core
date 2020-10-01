@@ -8,7 +8,6 @@
 
 namespace App\Contracts;
 
-
 use App\Events\Webhook\WebhookReceived;
 
 interface Processor

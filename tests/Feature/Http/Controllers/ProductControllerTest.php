@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Tests\Feature\Http\Controllers;
 
 use App\Events\Product\ProductCreated;
@@ -48,16 +47,16 @@ class ProductControllerTest extends TestCase
 
     public function testGetProductsSuccess()
     {
-        $response = $this->getJson('/product?' . http_build_query([
-                'shop_id' => $this->user->shops->first()->id
-            ])
+        $response = $this->getJson('/product?'.http_build_query([
+            'shop_id' => $this->user->shops->first()->id,
+        ])
         );
 
         $response->assertOk()
             ->assertJsonStructure([
                 'data',
                 'meta',
-                'links'
+                'links',
             ]);
 
         $this->assertCount(2, $response->decodeResponseJson()['data']);
@@ -74,17 +73,17 @@ class ProductControllerTest extends TestCase
             ->once()
             ->andReturn(ElasticSearchTestingHelper::makeSearchResponse([$this->products->first()->attributesToArray()], $this->products->first()));
 
-        $response = $this->getJson('/product?' . http_build_query([
-                'shop_id' => $this->user->shops->first()->id,
-                'search' => $this->products->first()->name,
-            ])
+        $response = $this->getJson('/product?'.http_build_query([
+            'shop_id' => $this->user->shops->first()->id,
+            'search' => $this->products->first()->name,
+        ])
         );
 
         $response->assertOk()
             ->assertJsonStructure([
                 'data',
                 'meta',
-                'links'
+                'links',
             ]);
 
         $this->assertCount(1, $response->decodeResponseJson()['data']);
@@ -104,8 +103,8 @@ class ProductControllerTest extends TestCase
                 [
                     'price' => 10.00,
                     'stock' => 10,
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $this->assertDatabaseHas('products', [
@@ -126,15 +125,15 @@ class ProductControllerTest extends TestCase
 
     public function testShowSingledescription()
     {
-        $response = $this->getJson('/product/' . $this->products->first()->id . '?' . http_build_query([
-                'shop_id' => $this->user->shops->first()->id,
-            ])
+        $response = $this->getJson('/product/'.$this->products->first()->id.'?'.http_build_query([
+            'shop_id' => $this->user->shops->first()->id,
+        ])
         );
 
         $response->assertOk()
             ->assertJsonFragment([
-                'name' => (string)$this->products->first()->name,
-                'description' => (string)$this->products->first()->description
+                'name' => (string) $this->products->first()->name,
+                'description' => (string) $this->products->first()->description,
             ]);
     }
 
@@ -153,8 +152,8 @@ class ProductControllerTest extends TestCase
                     'id' => $this->products->first()->productVariants->first()->id,
                     'price' => 10.00,
                     'stock' => 10,
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $this->assertDatabaseHas('products', [

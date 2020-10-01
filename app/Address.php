@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Address
+ * App\Address.
  *
  * @property int $id
  * @property string|null $address1
@@ -52,7 +52,7 @@ class Address extends Model
     ];
 
     protected $touches = [
-        'addressable'
+        'addressable',
     ];
 
     public function addressable()

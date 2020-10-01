@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\Shopify;
-
 
 use App\Contracts\Webhook;
 use App\MarketplaceIntegration;
@@ -34,7 +32,7 @@ class WebhookService implements Webhook
         }
 
         $marketplaceIntegration->update([
-            'meta->webhook_id' => $webhookIds
+            'meta->webhook_id' => $webhookIds,
         ]);
     }
 
