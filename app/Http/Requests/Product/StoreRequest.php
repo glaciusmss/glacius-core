@@ -5,7 +5,6 @@
 
 namespace App\Http\Requests\Product;
 
-
 use App\Http\Requests\BaseRequest;
 
 class StoreRequest extends BaseRequest
@@ -21,7 +20,7 @@ class StoreRequest extends BaseRequest
             'name' => 'required',
             'description' => 'required',
             'product_variants.*.price' => 'required|numeric|gt:0',
-            'product_variants.*.stock' => 'nullable|numeric|min:0'
+            'product_variants.*.stock' => 'nullable|numeric|min:0',
         ];
     }
 

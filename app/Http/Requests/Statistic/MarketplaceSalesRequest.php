@@ -5,7 +5,6 @@
 
 namespace App\Http\Requests\Statistic;
 
-
 use App\Enums\PeriodEnum;
 use App\Http\Requests\BaseRequest;
 use BenSampo\Enum\Rules\EnumValue;
@@ -20,14 +19,14 @@ class MarketplaceSalesRequest extends BaseRequest
     public function rules()
     {
         return [
-            'period' => [new EnumValue(PeriodEnum::class)]
+            'period' => [new EnumValue(PeriodEnum::class)],
         ];
     }
 
     protected function prepareForValidation()
     {
         $this->merge([
-            'period' => (int)$this->period,
+            'period' => (int) $this->period,
         ]);
     }
 }

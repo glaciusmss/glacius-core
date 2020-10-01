@@ -23,7 +23,7 @@ class FacebookController extends Controller
 
         return response()->json([
             'url' => "https://m.me/glaciusmss?ref={$token->token}",
-            'token' => $token->token
+            'token' => $token->token,
         ]);
     }
 

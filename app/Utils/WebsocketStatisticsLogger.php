@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Utils;
-
 
 use BeyondCode\LaravelWebSockets\Apps\App;
 use BeyondCode\LaravelWebSockets\Statistics\Logger\HttpStatisticsLogger;

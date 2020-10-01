@@ -39,7 +39,7 @@ class ProductController extends Controller
             'meta' => [
                 'sort_field' => $pagination->getSortField(),
                 'sort_order' => $pagination->getSortOrder(),
-            ]
+            ],
         ]);
     }
 

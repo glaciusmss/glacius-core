@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App;
 
 use BeyondCode\LaravelWebSockets\Statistics\Models\WebSocketsStatisticsEntry as BaseWebSocketsStatisticsEntry;

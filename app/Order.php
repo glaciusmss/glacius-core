@@ -2,16 +2,16 @@
 
 namespace App;
 
-use App\SearchEngine\IndexConfigurators\OrderIndexConfigurator;
 use App\Scopes\PaginationScope;
 use App\Scopes\PeriodScope;
+use App\SearchEngine\IndexConfigurators\OrderIndexConfigurator;
 use App\Utils\HasAddresses;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use ScoutElastic\Searchable;
 
 /**
- * App\Order
+ * App\Order.
  *
  * @property int $id
  * @property string $total_price
@@ -70,7 +70,7 @@ class Order extends Model
             'marketplace_name' => ['type' => 'text'],
             'shop_id' => ['type' => 'keyword'],
             'created_at' => ['type' => 'keyword'],
-        ]
+        ],
     ];
 
     protected $perPage = 10;
@@ -78,7 +78,7 @@ class Order extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'meta' => 'array'
+        'meta' => 'array',
     ];
 
     public function toSearchableArray()

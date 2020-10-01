@@ -29,7 +29,7 @@ class AddressFactory extends Factory
             'state' => $this->faker->state,
             'zip' => $this->faker->postcode,
             'country' => $this->faker->country,
-            'type' => $this->faker->randomElement(AddressType::getValues())
+            'type' => $this->faker->randomElement(AddressType::getValues()),
         ];
     }
 }

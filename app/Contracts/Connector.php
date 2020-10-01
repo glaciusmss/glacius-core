@@ -1,13 +1,11 @@
 <?php
 
-
 namespace App\Contracts;
-
 
 interface Connector
 {
     /**
-     * the connector unique identifier
+     * the connector unique identifier.
      *
      * @return string
      */

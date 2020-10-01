@@ -8,7 +8,6 @@
 
 namespace App\Events\Order;
 
-
 use App\Order;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;

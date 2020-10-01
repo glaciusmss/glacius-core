@@ -40,20 +40,20 @@ class OrderCreated extends Notification implements ShouldQueue
     public function toTelegram($notifiable)
     {
         /** @var Shop $notifiable */
-        return $notifiable->name . ': You have new order, ID [' . $this->order->id . '] from [' . Str::title($this->order->marketplace->name) . ']';
+        return $notifiable->name.': You have new order, ID ['.$this->order->id.'] from ['.Str::title($this->order->marketplace->name).']';
     }
 
     public function toFacebook($notifiable)
     {
         /** @var Shop $notifiable */
-        return $notifiable->name . ': You have new order, ID [' . $this->order->id . '] from [' . Str::title($this->order->marketplace->name) . ']';
+        return $notifiable->name.': You have new order, ID ['.$this->order->id.'] from ['.Str::title($this->order->marketplace->name).']';
     }
 
     public function toBroadcast($notifiable)
     {
         /** @var Shop $notifiable */
         $message = new BroadcastMessage([
-            'order' => new OrderResource($this->order)
+            'order' => new OrderResource($this->order),
         ]);
 
         return $message->onQueue(QueueGroup::Broadcast);
@@ -69,14 +69,14 @@ class OrderCreated extends Notification implements ShouldQueue
             'notification' => (new PayloadNotificationBuilder())
                 ->setChannelId(FirebaseChannelEnum::Default) // for android > 26
                 ->setTitle($notifiable->name)
-                ->setBody('You have new order, ID [' . $this->order->id . '] from [' . Str::title($this->order->marketplace->name) . ']'),
+                ->setBody('You have new order, ID ['.$this->order->id.'] from ['.Str::title($this->order->marketplace->name).']'),
 
             'data' => (new PayloadDataBuilder())
                 ->setData([
                     'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
                     'model' => 'order',
                     'model_id' => $this->order->id,
-                ])
+                ]),
         ];
     }
 }

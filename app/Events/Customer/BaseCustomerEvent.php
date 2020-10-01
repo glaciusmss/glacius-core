@@ -8,7 +8,6 @@
 
 namespace App\Events\Customer;
 
-
 use App\Customer;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;

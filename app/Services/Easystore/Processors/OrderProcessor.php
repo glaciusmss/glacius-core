@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\Easystore\Processors;
-
 
 use App\Contracts\Processor;
 use App\Customer;
@@ -23,7 +21,7 @@ class OrderProcessor extends BaseProcessor implements Processor
             'total_price' => $rawData->get('total_price'),
             'subtotal_price' => $rawData->get('subtotal_price'),
             'meta' => ['marketplace_order_id' => $rawData->get('id')],
-            'marketplace_id' => $this->getMarketplace($event->identifier)->id
+            'marketplace_id' => $this->getMarketplace($event->identifier)->id,
         ]);
 
         foreach ($rawData->get('line_items') as $lineItem) {
@@ -32,7 +30,7 @@ class OrderProcessor extends BaseProcessor implements Processor
 
             if ($product) {
                 $orderRecord->products()->attach($product, [
-                    'quantity' => $lineItem['quantity']
+                    'quantity' => $lineItem['quantity'],
                 ]);
             }
         }

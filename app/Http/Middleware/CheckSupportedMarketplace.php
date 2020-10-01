@@ -25,8 +25,8 @@ class CheckSupportedMarketplace
     public function handle($request, Closure $next)
     {
         if ($identifier = $request->route('identifier')) {
-            if (!$this->connectorResolver->getAllIdentifiers()->contains($identifier)) {
-                throw new BadRequestHttpException($identifier . ' is not supported');
+            if (! $this->connectorResolver->getAllIdentifiers()->contains($identifier)) {
+                throw new BadRequestHttpException($identifier.' is not supported');
             }
         }
 

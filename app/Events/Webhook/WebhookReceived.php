@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Events\Webhook;
-
 
 use Illuminate\Foundation\Events\Dispatchable;
 

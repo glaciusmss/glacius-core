@@ -1,7 +1,7 @@
 <?php
 
-use Laravel\Telescope\Watchers;
 use Laravel\Telescope\Http\Middleware\Authorize;
+use Laravel\Telescope\Watchers;
 
 return [
 
@@ -93,14 +93,14 @@ return [
     */
 
     'ignore_paths' => [
-        'websocket*'
+        'websocket*',
     ],
 
     'ignore_commands' => [
         'horizon:snapshot',
         'storage:link',
         'config:cache',
-        'route:cache'
+        'route:cache',
     ],
 
     /*

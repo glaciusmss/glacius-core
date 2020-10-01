@@ -8,7 +8,6 @@
 
 namespace App\DTO;
 
-
 use App\Http\Requests\PaginationRequest;
 use Illuminate\Support\Str;
 
@@ -56,6 +55,7 @@ class Pagination
         if (Str::contains($this->sortField, '.')) {
             return $this->sortField;
         }
+
         return $this->sortField;
     }
 

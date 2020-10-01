@@ -33,7 +33,7 @@ class UserController extends Controller
     public function login(LoginRequest $request)
     {
         $credentials = $request->validated();
-        if (!$token = $this->auth->attempt($credentials)) {
+        if (! $token = $this->auth->attempt($credentials)) {
             throw new UnauthorizedHttpException('email-password', 'incorrect email or password');
         }
 
@@ -44,7 +44,7 @@ class UserController extends Controller
 
     public function socialLogin($socialProvider)
     {
-        if (!$redirectUrl = $this->socialLoginService->getProviderRedirectUrl($socialProvider)) {
+        if (! $redirectUrl = $this->socialLoginService->getProviderRedirectUrl($socialProvider)) {
             throw new NotFoundHttpException('provider not found');
         }
 
@@ -53,7 +53,7 @@ class UserController extends Controller
 
     public function socialLoginCallback($socialProvider)
     {
-        if (!$userRecord = $this->socialLoginService->handleProviderCallback($socialProvider)) {
+        if (! $userRecord = $this->socialLoginService->handleProviderCallback($socialProvider)) {
             throw new NotFoundHttpException('provider not found');
         }
 
@@ -81,12 +81,12 @@ class UserController extends Controller
     public function password(ChangePasswordRequest $request)
     {
         //validate against existing password
-        if (!\Hash::check($request->input('old_password'), $this->getUser()->password)) {
+        if (! \Hash::check($request->input('old_password'), $this->getUser()->password)) {
             throw new UnauthorizedHttpException('password', 'incorrect password');
         }
 
         $this->getUser()->update([
-            'password' => $request->input('password')
+            'password' => $request->input('password'),
         ]);
 
         return response()->noContent();
@@ -111,11 +111,11 @@ class UserController extends Controller
 
     public function verifyEmailVerification(Request $request)
     {
-        if (!$user = User::find($request->route('id'))) {
+        if (! $user = User::find($request->route('id'))) {
             throw new AccessDeniedHttpException('this action is prohibited');
         }
 
-        if (!hash_equals((string)$request->route('hash'), sha1($user->getEmailForVerification()))) {
+        if (! hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))) {
             throw new AccessDeniedHttpException('this action is prohibited');
         }
 
@@ -128,7 +128,7 @@ class UserController extends Controller
         }
 
         return response()->redirectTo(
-            config('app.frontend_url') . '/login'
+            config('app.frontend_url').'/login'
         );
     }
 

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\Easystore;
-
 
 use App\Contracts\OAuth;
 use App\Enums\DeviceType;
@@ -31,25 +29,25 @@ class OAuthService implements OAuth
     {
         return [
             'config' => [
-                'onDeleteAuthCallback' => false
+                'onDeleteAuthCallback' => false,
             ],
             'validation' => [
-                'onInstall' => OnInstallRule::class
+                'onInstall' => OnInstallRule::class,
             ],
         ];
     }
 
     public function onInstall(Request $request)
     {
-        $this->cache->put('easystore:' . $this->getEasystoreShop($request) . ':shop', $this->getShop());
+        $this->cache->put('easystore:'.$this->getEasystoreShop($request).':shop', $this->getShop());
         if ($request->header('x-request-from') === 'mobile') {
-            $this->cache->put('easystore:' . $this->getEasystoreShop($request) . ':device', DeviceType::Mobile());
+            $this->cache->put('easystore:'.$this->getEasystoreShop($request).':device', DeviceType::Mobile());
         }
 
         $sdk = $this->getSdk([
             'shop' => $this->getEasystoreShop($request),
             'scopes' => 'read_orders,read_customers,read_products,write_products',
-            'redirect_uri' => config('easystore.redirect_url')
+            'redirect_uri' => config('easystore.redirect_url'),
         ]);
 
         return ['url' => $sdk->buildAuthUrl()];
@@ -58,12 +56,12 @@ class OAuthService implements OAuth
     public function onInstallCallback(Request $request)
     {
         $this->shop = throw_unless(
-            $this->cache->pull('easystore:' . $this->getEasystoreShop($request) . ':shop'),
+            $this->cache->pull('easystore:'.$this->getEasystoreShop($request).':shop'),
             new NotFoundHttpException('please try again')
         );
 
         $accessToken = $this->getSdk([
-            'shop' => $this->getEasystoreShop($request)
+            'shop' => $this->getEasystoreShop($request),
         ])->getAccessToken();
 
         $this->getShop()->marketplaces()->detach($this->getMarketplace('easystore')->id);
@@ -93,7 +91,7 @@ class OAuthService implements OAuth
             $shopifyShop = substr($shopifyShop, 0, -1);
         }
 
-        if (!Str::contains($shopifyShop, '.easy.co')) {
+        if (! Str::contains($shopifyShop, '.easy.co')) {
             $shopifyShop .= '.easy.co';
         }
 

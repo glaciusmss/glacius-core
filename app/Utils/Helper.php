@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Utils;
-
 
 use Illuminate\Support\Collection;
 
@@ -41,7 +39,7 @@ class Helper
 
     public static function escapeElasticReservedChars($string)
     {
-        $regex = "/[\\+\\-\\=\\&\\|\\!\\(\\)\\{\\}\\[\\]\\^\\\"\\~\\*\\<\\>\\?\\:\\\\\\/]/";
+        $regex = '/[\\+\\-\\=\\&\\|\\!\\(\\)\\{\\}\\[\\]\\^\\"\\~\\*\\<\\>\\?\\:\\\\\\/]/';
 
         return preg_replace($regex, addslashes('\\$0'), $string);
     }

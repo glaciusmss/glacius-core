@@ -11,7 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 /**
- * App\Shop
+ * App\Shop.
  *
  * @property int $id
  * @property string $name

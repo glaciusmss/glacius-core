@@ -23,7 +23,7 @@ class TelegramController extends Controller
 
         return response()->json([
             'url' => "https://t.me/GlaciusBot?start={$token->token}",
-            'token' => $token->token
+            'token' => $token->token,
         ]);
     }
 

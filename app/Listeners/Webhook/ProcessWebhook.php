@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Listeners\Webhook;
-
 
 use App\Contracts\Processor;
 use App\Enums\QueueGroup;
@@ -33,10 +31,10 @@ class ProcessWebhook implements ShouldQueue
     {
         $connector = $this->connectorManager->resolveConnector($webhookReceived->identifier);
 
-        [$class, $method] = Arr::get($connector->mapper(), 'webhook.' . $webhookReceived->topic);
+        [$class, $method] = Arr::get($connector->mapper(), 'webhook.'.$webhookReceived->topic);
 
-        if (!WebhookEventMapper::hasValue($method)) {
-            throw new NotFoundHttpException($method . ' not supported for this marketplace');
+        if (! WebhookEventMapper::hasValue($method)) {
+            throw new NotFoundHttpException($method.' not supported for this marketplace');
         }
 
         // dispatch processor
@@ -69,9 +67,9 @@ class ProcessWebhook implements ShouldQueue
         $method = Str::of($method)->replaceFirst('on', '')->append('d');
 
         $extractedClassFromObject = ucfirst(class_basename($model));
-        $namespace = 'App\\Events\\' . $extractedClassFromObject . '\\';
-        $eventName = $extractedClassFromObject . $method;
-        $eventClass = $namespace . $eventName;
+        $namespace = 'App\\Events\\'.$extractedClassFromObject.'\\';
+        $eventName = $extractedClassFromObject.$method;
+        $eventClass = $namespace.$eventName;
 
         if (class_exists($eventClass)) {
             event(new $eventClass($model));

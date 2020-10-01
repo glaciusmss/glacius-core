@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Contact
+ * App\Contact.
  *
  * @property int $id
  * @property string|null $first_name
@@ -40,7 +40,7 @@ class Contact extends Model
     protected $guarded = [];
 
     protected $touches = [
-        'contactable'
+        'contactable',
     ];
 
     public function contactable()

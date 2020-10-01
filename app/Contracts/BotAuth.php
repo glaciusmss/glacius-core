@@ -8,7 +8,6 @@
 
 namespace App\Contracts;
 
-
 interface BotAuth
 {
     public function connect($token);

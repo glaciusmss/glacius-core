@@ -8,7 +8,6 @@
 
 namespace App\Botman;
 
-
 use App\Jobs\Bot\ReplyJob;
 use Illuminate\Support\Arr;
 
@@ -22,6 +21,7 @@ trait BotAuthTrait
             foreach (Arr::wrap($stopMsg) as $msg) {
                 ReplyJob::dispatch($this->bot, $msg);
             }
+
             return false;
         }
 

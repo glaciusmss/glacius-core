@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\Woocommerce;
-
 
 use App\Contracts\OAuth;
 use App\Enums\DeviceType;
@@ -33,29 +31,29 @@ class OAuthService implements OAuth
     {
         return [
             'config' => [
-                'onDeleteAuthCallback' => false
+                'onDeleteAuthCallback' => false,
             ],
             'validation' => [
-                'onInstall' => OnInstallRule::class
-            ]
+                'onInstall' => OnInstallRule::class,
+            ],
         ];
     }
 
     public function onInstall(Request $request)
     {
         $generatedSession = Token::generateAndSave(TokenType::WoocommerceConnect(), $this->getShop()->attributesToArray())->token;
-        $this->cache->put('woocommerce:' . $generatedSession . ':shop', $this->getShop());
-        $this->cache->put('woocommerce:' . $generatedSession . ':woocommerce_store_url', $this->getWoocommerceStoreUrl($request));
+        $this->cache->put('woocommerce:'.$generatedSession.':shop', $this->getShop());
+        $this->cache->put('woocommerce:'.$generatedSession.':woocommerce_store_url', $this->getWoocommerceStoreUrl($request));
         if (request()->header('x-request-from') === 'mobile') {
-            $this->cache->put('woocommerce:' . $generatedSession . ':device', DeviceType::Mobile());
+            $this->cache->put('woocommerce:'.$generatedSession.':device', DeviceType::Mobile());
         }
 
-        $url = $this->getWoocommerceStoreUrl($request) . '/wc-auth/v1/authorize'
-            . '?app_name=GlaciusMSS.' . $generatedSession
-            . '&scope=read_write'
-            . '&user_id=' . $generatedSession
-            . '&return_url=' . config('woocommerce.return_url')
-            . '&callback_url=' . config('woocommerce.callback_url');
+        $url = $this->getWoocommerceStoreUrl($request).'/wc-auth/v1/authorize'
+            .'?app_name=GlaciusMSS.'.$generatedSession
+            .'&scope=read_write'
+            .'&user_id='.$generatedSession
+            .'&return_url='.config('woocommerce.return_url')
+            .'&callback_url='.config('woocommerce.callback_url');
 
         return compact('url');
     }
@@ -64,13 +62,13 @@ class OAuthService implements OAuth
     {
         $this->setShop(
             throw_unless(
-                $this->cache->pull('woocommerce:' . $request->input('user_id') . ':shop'),
+                $this->cache->pull('woocommerce:'.$request->input('user_id').':shop'),
                 new NotFoundHttpException('please try again')
             )
         );
 
         $woocommerceStoreUrl = throw_unless(
-            $this->cache->pull('woocommerce:' . $request->input('user_id') . ':woocommerce_store_url'),
+            $this->cache->pull('woocommerce:'.$request->input('user_id').':woocommerce_store_url'),
             new NotFoundHttpException('please try again')
         );
 
@@ -97,7 +95,7 @@ class OAuthService implements OAuth
     {
         $woocommerceStoreUrl = $request->input('woocommerce_store_url');
 
-        if (!Str::endsWith($woocommerceStoreUrl, '/')) {
+        if (! Str::endsWith($woocommerceStoreUrl, '/')) {
             $woocommerceStoreUrl .= '/';
         }
 

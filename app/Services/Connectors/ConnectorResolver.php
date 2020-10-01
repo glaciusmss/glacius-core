@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\Connectors;
-
 
 use App\Contracts\Connector;
 use App\Contracts\ResolvesConnector;
@@ -21,8 +19,8 @@ class ConnectorResolver implements ResolvesConnector
 
     public function addConnector($class)
     {
-        if (!in_array(Connector::class, class_implements($class), true)) {
-            throw new \InvalidArgumentException("$class has to implement " . Connector::class);
+        if (! in_array(Connector::class, class_implements($class), true)) {
+            throw new \InvalidArgumentException("$class has to implement ".Connector::class);
         }
 
         $this->connectors->push($class);
@@ -39,7 +37,7 @@ class ConnectorResolver implements ResolvesConnector
 
         return throw_unless(
             $connector,
-            new ConnectorNotFoundException($identifier . ' not found')
+            new ConnectorNotFoundException($identifier.' not found')
         );
     }
 

@@ -8,7 +8,6 @@
 
 namespace App\Utils;
 
-
 use App\SyncTransaction;
 
 trait HasSyncTrasactions

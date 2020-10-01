@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\Shopify\Helpers;
-
 
 use App\Exceptions\NotSupportedException;
 use Illuminate\Support\Arr;
@@ -15,7 +13,7 @@ trait HasSdk
     {
         $configuration = $this->studlyCaseConfig($configuration);
 
-        if (!Arr::hasAny($configuration, ['ShopUrl'])) {
+        if (! Arr::hasAny($configuration, ['ShopUrl'])) {
             throw new NotSupportedException('some configuration missing');
         }
 

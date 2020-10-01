@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\Shopify\Syncs;
-
 
 use App\Contracts\Sync;
 use App\DTO\SyncState;
@@ -29,7 +27,7 @@ class SyncProduct implements Sync
 
         $sdk = $this->getSdk([
             'AccessToken' => $marketplaceIntegration->token,
-            'ShopUrl' => $marketplaceIntegration->meta['shopify_shop']
+            'ShopUrl' => $marketplaceIntegration->meta['shopify_shop'],
         ]);
 
         try {
@@ -37,13 +35,13 @@ class SyncProduct implements Sync
 
             //update model with shopify meta
             $product->update([
-                'meta->shopify_product_id' => $response['id']
+                'meta->shopify_product_id' => $response['id'],
             ]);
 
             $product->productVariants
                 ->find($product->productVariants->first()['id'])
                 ->update([
-                    'meta->shopify_variant_id' => Arr::get($response, 'variants.0.id')
+                    'meta->shopify_variant_id' => Arr::get($response, 'variants.0.id'),
                 ]);
 
             return new SyncState(State::Success());
@@ -61,7 +59,7 @@ class SyncProduct implements Sync
 
         $sdk = $this->getSdk([
             'AccessToken' => $marketplaceIntegration->token,
-            'ShopUrl' => $marketplaceIntegration->meta['shopify_shop']
+            'ShopUrl' => $marketplaceIntegration->meta['shopify_shop'],
         ]);
 
         try {
@@ -80,7 +78,7 @@ class SyncProduct implements Sync
 
         $sdk = $this->getSdk([
             'AccessToken' => $marketplaceIntegration->token,
-            'ShopUrl' => $marketplaceIntegration->meta['shopify_shop']
+            'ShopUrl' => $marketplaceIntegration->meta['shopify_shop'],
         ]);
 
         try {
@@ -120,8 +118,8 @@ class SyncProduct implements Sync
                 [
                     'title' => 'default',
                     'price' => $newVariants['price'],
-                    'inventory_quantity' => $newVariants['stock']
-                ]
+                    'inventory_quantity' => $newVariants['stock'],
+                ],
             ],
         ];
     }

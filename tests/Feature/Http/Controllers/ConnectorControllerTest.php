@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Tests\Feature\Http\Controllers;
-
 
 use App\Enums\TokenType;
 use App\Http\Middleware\ValidateWebhook;
@@ -44,7 +42,7 @@ class ConnectorControllerTest extends TestCase
         $response = $this->postJson('/shopify/oauth', [
             'shopify_shop' => 'test',
             'rtn_url' => $this->faker->url,
-            'shop_id' => $this->user->shops->first()->id
+            'shop_id' => $this->user->shops->first()->id,
         ]);
 
         $response->assertOk();
@@ -82,7 +80,7 @@ class ConnectorControllerTest extends TestCase
         $urlToBeRedirect = $this->faker->url;
 
         // oauth callback will use cache to check for redirect url
-        \Cache::put('shopify:' . $this->user->shops->first()->id . ':rtn_url', $urlToBeRedirect);
+        \Cache::put('shopify:'.$this->user->shops->first()->id.':rtn_url', $urlToBeRedirect);
 
         $response = $this->getJson('/shopify/oauth');
 
@@ -112,9 +110,9 @@ class ConnectorControllerTest extends TestCase
 
         \Cache::put('woocommerce:1:rtn_url', $urlToBeReRedirectdirect);
 
-        $response = $this->getJson('/woocommerce/redirect?' . http_build_query([
-                'user_id' => $token->token
-            ])
+        $response = $this->getJson('/woocommerce/redirect?'.http_build_query([
+            'user_id' => $token->token,
+        ])
         );
 
         $response->assertRedirect($urlToBeReRedirectdirect);

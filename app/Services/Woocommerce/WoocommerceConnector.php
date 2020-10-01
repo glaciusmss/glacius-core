@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\Woocommerce;
-
 
 use App\Contracts\Connector;
 use App\Customer;
@@ -33,7 +31,7 @@ class WoocommerceConnector implements Connector
     public function getSyncService(): array
     {
         return [
-            SyncProduct::class
+            SyncProduct::class,
         ];
     }
 
@@ -53,7 +51,7 @@ class WoocommerceConnector implements Connector
                 WebhookTopic::CustomerCreate => [Customer::class, WebhookEventMapper::Create],
                 WebhookTopic::CustomerUpdate => [Customer::class, WebhookEventMapper::Update],
                 WebhookTopic::CustomerDelete => [Customer::class, WebhookEventMapper::Delete],
-            ]
+            ],
         ];
     }
 }

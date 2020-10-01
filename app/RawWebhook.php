@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\RawWebhook
+ * App\RawWebhook.
  *
  * @property int $id
  * @property array $raw_data
@@ -30,7 +30,7 @@ class RawWebhook extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'raw_data' => 'array'
+        'raw_data' => 'array',
     ];
 
     public function marketplace()

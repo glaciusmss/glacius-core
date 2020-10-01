@@ -7,7 +7,7 @@ use App\Enums\SyncDirection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\SyncTransaction
+ * App\SyncTransaction.
  *
  * @property int $id
  * @property string $event

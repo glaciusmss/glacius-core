@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Tests\Feature\Http\Controllers;
-
 
 use App\User;
 use App\UserProfile;
@@ -30,15 +28,15 @@ class UserProfileControllerTest extends TestCase
         $response->assertOk()
             ->assertJsonFragment([
                 'phone_number' => $this->user->userProfile->phone_number,
-                'gender' => (string)$this->user->userProfile->gender,
+                'gender' => (string) $this->user->userProfile->gender,
                 'date_of_birth' => $this->user->userProfile->date_of_birth->format('Y-m-d'),
             ]);
     }
 
     public function testUpdateUserProfileSuccess()
     {
-        $response = $this->patchJson('/user_profile/' . $this->user->userProfile->id, [
-            'phone_number' => '0123456789'
+        $response = $this->patchJson('/user_profile/'.$this->user->userProfile->id, [
+            'phone_number' => '0123456789',
         ]);
 
         $response->assertNoContent();

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Tests\Feature\Http\Controllers;
-
 
 use App\Shop;
 use App\User;
@@ -38,18 +36,18 @@ class ShopControllerTest extends TestCase
     {
         $response = $this->postJson('/shop', [
             'name' => 'test_shop',
-            'description' => 'test_desc'
+            'description' => 'test_desc',
         ]);
 
         $response->assertCreated()
             ->assertJsonFragment([
                 'name' => 'test_shop',
-                'description' => 'test_desc'
+                'description' => 'test_desc',
             ]);
 
         $this->assertDatabaseHas('shops', [
             'name' => 'test_shop',
-            'description' => 'test_desc'
+            'description' => 'test_desc',
         ]);
     }
 
@@ -58,12 +56,12 @@ class ShopControllerTest extends TestCase
         $shop = Shop::factory()->create();
         $this->user->shops()->attach($shop);
 
-        $response = $this->getJson('/shop/' . $shop->id);
+        $response = $this->getJson('/shop/'.$shop->id);
 
         $response->assertOk()
             ->assertJsonFragment([
                 'name' => $shop->name,
-                'description' => $shop->description
+                'description' => $shop->description,
             ]);
     }
 
@@ -75,8 +73,8 @@ class ShopControllerTest extends TestCase
         // make sure that factory created name same with db name
         $this->assertEquals($shop->name, $this->user->shops->first()->name);
 
-        $response = $this->patchJson('/shop/' . $shop->id, [
-            'name' => 'test_shop'
+        $response = $this->patchJson('/shop/'.$shop->id, [
+            'name' => 'test_shop',
         ]);
 
         $response->assertNoContent();
@@ -91,7 +89,7 @@ class ShopControllerTest extends TestCase
         $shop = Shop::factory()->create();
         $this->user->shops()->attach($shop);
 
-        $response = $this->deleteJson('/shop/' . $shop->id);
+        $response = $this->deleteJson('/shop/'.$shop->id);
 
         $response->assertNoContent();
 

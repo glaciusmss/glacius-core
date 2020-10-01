@@ -52,7 +52,7 @@ class Handler extends ExceptionHandler
         $headers = [];
         if ($exception instanceof ValidationException) {
             $statusCode = $exception->status;
-        } else if ($exception instanceof HttpExceptionInterface) {
+        } elseif ($exception instanceof HttpExceptionInterface) {
             $statusCode = $exception->getStatusCode();
             $headers = $exception->getHeaders();
         }
@@ -71,7 +71,7 @@ class Handler extends ExceptionHandler
                 'line' => $exception->getLine(),
                 'file' => $exception->getFile(),
                 'class' => \get_class($exception),
-                'trace' => explode("\n", $exception->getTraceAsString())
+                'trace' => explode("\n", $exception->getTraceAsString()),
             ];
         }
 

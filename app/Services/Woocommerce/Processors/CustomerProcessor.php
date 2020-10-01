@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\Woocommerce\Processors;
-
 
 use App\Contracts\Processor;
 use App\Customer;
@@ -35,7 +33,7 @@ class CustomerProcessor extends BaseProcessor implements Processor
             ->where('meta->marketplace_customer_id', $event->rawData->get('id'))
             ->first();
 
-        if (!$customerRecord) {
+        if (! $customerRecord) {
             return null;
         }
 

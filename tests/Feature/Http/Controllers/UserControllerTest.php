@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Tests\Feature\Http\Controllers;
-
 
 use App\Notifications\VerifyEmailNotification;
 use App\Services\SocialLoginService;
@@ -27,12 +25,12 @@ class UserControllerTest extends TestCase
 
         $response = $this->postJson('/user/login', [
             'email' => $user->email,
-            'password' => 'demo1234'
+            'password' => 'demo1234',
         ]);
 
         $response->assertOk()
             ->assertJsonStructure([
-                'token'
+                'token',
             ]);
 
         \Event::assertDispatched(Login::class);
@@ -44,12 +42,12 @@ class UserControllerTest extends TestCase
 
         $response = $this->postJson('/user/login', [
             'email' => $user->email,
-            'password' => 'demo12345'
+            'password' => 'demo12345',
         ]);
 
         $response->assertUnauthorized()
             ->assertJsonFragment([
-                'message' => 'incorrect email or password'
+                'message' => 'incorrect email or password',
             ]);
     }
 
@@ -67,7 +65,7 @@ class UserControllerTest extends TestCase
 
         $response->assertOk()
             ->assertJsonFragment([
-                'url' => 'http://example.com'
+                'url' => 'http://example.com',
             ]);
     }
 
@@ -85,7 +83,7 @@ class UserControllerTest extends TestCase
 
         $response->assertNotFound()
             ->assertJsonFragment([
-                'message' => 'provider not found'
+                'message' => 'provider not found',
             ]);
     }
 
@@ -107,7 +105,7 @@ class UserControllerTest extends TestCase
 
         $response->assertOk()
             ->assertJsonStructure([
-                'token'
+                'token',
             ]);
 
         \Event::assertDispatched(Login::class);
@@ -127,7 +125,7 @@ class UserControllerTest extends TestCase
 
         $response->assertNotFound()
             ->assertJsonFragment([
-                'message' => 'provider not found'
+                'message' => 'provider not found',
             ]);
     }
 
@@ -181,7 +179,7 @@ class UserControllerTest extends TestCase
         $response = $this->patchJson('/user/password', [
             'old_password' => 'demo1234',
             'password' => $password = $this->faker->password,
-            'confirm_password' => $password
+            'confirm_password' => $password,
         ]);
 
         $response->assertNoContent();
@@ -189,7 +187,7 @@ class UserControllerTest extends TestCase
         // login should fail after change password
         $loginResponse = $this->postJson('/user/login', [
             'email' => $user->email,
-            'password' => 'demo1234'
+            'password' => 'demo1234',
         ]);
 
         $loginResponse->assertUnauthorized();
@@ -204,12 +202,12 @@ class UserControllerTest extends TestCase
         $response = $this->patchJson('/user/password', [
             'old_password' => 'demo12345',
             'password' => $password = $this->faker->password,
-            'confirm_password' => $password
+            'confirm_password' => $password,
         ]);
 
         $response->assertUnauthorized()
             ->assertJsonFragment([
-                'message' => 'incorrect password'
+                'message' => 'incorrect password',
             ]);
     }
 
@@ -240,7 +238,7 @@ class UserControllerTest extends TestCase
         $response->assertOk()
             ->assertJsonFragment([
                 'name' => $user->name,
-                'email' => $user->email
+                'email' => $user->email,
             ]);
     }
 
@@ -251,7 +249,7 @@ class UserControllerTest extends TestCase
         $user = User::factory()->withoutEmailVerified()->create();
         $hash = sha1($user->email);
 
-        $response = $this->getJson('/user/email/verify/' . $user->id . '/' . $hash);
+        $response = $this->getJson('/user/email/verify/'.$user->id.'/'.$hash);
 
         $response->assertRedirect();
 
@@ -268,7 +266,7 @@ class UserControllerTest extends TestCase
 
         $response->assertForbidden()
             ->assertJsonFragment([
-                'message' => 'this action is prohibited'
+                'message' => 'this action is prohibited',
             ]);
     }
 
@@ -276,11 +274,11 @@ class UserControllerTest extends TestCase
     {
         $user = User::factory()->withoutEmailVerified()->create();
 
-        $response = $this->getJson('/user/email/verify/' . $user->id . '/randomhash');
+        $response = $this->getJson('/user/email/verify/'.$user->id.'/randomhash');
 
         $response->assertForbidden()
             ->assertJsonFragment([
-                'message' => 'this action is prohibited'
+                'message' => 'this action is prohibited',
             ]);
     }
 
@@ -289,11 +287,11 @@ class UserControllerTest extends TestCase
         $user = User::factory()->create();
         $hash = sha1($user->email);
 
-        $response = $this->getJson('/user/email/verify/' . $user->id . '/' . $hash);
+        $response = $this->getJson('/user/email/verify/'.$user->id.'/'.$hash);
 
         $response->assertStatus(409)
             ->assertJsonFragment([
-                'message' => 'user already verified'
+                'message' => 'user already verified',
             ]);
     }
 
@@ -327,7 +325,7 @@ class UserControllerTest extends TestCase
 
         $response->assertStatus(409)
             ->assertJsonFragment([
-                'message' => 'user already verified'
+                'message' => 'user already verified',
             ]);
 
         \Notification::assertNothingSent();

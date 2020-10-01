@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Utils;
-
 
 use App\Product;
 use App\ProductVariants;

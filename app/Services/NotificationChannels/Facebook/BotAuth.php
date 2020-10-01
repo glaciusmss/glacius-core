@@ -8,7 +8,6 @@
 
 namespace App\Services\NotificationChannels\Facebook;
 
-
 use App\Contracts\BotAuth as BotAuthContract;
 use App\Enums\NotificationChannelEnum;
 use App\Enums\TokenType;
@@ -34,9 +33,9 @@ class BotAuth extends BaseNotificationChannel implements BotAuthContract
         $user = User::find($token->meta['user_id']);
 
         $this->getNotificationChannel()->users()->attach($user, [
-            'meta->' . $this->getBotIdKey() => $this->getBot()->getUser()->getId(),
-            'meta->' . $this->getBotFirstNameKey() => $this->getBot()->getUser()->getFirstName(),
-            'meta->' . $this->getBotLastNameKey() => $this->getBot()->getUser()->getLastName(),
+            'meta->'.$this->getBotIdKey() => $this->getBot()->getUser()->getId(),
+            'meta->'.$this->getBotFirstNameKey() => $this->getBot()->getUser()->getFirstName(),
+            'meta->'.$this->getBotLastNameKey() => $this->getBot()->getUser()->getLastName(),
         ]);
 
         return $user;
@@ -59,7 +58,7 @@ class BotAuth extends BaseNotificationChannel implements BotAuthContract
     public function isBotConnectedToUser($botId)
     {
         return $this->getNotificationChannel()->users()
-            ->wherePivot('meta->' . $this->getBotIdKey(), $botId)
+            ->wherePivot('meta->'.$this->getBotIdKey(), $botId)
             ->first(['email']);
     }
 }

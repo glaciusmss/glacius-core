@@ -23,7 +23,7 @@ abstract class BaseConversation extends Conversation
     {
         $this->platform = BotPlatform::coerce($this->bot->getDriver()->getName());
 
-        if (!$this->validateAuth()) {
+        if (! $this->validateAuth()) {
             return;
         }
 

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services\Shopify;
-
 
 use App\Contracts\Connector;
 use App\Customer;
@@ -53,7 +51,7 @@ class ShopifyConnector implements Connector
                 WebhookTopic::CustomerCreate => [Customer::class, WebhookEventMapper::Create],
                 WebhookTopic::CustomerUpdate => [Customer::class, WebhookEventMapper::Update],
                 WebhookTopic::CustomerDelete => [Customer::class, WebhookEventMapper::Delete],
-            ]
+            ],
         ];
     }
 }
