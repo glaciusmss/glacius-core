@@ -29,7 +29,7 @@ class ProductControllerTest extends TestCase
 
         $this->actingAs($this->user);
 
-        /** @var Collection $orders */
+        /* @var Collection $orders */
         $this->products = Product::withoutSyncingToSearch(function () {
             return Product::factory()
                 ->has(ProductVariant::factory())

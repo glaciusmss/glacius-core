@@ -28,7 +28,7 @@ class CustomerControllerTest extends TestCase
 
         $this->actingAs($this->user);
 
-        /** @var Collection $customers */
+        /* @var Collection $customers */
         $this->customers = Customer::withoutSyncingToSearch(function () {
             return Customer::factory()
                 ->for(Marketplace::factory())

@@ -39,13 +39,13 @@ class OrderCreated extends Notification implements ShouldQueue
 
     public function toTelegram($notifiable)
     {
-        /** @var Shop $notifiable */
+        /* @var Shop $notifiable */
         return $notifiable->name.': You have new order, ID ['.$this->order->id.'] from ['.Str::title($this->order->marketplace->name).']';
     }
 
     public function toFacebook($notifiable)
     {
-        /** @var Shop $notifiable */
+        /* @var Shop $notifiable */
         return $notifiable->name.': You have new order, ID ['.$this->order->id.'] from ['.Str::title($this->order->marketplace->name).']';
     }
 
@@ -61,7 +61,7 @@ class OrderCreated extends Notification implements ShouldQueue
 
     public function toFcm($notifiable)
     {
-        /** @var Shop $notifiable */
+        /* @var Shop $notifiable */
         return [
             'options' => (new OptionsBuilder())
                 ->setPriority('high'),

@@ -26,7 +26,7 @@ class OrderControllerTest extends TestCase
 
         $this->actingAs($this->user);
 
-        /** @var Collection $orders */
+        /* @var Collection $orders */
         $this->orders = Order::withoutSyncingToSearch(function () {
             return Order::factory()
                 ->for(Marketplace::factory())
