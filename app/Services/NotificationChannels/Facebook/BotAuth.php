@@ -12,9 +12,9 @@ use App\Contracts\BotAuth as BotAuthContract;
 use App\Enums\NotificationChannelEnum;
 use App\Enums\TokenType;
 use App\Exceptions\BotException;
-use App\Services\NotificationChannels\BaseNotificationChannel;
 use App\Models\Token;
 use App\Models\User;
+use App\Services\NotificationChannels\BaseNotificationChannel;
 
 class BotAuth extends BaseNotificationChannel implements BotAuthContract
 {

@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Enums\TokenType;
 use App\Http\Requests\ConnectorRequest;
-use App\Services\Connectors\ConnectorManager;
 use App\Models\Token;
+use App\Services\Connectors\ConnectorManager;
 use Illuminate\Http\Request;
 
 class ConnectorController extends Controller

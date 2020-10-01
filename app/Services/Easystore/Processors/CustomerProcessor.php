@@ -3,8 +3,8 @@
 namespace App\Services\Easystore\Processors;
 
 use App\Contracts\Processor;
-use App\Models\Customer;
 use App\Events\Webhook\WebhookReceived;
+use App\Models\Customer;
 use App\Utils\Helper;
 
 class CustomerProcessor extends BaseProcessor implements Processor

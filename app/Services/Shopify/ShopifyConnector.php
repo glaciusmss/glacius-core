@@ -3,8 +3,8 @@
 namespace App\Services\Shopify;
 
 use App\Contracts\Connector;
-use App\Models\Customer;
 use App\Enums\WebhookEventMapper;
+use App\Models\Customer;
 use App\Models\Order;
 use App\Services\Shopify\Enums\WebhookTopic;
 use App\Services\Shopify\Processors\CustomerProcessor;
