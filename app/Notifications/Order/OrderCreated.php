@@ -8,8 +8,8 @@ use App\Channels\TelegramChannel;
 use App\Enums\FirebaseChannelEnum;
 use App\Enums\QueueGroup;
 use App\Http\Resources\OrderResource;
-use App\Order;
-use App\Shop;
+use App\Models\Order;
+use App\Models\Shop;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
@@ -39,13 +39,13 @@ class OrderCreated extends Notification implements ShouldQueue
 
     public function toTelegram($notifiable)
     {
-        /** @var Shop $notifiable */
+        /* @var Shop $notifiable */
         return $notifiable->name.': You have new order, ID ['.$this->order->id.'] from ['.Str::title($this->order->marketplace->name).']';
     }
 
     public function toFacebook($notifiable)
     {
-        /** @var Shop $notifiable */
+        /* @var Shop $notifiable */
         return $notifiable->name.': You have new order, ID ['.$this->order->id.'] from ['.Str::title($this->order->marketplace->name).']';
     }
 
@@ -61,7 +61,7 @@ class OrderCreated extends Notification implements ShouldQueue
 
     public function toFcm($notifiable)
     {
-        /** @var Shop $notifiable */
+        /* @var Shop $notifiable */
         return [
             'options' => (new OptionsBuilder())
                 ->setPriority('high'),

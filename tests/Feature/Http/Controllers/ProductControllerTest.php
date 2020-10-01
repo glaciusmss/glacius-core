@@ -5,10 +5,10 @@ namespace Tests\Feature\Http\Controllers;
 use App\Events\Product\ProductCreated;
 use App\Events\Product\ProductDeleted;
 use App\Events\Product\ProductUpdated;
-use App\Product;
-use App\ProductVariant;
-use App\Shop;
-use App\User;
+use App\Models\Product;
+use App\Models\ProductVariant;
+use App\Models\Shop;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use ScoutElastic\Facades\ElasticClient;
 use Tests\ElasticSearchTestingHelper;
@@ -29,7 +29,7 @@ class ProductControllerTest extends TestCase
 
         $this->actingAs($this->user);
 
-        /** @var Collection $orders */
+        /* @var Collection $orders */
         $this->products = Product::withoutSyncingToSearch(function () {
             return Product::factory()
                 ->has(ProductVariant::factory())

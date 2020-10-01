@@ -1,6 +1,6 @@
 <?php
 
-use App\Marketplace;
+use App\Models\Marketplace;
 use Illuminate\Database\Seeder;
 
 class MarketplaceSeeder extends Seeder

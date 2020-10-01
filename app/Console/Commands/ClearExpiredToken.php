@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Token;
+use App\Models\Token;
 use Illuminate\Console\Command;
 
 class ClearExpiredToken extends Command

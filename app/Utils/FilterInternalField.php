@@ -2,8 +2,8 @@
 
 namespace App\Utils;
 
-use App\Product;
-use App\ProductVariant;
+use App\Models\Product;
+use App\Models\ProductVariant;
 use Illuminate\Support\Arr;
 
 trait FilterInternalField

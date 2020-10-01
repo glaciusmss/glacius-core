@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\MarketplaceEnum;
-use App\NotificationChannel;
+use App\Models\NotificationChannel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class NotificationChannelFactory extends Factory

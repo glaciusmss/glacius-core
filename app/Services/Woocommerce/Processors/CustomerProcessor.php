@@ -3,8 +3,8 @@
 namespace App\Services\Woocommerce\Processors;
 
 use App\Contracts\Processor;
-use App\Customer;
 use App\Events\Webhook\WebhookReceived;
+use App\Models\Customer;
 
 class CustomerProcessor extends BaseProcessor implements Processor
 {

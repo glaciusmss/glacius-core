@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Customer;
 use App\DTO\Pagination;
 use App\Http\Requests\Customer\RetrieveRequest;
 use App\Http\Resources\CustomerResource;
+use App\Models\Customer;
 use App\SearchEngine\SearchRules\PartialSearchRule;
 use App\Utils\Helper;
 use Illuminate\Http\Request;

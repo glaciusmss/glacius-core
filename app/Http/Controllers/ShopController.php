@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Shop\StoreRequest;
 use App\Http\Requests\Shop\UpdateRequest;
 use App\Http\Resources\ShopResource;
-use App\Shop;
+use App\Models\Shop;
 
 class ShopController extends Controller
 {

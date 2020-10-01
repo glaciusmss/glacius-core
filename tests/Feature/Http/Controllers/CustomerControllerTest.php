@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\Http\Controllers;
 
-use App\Address;
-use App\Contact;
-use App\Customer;
-use App\Marketplace;
-use App\Shop;
-use App\User;
+use App\Models\Address;
+use App\Models\Contact;
+use App\Models\Customer;
+use App\Models\Marketplace;
+use App\Models\Shop;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use ScoutElastic\Facades\ElasticClient;
 use Tests\ElasticSearchTestingHelper;
@@ -28,7 +28,7 @@ class CustomerControllerTest extends TestCase
 
         $this->actingAs($this->user);
 
-        /** @var Collection $customers */
+        /* @var Collection $customers */
         $this->customers = Customer::withoutSyncingToSearch(function () {
             return Customer::factory()
                 ->for(Marketplace::factory())

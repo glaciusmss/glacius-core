@@ -3,7 +3,7 @@
 namespace App\Services\Shopify;
 
 use App\Contracts\Webhook;
-use App\MarketplaceIntegration;
+use App\Models\MarketplaceIntegration;
 use App\Services\Shopify\Enums\WebhookTopic;
 use App\Services\Shopify\Helpers\HasSdk;
 use Illuminate\Http\Request;

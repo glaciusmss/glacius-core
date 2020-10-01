@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Shop;
+use App\Models\Shop;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;

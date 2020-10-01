@@ -3,9 +3,9 @@
 namespace App\Services\Shopify;
 
 use App\Contracts\Connector;
-use App\Customer;
 use App\Enums\WebhookEventMapper;
-use App\Order;
+use App\Models\Customer;
+use App\Models\Order;
 use App\Services\Shopify\Enums\WebhookTopic;
 use App\Services\Shopify\Processors\CustomerProcessor;
 use App\Services\Shopify\Processors\OrderProcessor;

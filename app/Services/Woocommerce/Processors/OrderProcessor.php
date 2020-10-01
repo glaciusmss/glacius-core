@@ -3,10 +3,10 @@
 namespace App\Services\Woocommerce\Processors;
 
 use App\Contracts\Processor;
-use App\Customer;
 use App\Events\Webhook\WebhookReceived;
-use App\Order;
-use App\Product;
+use App\Models\Customer;
+use App\Models\Order;
+use App\Models\Product;
 use App\Utils\Helper;
 
 class OrderProcessor extends BaseProcessor implements Processor

@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\TempMedia;
+use App\Models\TempMedia;
 use Illuminate\Console\Command;
 
 class ClearExpiredImage extends Command

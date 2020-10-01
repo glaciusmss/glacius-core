@@ -4,7 +4,7 @@ namespace App\Events;
 
 use App\DTO\SyncState;
 use App\Enums\SyncDirection;
-use App\Marketplace;
+use App\Models\Marketplace;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Events\Dispatchable;
 

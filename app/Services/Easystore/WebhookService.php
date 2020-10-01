@@ -3,7 +3,7 @@
 namespace App\Services\Easystore;
 
 use App\Contracts\Webhook;
-use App\MarketplaceIntegration;
+use App\Models\MarketplaceIntegration;
 use App\Services\Easystore\Enums\WebhookTopic;
 use App\Services\Easystore\Helpers\HasSdk;
 use EasyStore\Client as EasyStoreClient;

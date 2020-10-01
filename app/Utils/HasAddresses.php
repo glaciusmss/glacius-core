@@ -8,7 +8,7 @@
 
 namespace App\Utils;
 
-use App\Address;
+use App\Models\Address;
 
 trait HasAddresses
 {

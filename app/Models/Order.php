@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use App\Scopes\PaginationScope;
 use App\Scopes\PeriodScope;

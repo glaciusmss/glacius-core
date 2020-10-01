@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Customer;
-use App\Marketplace;
-use App\Order;
-use App\Shop;
+use App\Models\Customer;
+use App\Models\Marketplace;
+use App\Models\Order;
+use App\Models\Shop;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class OrderFactory extends Factory

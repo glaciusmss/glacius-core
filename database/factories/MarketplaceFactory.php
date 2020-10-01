@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\MarketplaceEnum;
-use App\Marketplace;
+use App\Models\Marketplace;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class MarketplaceFactory extends Factory

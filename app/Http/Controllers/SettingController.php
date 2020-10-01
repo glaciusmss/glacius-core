@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Marketplace;
-use App\Setting;
+use App\Models\Marketplace;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class SettingController extends Controller

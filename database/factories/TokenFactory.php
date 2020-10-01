@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\TokenType;
-use App\Token;
+use App\Models\Token;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TokenFactory extends Factory

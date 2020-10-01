@@ -17,7 +17,7 @@ $botman->fallback(function (Botman $bot) {
     \App\Jobs\Bot\ReplyJob::dispatch($bot, 'sorry, command still in development stages');
 });
 
-$botman->exception(\Exception::class, function (\Exception $exception, Botman $bot) {
+$botman->exception(\Exception::class, function (Exception $exception, Botman $bot) {
     $exceptionHandler = app(App\Exceptions\BotHandler::class);
     $exceptionHandler->report($exception);
 

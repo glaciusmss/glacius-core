@@ -3,9 +3,9 @@
 namespace App\Services\Easystore;
 
 use App\Contracts\Connector;
-use App\Customer;
 use App\Enums\WebhookEventMapper;
-use App\Order;
+use App\Models\Customer;
+use App\Models\Order;
 use App\Services\Easystore\Enums\WebhookTopic;
 use App\Services\Easystore\Processors\CustomerProcessor;
 use App\Services\Easystore\Processors\OrderProcessor;

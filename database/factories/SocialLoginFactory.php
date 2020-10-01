@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Enums\SocialProvider;
-use App\SocialLogin;
-use App\User;
+use App\Models\SocialLogin;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SocialLoginFactory extends Factory
