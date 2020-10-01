@@ -2,8 +2,8 @@
 
 namespace App\Utils;
 
-use App\Models\Address;
 use App\Enums\AddressType;
+use App\Models\Address;
 use Illuminate\Support\Arr;
 
 trait UpdateAddresses

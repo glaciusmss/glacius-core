@@ -3,8 +3,8 @@
 namespace App\Services\Woocommerce;
 
 use App\Contracts\Connector;
-use App\Models\Customer;
 use App\Enums\WebhookEventMapper;
+use App\Models\Customer;
 use App\Models\Order;
 use App\Services\Woocommerce\Enums\WebhookTopic;
 use App\Services\Woocommerce\Processors\CustomerProcessor;
