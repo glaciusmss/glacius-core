@@ -11,7 +11,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Yadahan\AuthenticationLog\AuthenticationLogable;
 
 /**
- * App\User.
+ * App\Models\User
  *
  * @property int $id
  * @property string $name
@@ -22,15 +22,15 @@ use Yadahan\AuthenticationLog\AuthenticationLogable;
  * @property \App\Utils\CarbonFix|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Yadahan\AuthenticationLog\AuthenticationLog[] $authentications
  * @property-read int|null $authentications_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\NotificationChannel[] $notificationChannels
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\NotificationChannel[] $notificationChannels
  * @property-read int|null $notification_channels_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Shop[] $shops
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Shop[] $shops
  * @property-read int|null $shops_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\SocialLogin[] $socialLogins
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\SocialLogin[] $socialLogins
  * @property-read int|null $social_logins_count
- * @property-read \App\UserProfile|null $userProfile
+ * @property-read \App\Models\UserProfile|null $userProfile
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User query()

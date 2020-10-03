@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Contact.
+ * App\Models\Contact
  *
  * @property int $id
  * @property string|null $first_name

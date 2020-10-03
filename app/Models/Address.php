@@ -3,12 +3,12 @@
 namespace App\Models;
 
 use App\Enums\AddressType;
-use App\Utils\HasContact;
+use App\Models\MorphHelper\HasContact;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Address.
+ * App\Models\Address
  *
  * @property int $id
  * @property string|null $address1
@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \App\Utils\CarbonFix|null $created_at
  * @property \App\Utils\CarbonFix|null $updated_at
  * @property-read Model|\Eloquent $addressable
- * @property-read \App\Contact|null $contact
+ * @property-read \App\Models\Contact|null $contact
  * @method static \Illuminate\Database\Eloquent\Builder|Address newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Address newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Address query()

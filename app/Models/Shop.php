@@ -4,33 +4,33 @@ namespace App\Models;
 
 use App\Enums\NotificationChannelEnum;
 use App\Scopes\OrderScope;
-use App\Utils\HasSettings;
+use App\Models\MorphHelper\HasSettings;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 /**
- * App\Shop.
+ * App\Models\Shop
  *
  * @property int $id
  * @property string $name
  * @property string $description
  * @property \App\Utils\CarbonFix|null $created_at
  * @property \App\Utils\CarbonFix|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Customer[] $customers
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Customer[] $customers
  * @property-read int|null $customers_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Marketplace[] $marketplaces
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Marketplace[] $marketplaces
  * @property-read int|null $marketplaces_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Order[] $orders
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $orders
  * @property-read int|null $orders_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Product[] $products
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
  * @property-read int|null $products_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Setting[] $settings
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Setting[] $settings
  * @property-read int|null $settings_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $users
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
  * @property-read int|null $users_count
  * @method static \Illuminate\Database\Eloquent\Builder|Shop newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Shop newQuery()

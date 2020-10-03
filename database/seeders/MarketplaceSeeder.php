@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Models\Marketplace;
 use Illuminate\Database\Seeder;
 

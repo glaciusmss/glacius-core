@@ -6,7 +6,7 @@
  * Time: 9:56 AM.
  */
 
-namespace App\Utils;
+namespace App\Models\MorphHelper;
 
 use App\Models\Address;
 

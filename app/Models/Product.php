@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Scopes\OrderScope;
 use App\Scopes\PaginationScope;
 use App\SearchEngine\IndexConfigurators\ProductIndexConfigurator;
-use App\Utils\HasSyncTrasactions;
+use App\Models\MorphHelper\HasSyncTrasactions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -15,7 +15,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
- * App\Product.
+ * App\Models\Product
  *
  * @property int $id
  * @property string $name
@@ -24,14 +24,15 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property \App\Utils\CarbonFix|null $created_at
  * @property \App\Utils\CarbonFix|null $updated_at
  * @property array $meta
+ * @property \ScoutElastic\Highlight|null $highlight
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|\Spatie\MediaLibrary\MediaCollections\Models\Media[] $media
  * @property-read int|null $media_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Order[] $orders
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $orders
  * @property-read int|null $orders_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\ProductVariant[] $productVariants
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductVariant[] $productVariants
  * @property-read int|null $product_variants_count
- * @property-read \App\Shop $shop
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\SyncTransaction[] $syncTransactions
+ * @property-read \App\Models\Shop $shop
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\SyncTransaction[] $syncTransactions
  * @property-read int|null $sync_transactions_count
  * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()

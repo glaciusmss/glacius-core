@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- * App\ConnectedNotificationChannel.
+ * App\Models\ConnectedNotificationChannel
  *
  * @property int $id
  * @property array $meta

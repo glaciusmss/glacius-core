@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\UserProfile.
+ * App\Models\UserProfile
  *
  * @property int $id
  * @property string|null $phone_number
@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $user_id
  * @property \App\Utils\CarbonFix|null $created_at
  * @property \App\Utils\CarbonFix|null $updated_at
- * @property-read \App\User $user
+ * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|UserProfile newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserProfile newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|UserProfile query()

@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use App\Utils\HasSettings;
+use App\Models\MorphHelper\HasSettings;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- * App\MarketplaceIntegration.
+ * App\Models\MarketplaceIntegration
  *
  * @property int $id
  * @property string|null $token
@@ -18,6 +18,8 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property int $marketplace_id
  * @property \App\Utils\CarbonFix|null $created_at
  * @property \App\Utils\CarbonFix|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Setting[] $settings
+ * @property-read int|null $settings_count
  * @method static \Illuminate\Database\Eloquent\Builder|MarketplaceIntegration newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|MarketplaceIntegration newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|MarketplaceIntegration query()

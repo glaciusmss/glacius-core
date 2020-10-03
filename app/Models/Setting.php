@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Setting.
+ * App\Models\Setting
  *
  * @property int $id
  * @property string $label

@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\NotificationChannel.
+ * App\Models\NotificationChannel
  *
  * @property int $id
  * @property string $name
  * @property string $website
  * @property \App\Utils\CarbonFix|null $created_at
  * @property \App\Utils\CarbonFix|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\User[] $users
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
  * @property-read int|null $users_count
  * @method static \Illuminate\Database\Eloquent\Builder|NotificationChannel newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|NotificationChannel newQuery()

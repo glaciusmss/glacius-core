@@ -6,7 +6,7 @@ use App\Enums\SocialProvider;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\SocialLogin.
+ * App\Models\SocialLogin
  *
  * @property int $id
  * @property string $provider_user_id
@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $user_id
  * @property \App\Utils\CarbonFix|null $created_at
  * @property \App\Utils\CarbonFix|null $updated_at
- * @property-read \App\User $user
+ * @property-read \App\Models\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|SocialLogin newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|SocialLogin newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|SocialLogin query()

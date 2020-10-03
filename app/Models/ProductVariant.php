@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\ProductVariants.
+ * App\Models\ProductVariant
  *
  * @property int $id
  * @property string $name
@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $product_id
  * @property \App\Utils\CarbonFix|null $created_at
  * @property \App\Utils\CarbonFix|null $updated_at
- * @property-read \App\Product $product
+ * @property-read \App\Models\Product $product
  * @method static \Illuminate\Database\Eloquent\Builder|ProductVariant newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductVariant newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ProductVariant query()

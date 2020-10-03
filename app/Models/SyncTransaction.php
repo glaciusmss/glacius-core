@@ -7,7 +7,7 @@ use App\Enums\SyncDirection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\SyncTransaction.
+ * App\Models\SyncTransaction
  *
  * @property int $id
  * @property string $event
@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $marketplace_id
  * @property \App\Utils\CarbonFix|null $created_at
  * @property \App\Utils\CarbonFix|null $updated_at
- * @property-read \App\Marketplace $marketplace
+ * @property-read \App\Models\Marketplace $marketplace
  * @property-read Model|\Eloquent $syncTransactional
  * @method static \Illuminate\Database\Eloquent\Builder|SyncTransaction newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|SyncTransaction newQuery()

@@ -5,13 +5,13 @@ namespace App\Models;
 use App\Scopes\PaginationScope;
 use App\Scopes\PeriodScope;
 use App\SearchEngine\IndexConfigurators\OrderIndexConfigurator;
-use App\Utils\HasAddresses;
+use App\Models\MorphHelper\HasAddresses;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use ScoutElastic\Searchable;
 
 /**
- * App\Order.
+ * App\Models\Order
  *
  * @property int $id
  * @property string $total_price
@@ -22,13 +22,14 @@ use ScoutElastic\Searchable;
  * @property int|null $customer_id
  * @property \App\Utils\CarbonFix|null $created_at
  * @property \App\Utils\CarbonFix|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Address[] $addresses
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Address[] $addresses
  * @property-read int|null $addresses_count
- * @property-read \App\Customer|null $customer
- * @property-read \App\Marketplace $marketplace
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Product[] $products
+ * @property-read \App\Models\Customer|null $customer
+ * @property \ScoutElastic\Highlight|null $highlight
+ * @property-read \App\Models\Marketplace $marketplace
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
  * @property-read int|null $products_count
- * @property-read \App\Shop $shop
+ * @property-read \App\Models\Shop $shop
  * @method static \Illuminate\Database\Eloquent\Builder|Order createdByPeriodLastMonth()
  * @method static \Illuminate\Database\Eloquent\Builder|Order createdByPeriodLastQuarter()
  * @method static \Illuminate\Database\Eloquent\Builder|Order createdByPeriodLastWeek()

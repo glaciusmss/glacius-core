@@ -4,7 +4,7 @@ namespace App\Utils;
 
 use BeyondCode\LaravelWebSockets\Apps\App;
 use BeyondCode\LaravelWebSockets\Statistics\Logger\HttpStatisticsLogger;
-use function GuzzleHttp\Psr7\stream_for;
+use GuzzleHttp\Psr7\Utils;
 
 class WebsocketStatisticsLogger extends HttpStatisticsLogger
 {
@@ -24,7 +24,7 @@ class WebsocketStatisticsLogger extends HttpStatisticsLogger
                 ->post(
                     config('internal-url.app_url').'/'.config('websockets.path').'/statistics',
                     ['Content-Type' => 'application/json'],
-                    stream_for(json_encode($postData))
+                    Utils::streamFor(json_encode($postData))
                 );
 
             $currentConnectionCount = $this->channelManager->getConnectionCount($appId);

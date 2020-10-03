@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- * App\OrderDetails.
+ * App\Models\OrderDetail
  *
  * @property int $id
  * @property int $quantity

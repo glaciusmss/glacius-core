@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\TempMedia.
+ * App\Models\TempMedia
  *
  * @property int $id
  * @property string $file_name

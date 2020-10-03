@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 /**
- * App\Token.
+ * App\Models\Token
  *
  * @property int $id
  * @property string $token

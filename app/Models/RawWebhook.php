@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\RawWebhook.
+ * App\Models\RawWebhook
  *
  * @property int $id
  * @property array $raw_data
@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $marketplace_id
  * @property \App\Utils\CarbonFix|null $created_at
  * @property \App\Utils\CarbonFix|null $updated_at
- * @property-read \App\Marketplace $marketplace
+ * @property-read \App\Models\Marketplace $marketplace
  * @method static \Illuminate\Database\Eloquent\Builder|RawWebhook newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RawWebhook newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RawWebhook query()

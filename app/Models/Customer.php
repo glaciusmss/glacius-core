@@ -2,18 +2,18 @@
 
 namespace App\Models;
 
+use App\Models\MorphHelper\HasContact;
 use App\Scopes\OrderScope;
 use App\Scopes\PaginationScope;
 use App\Scopes\PeriodScope;
 use App\SearchEngine\IndexConfigurators\CustomerIndexConfigurator;
-use App\Utils\HasAddresses;
-use App\Utils\HasContact;
+use App\Models\MorphHelper\HasAddresses;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use ScoutElastic\Searchable;
 
 /**
- * App\Customer.
+ * App\Models\Customer
  *
  * @property int $id
  * @property array $meta
@@ -21,13 +21,14 @@ use ScoutElastic\Searchable;
  * @property int $marketplace_id
  * @property \App\Utils\CarbonFix|null $created_at
  * @property \App\Utils\CarbonFix|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Address[] $addresses
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Address[] $addresses
  * @property-read int|null $addresses_count
- * @property-read \App\Contact|null $contact
- * @property-read \App\Marketplace $marketplace
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Order[] $orders
+ * @property-read \App\Models\Contact|null $contact
+ * @property \ScoutElastic\Highlight|null $highlight
+ * @property-read \App\Models\Marketplace $marketplace
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Order[] $orders
  * @property-read int|null $orders_count
- * @property-read \App\Shop $shop
+ * @property-read \App\Models\Shop $shop
  * @method static \Illuminate\Database\Eloquent\Builder|Customer createdByPeriodLastMonth()
  * @method static \Illuminate\Database\Eloquent\Builder|Customer createdByPeriodLastQuarter()
  * @method static \Illuminate\Database\Eloquent\Builder|Customer createdByPeriodLastWeek()
