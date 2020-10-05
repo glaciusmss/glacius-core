@@ -3,6 +3,7 @@
 namespace App\Services\Connectors;
 
 use App\Contracts\BotConnector;
+use App\Contracts\Connector;
 use App\Contracts\ServiceConnector;
 use App\Contracts\ResolvesConnector;
 use App\Exceptions\ConnectorNotFoundException;
@@ -60,7 +61,7 @@ class ConnectorResolver implements ResolvesConnector
     public function getAllIdentifiers(): Enumerable
     {
         return $this->makeConnectors()
-            ->map(static function (ServiceConnector $connector) {
+            ->map(static function (Connector $connector) {
                 return $connector->getConnectorIdentifier();
             });
     }
