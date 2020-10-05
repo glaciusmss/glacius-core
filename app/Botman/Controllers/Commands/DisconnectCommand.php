@@ -8,21 +8,32 @@
 
 namespace App\Botman\Controllers\Commands;
 
-use App\Contracts\BotAuth;
+use App\Contracts\BotConnector;
+use App\Enums\ServiceMethod;
 use App\Jobs\Bot\ReplyJob;
+use App\Services\Connectors\BotAuthManager;
+use App\Services\Connectors\ConnectorManager;
 
 class DisconnectCommand extends BaseCommand
 {
-    protected $botAuth;
+    protected $connectorManager;
 
-    public function __construct(BotAuth $botAuth)
+    public function __construct(ConnectorManager $connectorManager)
     {
-        $this->botAuth = $botAuth;
+        $this->connectorManager = $connectorManager;
     }
 
     public function handle()
     {
-        $disconnectedUser = $this->botAuth->disconnect();
+        $botAuthService = $this->connectorManager->getServiceManager(
+            $this->platform,
+            BotConnector::class,
+            BotAuthManager::class,
+            ServiceMethod::BotAuthService
+        )->setBot($this->bot);
+
+        $disconnectedUser = $botAuthService->disconnect();
+
         ReplyJob::dispatch($this->bot, 'Successfully disconnected to Glacius with '.$disconnectedUser->email);
     }
 }

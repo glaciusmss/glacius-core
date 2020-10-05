@@ -2,21 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Contracts\BotAuth;
+use App\Contracts\BotConnector;
+use App\Enums\ServiceMethod;
 use App\Enums\TokenType;
 use App\Models\Token;
-use Illuminate\Auth\AuthManager;
+use App\Services\Connectors\BotAuthManager;
+use App\Services\Connectors\ConnectorManager;
 
 class FacebookController extends Controller
 {
-    protected $botAuth;
-
-    public function __construct(AuthManager $auth, BotAuth $botAuth)
-    {
-        parent::__construct($auth);
-        $this->botAuth = $botAuth;
-    }
-
     public function connect()
     {
         $token = Token::generateAndSave(TokenType::FacebookConnect(), ['user_id' => $this->auth->id()]);
@@ -27,9 +21,16 @@ class FacebookController extends Controller
         ]);
     }
 
-    public function disconnect()
+    public function disconnect(ConnectorManager $connectorManager)
     {
-        $this->botAuth->disconnect();
+        $botAuthService = $connectorManager->getServiceManager(
+            'facebook',
+            BotConnector::class,
+            BotAuthManager::class,
+            ServiceMethod::BotAuthService
+        )->setBot(app('botman'));
+
+        $botAuthService->disconnect();
 
         return response()->noContent();
     }

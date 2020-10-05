@@ -9,23 +9,33 @@
 namespace App\Botman\Controllers\Commands;
 
 use App\Botman\Controllers\Conversations\ConnectConversation;
-use App\Contracts\BotAuth;
+use App\Contracts\BotConnector;
+use App\Enums\ServiceMethod;
 use App\Jobs\Bot\ReplyJob;
+use App\Services\Connectors\BotAuthManager;
+use App\Services\Connectors\ConnectorManager;
 use BotMan\BotMan\BotMan;
 use Illuminate\Support\Arr;
 
 class StartCommand extends BaseCommand
 {
-    protected $botAuth;
+    protected $connectorManager;
 
-    public function __construct(BotAuth $botAuth)
+    public function __construct(ConnectorManager $connectorManager)
     {
-        $this->botAuth = $botAuth;
+        $this->connectorManager = $connectorManager;
     }
 
     public function handle()
     {
-        if ($connectedUser = $this->botAuth->isBotConnectedToUser($this->bot->getUser()->getId())) {
+        $botAuthService = $this->connectorManager->getServiceManager(
+            $this->platform,
+            BotConnector::class,
+            BotAuthManager::class,
+            ServiceMethod::BotAuthService
+        )->setBot($this->bot);
+
+        if ($connectedUser = $botAuthService->isBotConnectedToUser($this->bot->getUser()->getId())) {
             ReplyJob::dispatch($this->bot, 'This account has connected to '.$connectedUser->email);
             ReplyJob::dispatch($this->bot, 'Please disconnect first before connect to another account');
 
@@ -33,13 +43,13 @@ class StartCommand extends BaseCommand
         }
 
         if ($connectToken = $this->parameters->first()) {
-            $connectedUser = $this->botAuth->connect($connectToken);
+            $connectedUser = $botAuthService->connect($connectToken);
             ReplyJob::dispatch($this->bot, 'Successfully connected to Glacius with '.$connectedUser->email);
 
             return;
         }
 
-        $this->bot->startConversation(new ConnectConversation($this->botAuth));
+        $this->bot->startConversation(app(ConnectConversation::class));
     }
 
     public function handleFbMessenger($payload, BotMan $bot)

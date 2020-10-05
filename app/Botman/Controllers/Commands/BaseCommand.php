@@ -27,7 +27,7 @@ abstract class BaseCommand
     {
         $this->bot = $bot;
         $this->parameters = collect($parameters);
-        $this->platform = BotPlatform::coerce($bot->getDriver()->getName());
+        $this->platform = strtolower($this->bot->getDriver()->getName());
 
         if (! $this->validateAuth()) {
             return;

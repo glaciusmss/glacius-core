@@ -2,7 +2,7 @@
 
 namespace App\Services\Shopify;
 
-use App\Contracts\Connector;
+use App\Contracts\ServiceConnector;
 use App\Enums\WebhookEventMapper;
 use App\Models\Customer;
 use App\Models\Order;
@@ -11,7 +11,7 @@ use App\Services\Shopify\Processors\CustomerProcessor;
 use App\Services\Shopify\Processors\OrderProcessor;
 use App\Services\Shopify\Syncs\SyncProduct;
 
-class ShopifyConnector implements Connector
+class ShopifyConnector implements ServiceConnector
 {
     public function getConnectorIdentifier(): string
     {

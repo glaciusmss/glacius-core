@@ -9,7 +9,6 @@
 namespace App\Botman\Controllers\Conversations;
 
 use App\Botman\BotAuthTrait;
-use App\Enums\BotPlatform;
 use App\Jobs\Bot\ReplyJob;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 
@@ -21,7 +20,7 @@ abstract class BaseConversation extends Conversation
 
     public function run()
     {
-        $this->platform = BotPlatform::coerce($this->bot->getDriver()->getName());
+        $this->platform = strtolower($this->bot->getDriver()->getName());
 
         if (! $this->validateAuth()) {
             return;

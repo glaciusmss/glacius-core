@@ -14,9 +14,10 @@ interface ResolvesConnector
 
     /**
      * @param string $identifier
-     * @return mixed
+     * @param string $connectorType
+     * @return ServiceConnector|BotConnector
      */
-    public function findConnector(string $identifier): Connector;
+    public function findConnector(string $identifier, string $connectorType = ServiceConnector::class);
 
     public function getConnectors(): Enumerable;
 

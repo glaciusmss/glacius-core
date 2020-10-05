@@ -2,7 +2,7 @@
 
 namespace App\Services\Woocommerce;
 
-use App\Contracts\Connector;
+use App\Contracts\ServiceConnector;
 use App\Enums\WebhookEventMapper;
 use App\Models\Customer;
 use App\Models\Order;
@@ -11,7 +11,7 @@ use App\Services\Woocommerce\Processors\CustomerProcessor;
 use App\Services\Woocommerce\Processors\OrderProcessor;
 use App\Services\Woocommerce\Syncs\SyncProduct;
 
-class WoocommerceConnector implements Connector
+class WoocommerceConnector implements ServiceConnector
 {
     public function getConnectorIdentifier(): string
     {

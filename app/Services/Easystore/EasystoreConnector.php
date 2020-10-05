@@ -2,7 +2,7 @@
 
 namespace App\Services\Easystore;
 
-use App\Contracts\Connector;
+use App\Contracts\ServiceConnector;
 use App\Enums\WebhookEventMapper;
 use App\Models\Customer;
 use App\Models\Order;
@@ -11,7 +11,7 @@ use App\Services\Easystore\Processors\CustomerProcessor;
 use App\Services\Easystore\Processors\OrderProcessor;
 use App\Services\Easystore\Syncs\SyncProduct;
 
-class EasystoreConnector implements Connector
+class EasystoreConnector implements ServiceConnector
 {
     public function getConnectorIdentifier(): string
     {

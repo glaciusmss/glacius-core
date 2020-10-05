@@ -8,11 +8,13 @@
 
 namespace App\Contracts;
 
+use BotMan\BotMan\BotMan;
+
 interface BotAuth
 {
-    public function connect($token);
+    public function connect(BotMan $bot, string $token);
 
-    public function disconnect();
+    public function disconnect(BotMan $bot);
 
-    public function isBotConnectedToUser($botId);
+    public function isBotConnectedToUser(BotMan $bot, $botId);
 }

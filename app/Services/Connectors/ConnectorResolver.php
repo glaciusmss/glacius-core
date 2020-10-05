@@ -2,7 +2,8 @@
 
 namespace App\Services\Connectors;
 
-use App\Contracts\Connector;
+use App\Contracts\BotConnector;
+use App\Contracts\ServiceConnector;
 use App\Contracts\ResolvesConnector;
 use App\Exceptions\ConnectorNotFoundException;
 use Illuminate\Support\Collection;
@@ -19,8 +20,11 @@ class ConnectorResolver implements ResolvesConnector
 
     public function addConnector($class)
     {
-        if (! in_array(Connector::class, class_implements($class), true)) {
-            throw new \InvalidArgumentException("$class has to implement ".Connector::class);
+        $isClassImplementServiceConnector = in_array(ServiceConnector::class, class_implements($class), true);
+        $isClassImplementBotConnector = in_array(BotConnector::class, class_implements($class), true);
+
+        if (! $isClassImplementServiceConnector  && ! $isClassImplementBotConnector) {
+            throw new \InvalidArgumentException("$class has to implement ".ServiceConnector::class." or ".BotConnector::class);
         }
 
         $this->connectors->push($class);
@@ -28,11 +32,11 @@ class ConnectorResolver implements ResolvesConnector
         return $this;
     }
 
-    public function findConnector(string $identifier): Connector
+    public function findConnector(string $identifier, string $connectorType = ServiceConnector::class)
     {
         $connector = $this->makeConnectors()
-            ->first(static function (Connector $connector) use ($identifier) {
-                return $connector->getConnectorIdentifier() === $identifier;
+            ->first(static function ($connector) use ($connectorType, $identifier) {
+                return $connector instanceof $connectorType && $connector->getConnectorIdentifier() === $identifier;
             });
 
         return throw_unless(
@@ -56,7 +60,7 @@ class ConnectorResolver implements ResolvesConnector
     public function getAllIdentifiers(): Enumerable
     {
         return $this->makeConnectors()
-            ->map(static function (Connector $connector) {
+            ->map(static function (ServiceConnector $connector) {
                 return $connector->getConnectorIdentifier();
             });
     }

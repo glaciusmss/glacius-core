@@ -8,18 +8,21 @@
 
 namespace App\Botman\Controllers\Conversations;
 
-use App\Contracts\BotAuth;
+use App\Contracts\BotConnector;
+use App\Enums\ServiceMethod;
 use App\Exceptions\BotException;
 use App\Jobs\Bot\ReplyJob;
+use App\Services\Connectors\BotAuthManager;
+use App\Services\Connectors\ConnectorManager;
 use BotMan\BotMan\Messages\Incoming\Answer;
 
 class ConnectConversation extends BaseConversation
 {
-    protected $botAuth;
+    protected $connectorManager;
 
-    public function __construct(BotAuth $botAuth)
+    public function __construct(ConnectorManager $connectorManager)
     {
-        $this->botAuth = $botAuth;
+        $this->connectorManager = $connectorManager;
     }
 
     public function handle()
@@ -32,11 +35,16 @@ class ConnectConversation extends BaseConversation
     {
         $this->queuedAsk('Please send me the token you got from Glacius website.', function (Answer $answer) {
             try {
-                $connectedUser = $this->botAuth->connect(
-                    $answer->getText()
-                );
+                $botAuthService = $this->connectorManager->getServiceManager(
+                    $this->platform,
+                    BotConnector::class,
+                    BotAuthManager::class,
+                    ServiceMethod::BotAuthService
+                )->setBot($this->bot);
 
-                ReplyJob::dispatch($this->bot, 'Successfully connected to Glacius with '.$connectedUser->email);
+                $connectedUser = $botAuthService->connect($answer->getText());
+
+                ReplyJob::dispatch($this->bot, 'Successfully connected to Glacius with ' . $connectedUser->email);
             } catch (BotException $exception) {
                 app(\App\Exceptions\BotHandler::class)->render($exception, $this->bot);
                 $this->askForToken();

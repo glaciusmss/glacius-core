@@ -215,6 +215,12 @@ return [
         App\Services\Easystore\EasystoreServiceProvider::class,
         App\Services\Shopify\ShopifyServiceProvider::class,
         App\Services\Woocommerce\WoocommerceServiceProvider::class,
+
+        /*
+         * Bot Service Providers...
+         */
+        App\Services\Facebook\FacebookServiceProvider::class,
+        App\Services\Telegram\TelegramServiceProvider::class,
     ],
 
     /*

@@ -3,7 +3,7 @@
 namespace App\Services\Connectors;
 
 use App\Contracts\Configurable;
-use App\Contracts\Connector;
+use App\Contracts\ServiceConnector;
 use App\Contracts\OAuth;
 use App\Contracts\ResolvesConnector;
 use App\Contracts\Webhook;
@@ -16,6 +16,15 @@ use Illuminate\Support\Collection;
 
 class ConnectorManager
 {
+    public function getServiceManager(string $identifier, string $connectorType, string $managerName, string $serviceName)
+    {
+        $service = $this->makeService(
+            $this->resolveConnector($identifier, $connectorType)->{$serviceName}()
+        );
+
+        return app()->makeWith($managerName, compact('service'));
+    }
+
     public function processOAuth(string $identifier, string $methodToBeCalled, ...$parameters)
     {
         $authService = $this->makeService(
@@ -35,9 +44,9 @@ class ConnectorManager
         return value($result);
     }
 
-    public function resolveConnector(string $identifier): Connector
+    public function resolveConnector(string $identifier, string $connectorType = ServiceConnector::class)
     {
-        return app(ResolvesConnector::class)->findConnector($identifier);
+        return app(ResolvesConnector::class)->findConnector($identifier, $connectorType);
     }
 
     public function dispatchWebhookToProcessor(string $identifier, Request $request)
@@ -54,7 +63,7 @@ class ConnectorManager
 
     protected function registerWebhook(string $identifier, string $methodToBeCalled, OAuth $authService)
     {
-        if ($methodToBeCalled === 'onInstall' && ! $this->hasMethodEnabled($authService, 'onInstallCallback')) {
+        if ($methodToBeCalled === 'onInstall' && !$this->hasMethodEnabled($authService, 'onInstallCallback')) {
             $marketplace = $authService->getShop()->marketplaces()->whereName($identifier)->firstOrFail();
 
             $webhookService = $this->makeService(
@@ -79,7 +88,7 @@ class ConnectorManager
 
     protected function removeWebhook(string $identifier, string $methodToBeCalled, OAuth $authService)
     {
-        if ($methodToBeCalled === 'onDeleteAuth' && ! $this->hasMethodEnabled($authService, 'onDeleteAuthCallback')) {
+        if ($methodToBeCalled === 'onDeleteAuth' && !$this->hasMethodEnabled($authService, 'onDeleteAuthCallback')) {
             $marketplace = $authService->getShop()->marketplaces()->whereName($identifier)->firstOrFail();
 
             $webhookService = $this->makeService(
@@ -104,7 +113,7 @@ class ConnectorManager
 
     protected function fireOAuthEvents(string $identifier, string $methodToBeCalled, OAuth $authService): void
     {
-        if ($methodToBeCalled === 'onInstall' && ! $this->hasMethodEnabled($authService, 'onInstallCallback')) {
+        if ($methodToBeCalled === 'onInstall' && !$this->hasMethodEnabled($authService, 'onInstallCallback')) {
             // this will be fire if onInstallCallback is not enabled
             event(new OAuthConnected($authService->getShop(), $identifier));
 
@@ -117,7 +126,7 @@ class ConnectorManager
             return;
         }
 
-        if ($methodToBeCalled === 'onDeleteAuth' && ! $this->hasMethodEnabled($authService, 'onDeleteAuthCallback')) {
+        if ($methodToBeCalled === 'onDeleteAuth' && !$this->hasMethodEnabled($authService, 'onDeleteAuthCallback')) {
             // this will be fire if onDeleteAuthCallback is not enabled
             event(new OAuthDisconnected($authService->getShop(), $identifier));
 
@@ -131,7 +140,7 @@ class ConnectorManager
 
     protected function hasMethodEnabled(Configurable $configurable, $method): bool
     {
-        if (! Arr::get($configurable->configurations(), "config.$method", true)) {
+        if (!Arr::get($configurable->configurations(), "config.$method", true)) {
             return false;
         }
 
