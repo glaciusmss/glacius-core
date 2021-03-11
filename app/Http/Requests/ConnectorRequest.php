@@ -3,8 +3,10 @@
 namespace App\Http\Requests;
 
 use App\Contracts\RequestValidation;
+use App\Enums\ServiceMethod;
 use App\Exceptions\NotSupportedException;
-use App\Services\Connectors\ConnectorManager;
+use App\Services\Connectors\ManagerBuilder;
+use App\Services\Connectors\OAuthManager;
 use Illuminate\Support\Arr;
 
 class ConnectorRequest extends BaseRequest
@@ -23,12 +25,7 @@ class ConnectorRequest extends BaseRequest
             throw new NotSupportedException('this url is not supported');
         }
 
-        $connectorManager = app(ConnectorManager::class);
-
-        $connector = $connectorManager->resolveConnector($this->route('identifier'));
-        $configurations = $connectorManager->makeService($connector->getAuthService())->configurations();
-
-        $rules = Arr::get($configurations, "validation.$functionName", []);
+        $rules = $this->getOAuthManager()->getConfiguration("validation.$functionName", []);
 
         $rules = $this->wrapRules($rules);
 
@@ -37,6 +34,15 @@ class ConnectorRequest extends BaseRequest
         }
 
         return $rules;
+    }
+
+    protected function getOAuthManager(): OAuthManager
+    {
+        return app(ManagerBuilder::class)
+            ->setIdentifier($this->route('identifier'))
+            ->setManagerClass(OAuthManager::class)
+            ->setServiceMethod(ServiceMethod::AuthService)
+            ->build();
     }
 
     protected function mapUriToFunction()

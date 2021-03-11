@@ -13,16 +13,16 @@ use App\Enums\ServiceMethod;
 use App\Exceptions\BotException;
 use App\Jobs\Bot\ReplyJob;
 use App\Services\Connectors\BotAuthManager;
-use App\Services\Connectors\ConnectorManager;
+use App\Services\Connectors\ManagerBuilder;
 use BotMan\BotMan\Messages\Incoming\Answer;
 
 class ConnectConversation extends BaseConversation
 {
-    protected $connectorManager;
+    protected $managerBuilder;
 
-    public function __construct(ConnectorManager $connectorManager)
+    public function __construct(ManagerBuilder $managerBuilder)
     {
-        $this->connectorManager = $connectorManager;
+        $this->managerBuilder = $managerBuilder;
     }
 
     public function handle()
@@ -35,14 +35,17 @@ class ConnectConversation extends BaseConversation
     {
         $this->queuedAsk('Please send me the token you got from Glacius website.', function (Answer $answer) {
             try {
-                $botAuthService = $this->connectorManager->getServiceManager(
-                    $this->platform,
-                    BotConnector::class,
-                    BotAuthManager::class,
-                    ServiceMethod::BotAuthService
-                )->setBot($this->bot);
+                /** @var BotAuthManager $botAuthManager */
+                $botAuthManager = $this->managerBuilder
+                    ->setIdentifier($this->platform)
+                    ->setConnectorType(BotConnector::class)
+                    ->setManagerClass(BotAuthManager::class)
+                    ->setServiceMethod(ServiceMethod::BotAuthService)
+                    ->build();
 
-                $connectedUser = $botAuthService->connect($answer->getText());
+                $botAuthManager->setBot($this->bot);
+
+                $connectedUser = $botAuthManager->connect($answer->getText());
 
                 ReplyJob::dispatch($this->bot, 'Successfully connected to Glacius with ' . $connectedUser->email);
             } catch (BotException $exception) {

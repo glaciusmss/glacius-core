@@ -12,27 +12,30 @@ use App\Contracts\BotConnector;
 use App\Enums\ServiceMethod;
 use App\Jobs\Bot\ReplyJob;
 use App\Services\Connectors\BotAuthManager;
-use App\Services\Connectors\ConnectorManager;
+use App\Services\Connectors\ManagerBuilder;
 
 class DisconnectCommand extends BaseCommand
 {
-    protected $connectorManager;
+    protected $managerBuilder;
 
-    public function __construct(ConnectorManager $connectorManager)
+    public function __construct(ManagerBuilder $managerBuilder)
     {
-        $this->connectorManager = $connectorManager;
+        $this->managerBuilder = $managerBuilder;
     }
 
     public function handle()
     {
-        $botAuthService = $this->connectorManager->getServiceManager(
-            $this->platform,
-            BotConnector::class,
-            BotAuthManager::class,
-            ServiceMethod::BotAuthService
-        )->setBot($this->bot);
+        /** @var BotAuthManager $botAuthManager */
+        $botAuthManager = $this->managerBuilder
+            ->setIdentifier($this->platform)
+            ->setConnectorType(BotConnector::class)
+            ->setManagerClass(BotAuthManager::class)
+            ->setServiceMethod(ServiceMethod::BotAuthService)
+            ->build();
 
-        $disconnectedUser = $botAuthService->disconnect();
+        $botAuthManager->setBot($this->bot);
+
+        $disconnectedUser = $botAuthManager->disconnect();
 
         ReplyJob::dispatch($this->bot, 'Successfully disconnected to Glacius with '.$disconnectedUser->email);
     }

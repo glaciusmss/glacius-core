@@ -56,7 +56,7 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
     Route::apiResource('user_profile', 'UserProfileController')->only(['index', 'update']);
 
     Route::prefix('/image')->group(function () {
-        Route::get('/{image}', 'MediaController@getImage');
+        Route::get('/', 'MediaController@getImage');
         Route::post('/', 'MediaController@storeImage');
     });
 

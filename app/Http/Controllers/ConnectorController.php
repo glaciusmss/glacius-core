@@ -2,34 +2,59 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\ServiceConnector;
+use App\Enums\ServiceMethod;
 use App\Enums\TokenType;
 use App\Http\Requests\ConnectorRequest;
 use App\Models\Token;
-use App\Services\Connectors\ConnectorManager;
+use App\Services\Connectors\ManagerBuilder;
+use App\Services\Connectors\OAuthManager;
+use App\Services\Connectors\WebhookManager;
 use Illuminate\Http\Request;
 
 class ConnectorController extends Controller
 {
-    public function create(string $identifier, ConnectorRequest $request, ConnectorManager $connectorManager)
+    public function create(string $identifier, ConnectorRequest $request, ManagerBuilder $managerBuilder)
     {
         // store the return url to cache
-        \Cache::put($identifier.':'.$this->getShop()->id.':rtn_url', $request->input('rtn_url'));
+        \Cache::put($identifier . ':' . $this->getShop()->id . ':rtn_url', $request->input('rtn_url'));
+
+        /** @var OAuthManager $oAuthManager */
+        $oAuthManager = $managerBuilder
+            ->setIdentifier($identifier)
+            ->setManagerClass(OAuthManager::class)
+            ->setServiceMethod(ServiceMethod::AuthService)
+            ->build();
 
         return response()->json(
-            $connectorManager->processOAuth($identifier, 'onInstall', $request)
+            $oAuthManager->onInstall($request)
         );
     }
 
-    public function woocommerceCallback(string $identifier, ConnectorRequest $request, ConnectorManager $connectorManager)
+    public function woocommerceCallback(string $identifier, ConnectorRequest $request, ManagerBuilder $managerBuilder)
     {
-        $connectorManager->processOAuth($identifier, 'onInstallCallback', $request);
+        /** @var OAuthManager $oAuthManager */
+        $oAuthManager = $managerBuilder
+            ->setIdentifier($identifier)
+            ->setManagerClass(OAuthManager::class)
+            ->setServiceMethod(ServiceMethod::AuthService)
+            ->build();
+
+        $oAuthManager->onInstallCallback($request);
 
         return response()->json();
     }
 
-    public function oAuthCallback(string $identifier, ConnectorRequest $request, ConnectorManager $connectorManager)
+    public function oAuthCallback(string $identifier, ConnectorRequest $request, ManagerBuilder $managerBuilder)
     {
-        $shop = $connectorManager->processOAuth($identifier, 'onInstallCallback', $request);
+        /** @var OAuthManager $oAuthManager */
+        $oAuthManager = $managerBuilder
+            ->setIdentifier($identifier)
+            ->setManagerClass(OAuthManager::class)
+            ->setServiceMethod(ServiceMethod::AuthService)
+            ->build();
+
+        $shop = $oAuthManager->onInstallCallback($request);
 
         return response()->redirectTo(
             \Cache::pull($identifier.':'.$shop->id.':rtn_url')
@@ -37,9 +62,16 @@ class ConnectorController extends Controller
         );
     }
 
-    public function destroy(string $identifier, ConnectorRequest $request, ConnectorManager $connectorManager)
+    public function destroy(string $identifier, ConnectorRequest $request, ManagerBuilder $managerBuilder)
     {
-        $connectorManager->processOAuth($identifier, 'onDeleteAuth', $request);
+        /** @var OAuthManager $oAuthManager */
+        $oAuthManager = $managerBuilder
+            ->setIdentifier($identifier)
+            ->setManagerClass(OAuthManager::class)
+            ->setServiceMethod(ServiceMethod::AuthService)
+            ->build();
+
+        $oAuthManager->onDeleteAuth($request);
 
         return response()->noContent();
     }
@@ -67,9 +99,16 @@ class ConnectorController extends Controller
 //        );
     }
 
-    public function webhooks(string $identifier, Request $request, ConnectorManager $connectorManager)
+    public function webhooks(string $identifier, Request $request, ManagerBuilder $managerBuilder)
     {
-        $connectorManager->dispatchWebhookToProcessor($identifier, $request);
+        /** @var WebhookManager $webhookManager */
+        $webhookManager = $managerBuilder
+            ->setIdentifier($identifier)
+            ->setManagerClass(WebhookManager::class)
+            ->setServiceMethod(ServiceMethod::WebhookService)
+            ->build();
+
+        $webhookManager->dispatchWebhookToProcessor($request);
 
         return response()->json();
     }

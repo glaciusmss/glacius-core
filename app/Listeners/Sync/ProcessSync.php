@@ -2,25 +2,21 @@
 
 namespace App\Listeners\Sync;
 
-use App\Contracts\Sync;
 use App\Enums\QueueGroup;
-use App\Enums\SyncDirection;
-use App\Events\MarketplaceSynced;
+use App\Enums\ServiceMethod;
 use App\Events\SyncEvent;
-use App\Models\Marketplace;
-use App\Models\MarketplaceIntegration;
-use App\Services\Connectors\ConnectorManager;
+use App\Services\Connectors\ManagerBuilder;
+use App\Services\Connectors\SyncManager;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Collection;
 
 class ProcessSync implements ShouldQueue
 {
     public $queue = QueueGroup::Sync;
-    protected $connectorManager;
+    protected $managerBuilder;
 
-    public function __construct(ConnectorManager $connectorManager)
+    public function __construct(ManagerBuilder $managerBuilder)
     {
-        $this->connectorManager = $connectorManager;
+        $this->managerBuilder = $managerBuilder;
     }
 
     /**
@@ -28,41 +24,17 @@ class ProcessSync implements ShouldQueue
      */
     public function handle($syncEvent)
     {
-        $modelClassName = get_class($syncEvent->model);
         foreach ($syncEvent->shop->marketplaces as $marketplace) {
-            /** @var MarketplaceIntegration $marketplaceIntegration */
-            $marketplaceIntegration = $marketplace->pivot;
+            /** @var SyncManager $syncManager */
+            $syncManager = $this->managerBuilder
+                ->setIdentifier($marketplace->name)
+                ->setManagerClass(SyncManager::class)
+                ->setServiceMethod(ServiceMethod::SyncService)
+                ->build();
 
-            $connector = $this->connectorManager->resolveConnector($marketplace->name);
-
-            // dispatch sync
-            $syncServices = Collection::wrap($connector->getSyncService());
-
-            // identify which processor to be used
-            $resolvedSync = $syncServices->map(function ($syncService) {
-                return $this->connectorManager->makeService($syncService);
-            })->first(static function (Sync $syncService) use ($modelClassName) {
-                return $syncService->processFor() === $modelClassName;
-            });
-
-            if (! $resolvedSync || ! $this->isSyncEnabled($marketplace, $syncEvent)) {
-                // sync service not activated for current marketplace
-                // or is disabled
-                continue;
-            }
-
-            // call the specific sync service
-            $result = $resolvedSync->{$syncEvent->getMethod()}($syncEvent, $marketplaceIntegration);
-
-            //fire synced event after we finished each sync
-            event(new MarketplaceSynced($syncEvent->getMethod(), $syncEvent->model, SyncDirection::To(), $marketplace, $result));
+            $syncManager->setMarketplace($marketplace)
+                ->setSyncEvent($syncEvent)
+                ->sync();
         }
-    }
-
-    protected function isSyncEnabled(Marketplace $marketplace, SyncEvent $syncEvent)
-    {
-        $optionKey = 'is_'.strtolower(class_basename($syncEvent->model)).'_sync_activated';
-
-        return $syncEvent->shop->getSetting($optionKey, true, $marketplace->name);
     }
 }

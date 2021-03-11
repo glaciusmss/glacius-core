@@ -13,29 +13,32 @@ use App\Contracts\BotConnector;
 use App\Enums\ServiceMethod;
 use App\Jobs\Bot\ReplyJob;
 use App\Services\Connectors\BotAuthManager;
-use App\Services\Connectors\ConnectorManager;
+use App\Services\Connectors\ManagerBuilder;
 use BotMan\BotMan\BotMan;
 use Illuminate\Support\Arr;
 
 class StartCommand extends BaseCommand
 {
-    protected $connectorManager;
+    protected $managerBuilder;
 
-    public function __construct(ConnectorManager $connectorManager)
+    public function __construct(ManagerBuilder $managerBuilder)
     {
-        $this->connectorManager = $connectorManager;
+        $this->managerBuilder = $managerBuilder;
     }
 
     public function handle()
     {
-        $botAuthService = $this->connectorManager->getServiceManager(
-            $this->platform,
-            BotConnector::class,
-            BotAuthManager::class,
-            ServiceMethod::BotAuthService
-        )->setBot($this->bot);
+        /** @var BotAuthManager $botAuthManager */
+        $botAuthManager = $this->managerBuilder
+            ->setIdentifier($this->platform)
+            ->setConnectorType(BotConnector::class)
+            ->setManagerClass(BotAuthManager::class)
+            ->setServiceMethod(ServiceMethod::BotAuthService)
+            ->build();
 
-        if ($connectedUser = $botAuthService->isBotConnectedToUser($this->bot->getUser()->getId())) {
+        $botAuthManager->setBot($this->bot);
+
+        if ($connectedUser = $botAuthManager->isBotConnectedToUser($this->bot->getUser()->getId())) {
             ReplyJob::dispatch($this->bot, 'This account has connected to '.$connectedUser->email);
             ReplyJob::dispatch($this->bot, 'Please disconnect first before connect to another account');
 
@@ -43,7 +46,7 @@ class StartCommand extends BaseCommand
         }
 
         if ($connectToken = $this->parameters->first()) {
-            $connectedUser = $botAuthService->connect($connectToken);
+            $connectedUser = $botAuthManager->connect($connectToken);
             ReplyJob::dispatch($this->bot, 'Successfully connected to Glacius with '.$connectedUser->email);
 
             return;

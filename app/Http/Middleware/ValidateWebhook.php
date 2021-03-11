@@ -9,17 +9,19 @@
 namespace App\Http\Middleware;
 
 use App\Contracts\Webhook;
-use App\Services\Connectors\ConnectorManager;
+use App\Enums\ServiceMethod;
+use App\Services\Connectors\ManagerBuilder;
+use App\Services\Connectors\WebhookManager;
 use Closure;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class ValidateWebhook
 {
-    protected $connectorManager;
+    protected $managerBuilder;
 
-    public function __construct(ConnectorManager $connectorManager)
+    public function __construct(ManagerBuilder $managerBuilder)
     {
-        $this->connectorManager = $connectorManager;
+        $this->managerBuilder = $managerBuilder;
     }
 
     /**
@@ -33,12 +35,14 @@ class ValidateWebhook
     {
         $identifier = $request->route('identifier');
 
-        $connector = $this->connectorManager->resolveConnector($identifier);
+        /** @var WebhookManager $webhookManager */
+        $webhookManager = $this->managerBuilder
+            ->setIdentifier($identifier)
+            ->setManagerClass(WebhookManager::class)
+            ->setServiceMethod(ServiceMethod::WebhookService)
+            ->build();
 
-        /** @var Webhook $webhookService */
-        $webhookService = $this->connectorManager->makeService($connector->getWebhookService());
-
-        if (! $webhookService->validateHmac($request)) {
+        if (! $webhookManager->validateHmac($request)) {
             throw new AccessDeniedHttpException('invalid token');
         }
 

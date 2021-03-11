@@ -7,7 +7,7 @@ use App\Enums\ServiceMethod;
 use App\Enums\TokenType;
 use App\Models\Token;
 use App\Services\Connectors\BotAuthManager;
-use App\Services\Connectors\ConnectorManager;
+use App\Services\Connectors\ManagerBuilder;
 
 class FacebookController extends Controller
 {
@@ -21,16 +21,19 @@ class FacebookController extends Controller
         ]);
     }
 
-    public function disconnect(ConnectorManager $connectorManager)
+    public function disconnect(ManagerBuilder $managerBuilder)
     {
-        $botAuthService = $connectorManager->getServiceManager(
-            'facebook',
-            BotConnector::class,
-            BotAuthManager::class,
-            ServiceMethod::BotAuthService
-        )->setBot(app('botman'));
+        /** @var BotAuthManager $botAuthManager */
+        $botAuthManager = $managerBuilder
+            ->setIdentifier('facebook')
+            ->setConnectorType(BotConnector::class)
+            ->setManagerClass(BotAuthManager::class)
+            ->setServiceMethod(ServiceMethod::BotAuthService)
+            ->build();
 
-        $botAuthService->disconnect();
+        $botAuthManager->setBot(app('botman'));
+
+        $botAuthManager->disconnect();
 
         return response()->noContent();
     }

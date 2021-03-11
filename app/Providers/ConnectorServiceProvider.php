@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Contracts\ResolvesConnector;
-use App\Services\Connectors\ConnectorManager;
+use App\Services\Connectors\ManagerBuilder;
 use App\Services\Connectors\ConnectorResolver;
 use Illuminate\Support\ServiceProvider;
 
@@ -22,8 +22,8 @@ class ConnectorServiceProvider extends ServiceProvider
 
         $this->app->bind(ResolvesConnector::class, ConnectorResolver::class);
 
-        $this->app->singleton(ConnectorManager::class, static function () {
-            return new ConnectorManager();
+        $this->app->singleton(ManagerBuilder::class, static function () {
+            return new ManagerBuilder();
         });
     }
 

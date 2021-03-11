@@ -7,6 +7,7 @@ use App\Models\MarketplaceIntegration;
 use App\Services\Woocommerce\Enums\WebhookTopic;
 use App\Services\Woocommerce\Helpers\HasSdk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Enumerable;
 
 class WebhookService implements Webhook
@@ -50,15 +51,17 @@ class WebhookService implements Webhook
 
     public function remove(MarketplaceIntegration $marketplaceIntegration)
     {
-        $sdk = $this->getSdk([
-            'woocommerceStoreUrl' => $marketplaceIntegration->meta['woocommerce_store_url'],
-            'consumerKey' => $marketplaceIntegration->meta['key'],
-            'consumerSecret' => $marketplaceIntegration->meta['secret'],
-        ]);
+        if (! empty(Arr::get($marketplaceIntegration->meta, 'webhook_id', []))) {
+            $sdk = $this->getSdk([
+                'woocommerceStoreUrl' => $marketplaceIntegration->meta['woocommerce_store_url'],
+                'consumerKey' => $marketplaceIntegration->meta['key'],
+                'consumerSecret' => $marketplaceIntegration->meta['secret'],
+            ]);
 
-        $sdk->post('webhooks/batch', [
-            'delete' => $marketplaceIntegration->meta['webhook_id'],
-        ]);
+            $sdk->post('webhooks/batch', [
+                'delete' => Arr::get($marketplaceIntegration->meta, 'webhook_id', []),
+            ]);
+        }
     }
 
     public function validateHmac(Request $request)

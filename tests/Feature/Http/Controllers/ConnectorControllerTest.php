@@ -8,7 +8,7 @@ use App\Http\Requests\ConnectorRequest;
 use App\Models\Shop;
 use App\Models\Token;
 use App\Models\User;
-use App\Services\Connectors\ConnectorManager;
+use App\Services\Connectors\ManagerBuilder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Request;
 use Tests\TestCase;
@@ -32,12 +32,12 @@ class ConnectorControllerTest extends TestCase
 
     public function testCreateOAuthSuccess()
     {
-        $connectorManagerMock = \Mockery::spy(ConnectorManager::class)->makePartial();
+        $connectorManagerMock = \Mockery::spy(ManagerBuilder::class)->makePartial();
         $connectorManagerMock->shouldReceive('processOAuth')
             ->with('shopify', 'onInstall', \Mockery::type(ConnectorRequest::class))
             ->once();
 
-        $this->swap(ConnectorManager::class, $connectorManagerMock);
+        $this->swap(ManagerBuilder::class, $connectorManagerMock);
 
         $response = $this->postJson('/shopify/oauth', [
             'shopify_shop' => 'test',
@@ -52,13 +52,13 @@ class ConnectorControllerTest extends TestCase
     {
         $this->logout($this->user);
 
-        $connectorManagerMock = \Mockery::spy(ConnectorManager::class)->makePartial();
+        $connectorManagerMock = \Mockery::spy(ManagerBuilder::class)->makePartial();
         $connectorManagerMock->shouldReceive('processOAuth')
             ->with('woocommerce', 'onInstallCallback', \Mockery::type(ConnectorRequest::class))
             ->once()
             ->andReturn($this->user->shops->first());
 
-        $this->swap(ConnectorManager::class, $connectorManagerMock);
+        $this->swap(ManagerBuilder::class, $connectorManagerMock);
 
         $response = $this->postJson('/woocommerce/callback');
 
@@ -69,13 +69,13 @@ class ConnectorControllerTest extends TestCase
     {
         $this->logout($this->user);
 
-        $connectorManagerMock = \Mockery::spy(ConnectorManager::class)->makePartial();
+        $connectorManagerMock = \Mockery::spy(ManagerBuilder::class)->makePartial();
         $connectorManagerMock->shouldReceive('processOAuth')
             ->with('shopify', 'onInstallCallback', \Mockery::type(ConnectorRequest::class))
             ->once()
             ->andReturn($this->user->shops->first());
 
-        $this->swap(ConnectorManager::class, $connectorManagerMock);
+        $this->swap(ManagerBuilder::class, $connectorManagerMock);
 
         $urlToBeRedirect = $this->faker->url;
 
@@ -89,12 +89,12 @@ class ConnectorControllerTest extends TestCase
 
     public function testDeleteSuccess()
     {
-        $connectorManagerMock = \Mockery::spy(ConnectorManager::class)->makePartial();
+        $connectorManagerMock = \Mockery::spy(ManagerBuilder::class)->makePartial();
         $connectorManagerMock->shouldReceive('processOAuth')
             ->with('shopify', 'onDeleteAuth', \Mockery::type(ConnectorRequest::class))
             ->once();
 
-        $this->swap(ConnectorManager::class, $connectorManagerMock);
+        $this->swap(ManagerBuilder::class, $connectorManagerMock);
 
         $response = $this->deleteJson('/shopify/oauth');
 
@@ -120,12 +120,12 @@ class ConnectorControllerTest extends TestCase
 
     public function testAcceptWebhookSuccess()
     {
-        $connectorManagerMock = \Mockery::spy(ConnectorManager::class)->makePartial();
+        $connectorManagerMock = \Mockery::spy(ManagerBuilder::class)->makePartial();
         $connectorManagerMock->shouldReceive('dispatchWebhookToProcessor')
             ->with('shopify', \Mockery::type(Request::class))
             ->once();
 
-        $this->swap(ConnectorManager::class, $connectorManagerMock);
+        $this->swap(ManagerBuilder::class, $connectorManagerMock);
 
         $this->withoutMiddleware(ValidateWebhook::class);
 

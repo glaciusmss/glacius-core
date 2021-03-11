@@ -6,7 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * Class ProductVariantResource.
- * @mixin \App\ProductVariants
+ * @mixin \App\Models\ProductVariant
  */
 class ProductVariantResource extends JsonResource
 {

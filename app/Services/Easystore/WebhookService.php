@@ -9,6 +9,7 @@ use App\Services\Easystore\Helpers\HasSdk;
 use EasyStore\Client as EasyStoreClient;
 use EasyStore\Exception\ApiException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Enumerable;
 
 class WebhookService implements Webhook
@@ -43,7 +44,7 @@ class WebhookService implements Webhook
             'shop' => $marketplaceIntegration->meta['easystore_shop'],
         ]);
 
-        foreach ($marketplaceIntegration->meta['webhook_id'] as $webhookId) {
+        foreach (Arr::get($marketplaceIntegration->meta, 'webhook_id', []) as $webhookId) {
             $sdk->delete("/webhooks/{$webhookId}.json");
         }
     }

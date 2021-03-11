@@ -8,11 +8,17 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MediaController extends Controller
 {
-    public function getImage(Media $image)
+    public function getImage(Request $request)
     {
+        $image = throw_unless(
+            Media::whereFileName($request->input('filename'))->first(),
+            new NotFoundHttpException('image not found')
+        );
+
         return new MediaResource($image);
     }
 
